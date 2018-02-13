@@ -34,8 +34,8 @@
       <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="CTM.Quoting.Provider, Version=2.0.22.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CTM.Quoting.Provider.2.0.22.1\lib\net45\CTM.Quoting.Provider.dll</HintPath>
+    <Reference Include="CTM.Quoting.Provider">
+      <HintPath>..\..\packages\CTM.Quoting.Provider.2.0.22.1\lib\net45\CTM.Quoting.Provider.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
