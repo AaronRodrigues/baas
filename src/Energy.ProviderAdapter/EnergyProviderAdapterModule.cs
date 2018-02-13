@@ -1,7 +1,7 @@
 ﻿using Autofac;
 using CTM.Quoting.Provider;
 
-namespace EnergyProviderAdapter
+namespace Energy.ProviderAdapter
 {
     public class EnergyProviderAdapterModule: Module
     {

@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CTM.Quoting.Provider;
 
-namespace EnergyProviderAdapter
+namespace Energy.ProviderAdapter
 {
     public class EnergyProviderAdapter : IProviderAdapter<EnergyEnquiry, EnergyQuote>
     {
