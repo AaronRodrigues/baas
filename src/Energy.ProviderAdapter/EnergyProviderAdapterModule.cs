@@ -18,7 +18,7 @@ namespace Energy.ProviderAdapter
                     m => m
                         .For(am => am.ProviderName, providerName)
                         .For(am => am.SupportedProduct, Product.Parse("Energy/1.0")))
-                .WithMetadata("messaging:component.queueName", $"quoting:Energy:{providerName}:1.0")
+                .WithMetadata("messaging:component.queueName", string.Format("quoting:Energy:{0}:1.0", providerName))
                 .WithParameter("providerName", providerName)
                 .WithParameter("brandCodePrefix", brandCodePrefix);
         }

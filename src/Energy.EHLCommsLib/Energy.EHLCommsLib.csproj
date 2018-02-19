@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,9 +41,52 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EHLCommsManager.cs" />
+    <Compile Include="Constants\EhlErrorConstants.cs" />
+    <Compile Include="Contracts\Common\Data\DataTemplate.cs" />
+    <Compile Include="Contracts\Common\Data\Item.cs" />
+    <Compile Include="Contracts\Common\Data\NameIdPair.cs" />
+    <Compile Include="Contracts\Common\Data\Query.cs" />
+    <Compile Include="Contracts\Common\Data\Statement.cs" />
+    <Compile Include="Contracts\Common\Error.cs" />
+    <Compile Include="Contracts\Common\Link.cs" />
+    <Compile Include="Contracts\Common\LinkedDataSource.cs" />
+    <Compile Include="Contracts\Common\Message.cs" />
+    <Compile Include="Contracts\CurrentSupplies\Fuel.cs" />
+    <Compile Include="Contracts\CurrentSupplies\FuelPlan.cs" />
+    <Compile Include="Contracts\CurrentSupplies\Fuels.cs" />
+    <Compile Include="Contracts\CurrentSupplies\PaymentMethod.cs" />
+    <Compile Include="Contracts\CurrentSupplies\Supplier.cs" />
+    <Compile Include="Contracts\CurrentSupplies\SupplierTariff.cs" />
+    <Compile Include="Contracts\Responses\ApiResponse.cs" />
+    <Compile Include="Contracts\Responses\CurrentSupplies.cs" />
+    <Compile Include="Contracts\Responses\SwitchesApiResponse.cs" />
+    <Compile Include="EHLApiCalls.cs" />
+    <Compile Include="EHLCommsAggregator.cs" />
+    <Compile Include="Enums\AppFormQuestionType.cs" />
+    <Compile Include="Enums\CompareWhat.cs" />
+    <Compile Include="Enums\EnergyJourneyType.cs" />
+    <Compile Include="Enums\MessageCode.cs" />
+    <Compile Include="Enums\MessageType.cs" />
+    <Compile Include="Enums\PaymentMethodType.cs" />
+    <Compile Include="Enums\PriceFeatureCategory.cs" />
+    <Compile Include="Enums\UsagePeriod.cs" />
+    <Compile Include="Extensions\ExtensionMethods.cs" />
+    <Compile Include="Interfaces\IEHLApiCalls.cs" />
+    <Compile Include="Interfaces\IHttpClient.cs" />
+    <Compile Include="Interfaces\ISwitchServiceHelper.cs" />
+    <Compile Include="Models\BaseRequest.cs" />
+    <Compile Include="Models\BaseResponse.cs" />
+    <Compile Include="Models\EstimatorData.cs" />
+    <Compile Include="Models\Message.cs" />
+    <Compile Include="Models\Prices\GetPricesRequest.cs" />
+    <Compile Include="Models\Prices\GetPricesResponse.cs" />
+    <Compile Include="Models\Prices\PriceFeature.cs" />
+    <Compile Include="Models\Prices\PriceResult.cs" />
+    <Compile Include="Models\SpendData.cs" />
+    <Compile Include="Models\UsageData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
