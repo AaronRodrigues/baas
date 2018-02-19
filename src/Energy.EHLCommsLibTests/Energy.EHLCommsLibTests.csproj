@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="EhlCommsManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SwitchServicesTestsHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Energy.EHLCommsLib\Energy.EHLCommsLib.csproj">
