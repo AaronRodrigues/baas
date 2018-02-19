@@ -1,0 +1,74 @@
+{
+    "region": {
+        "id": "1",
+        "name": "Eastern"
+    },
+    "supplies": [
+        {
+            "fuel": "electricity",
+            "supplier": {
+                "description": "RWE npower is one of Britain's largest energy companies, supplying gas and electricity to around 4 million customers across the UK and producing around 10% of the electricity used in the UK. Npower supply energy to both residential and business customers, and is a market leader in renewable energy.\u000d\u000a\u000d\u000anpower have been given a 3 star service rating due to the relatively low number of cases raised against them by Consumer Focus, as well as being able to offer a wide range of services including full online account management. They offer a range of products including Online and Green tariffs.\u000d\u000a\u000d\u000anpower tariffs can include a large discount paid at the end of each year - anything from £42 to £105 a year. Therefore over the year you will save the money quoted, however, if you leave during the year you will lose the discount and some of your savings. npower now offer the option of managing your account online, with online billing and the ability to submit a meter reading and pay your bill online. Once you have become a customer you can sign up for this, if you want.",
+                "environmental": {
+                    "CO2EmissionPerKwh": 0.543,
+                    "NuclearWastePerKwh": 0.00080,
+                    "fuelMix": {
+                        "coal": 0.31,
+                        "naturalGas": 0.57,
+                        "nuclear": 0.03,
+                        "other": 0.03,
+                        "renewable": 0.06
+                    }
+                },
+                "id": "57",
+                "name": "npower",
+                "serviceStarRating": 3
+            },
+            "supplierTariff": {
+                "annualStandingChargeInPounds": 112.292250000000000000,
+                "discounts": "Direct Debit discount of £42 per year.",
+                "features": [
+                    {
+                        "tags": "Contact",
+                        "text": "Extended hours 0800 customer service centre"
+                    },
+                    {
+                        "tags": "Management",
+                        "text": "Manage your account online"
+                    },
+                    {
+                        "tags": "Billing",
+                        "text": "Paperless billing"
+                    },
+                    {
+                        "tags": "Discount Cancellation",
+                        "text": "Guaranteed discount on standard prices until 30th November 2013, cancellation fees apply"
+                    }
+                ],
+                "id": "1452",
+				"durationWithCurrentSupplierInMonths": 6,
+				"exitFees" : 50,
+                "logo": {
+                    "media": "image/gif",
+                    "rel": "/rels/domestic/supplier-tariff-logo",
+                    "uri": "/domestic/energy/suppliers/logos/GE_Npower_TRANS.gif"
+                },
+                "name": "npower - Electricity Online November 2013",
+                "otherInformation": "n/a",
+                "otherServices": "n/a",
+                "paymentMethod": {
+                    "id": "1",
+                    "name": "Monthly Direct Debit"
+                },
+                "standingCharge": "30.76 p per day (£112.29 per year)",
+				tariffEndDate: "/Date(1388534400000+0000)/",
+				priceGuaranteedUntil: "/Date(1420070400000+0000)/",
+				"tariffComparisonRate" : 1.0000,
+				"personalTariffComparisonRate" : 2.0000,
+                "tariffInformation": "Customers on this tariff are guaranteed a 4% lower bill than npower’s Standard (off-line) variable prices until 30th November 2013. Prices are variable throughout this period. The guarantee applies to customers with average electricity consumption of 3,300 kWh, and includes the monthly direct debit discount. There is a £30 cancellation fee for this tariff if customers switch away before the end date. Customers signing up to this tariff will receive paperless billing. The savings quoted include any discounts associated with this tariff. To qualify, you must take your supply from npower and pay by the same payment method for a full 12 month period – this period does not have to be a Jan-Dec calendar year. The discounts will be paid to you annually and will be credited to your account at the end of each full year that you remain with npower. The estimated savings figure on the results table assumes tariff rates and discounts remain the same for a year. After the guaranteed period of 30th November 2013, customers on this tariff will automatically be moved to npower's Go Save tariff which may be more expensive than Electricity Online November 2013.",
+				"tariffType" : "Variable",
+                "unitCharge": "9.597 p"
+            }
+        }
+    ],
+    "supplyType": "SingleElectricity"
+}

@@ -1,0 +1,94 @@
+{
+    "data-template": {
+        "groups": [
+            {
+                "items": [
+                    {
+                        "data": "36c5ea44-3290-4c23-8a47-a18800dbdf1b",
+                        "name": "id"
+                    },
+                    {
+                        "data": "CTMTest",
+                        "name": "partnerReference"
+                    },
+                    {
+                        "data": "E21123711",
+                        "name": "EHLReference"
+                    },
+                    {
+                        "data": "Mr",
+                        "name": "title"
+                    },
+                    {
+                        "data": "test",
+                        "name": "firstName"
+                    },
+                    {
+                        "data": "test",
+                        "name": "surname"
+                    },
+                    {
+                        "data": "vishal.sharma@bglgroup.co.uk",
+                        "name": "email"
+                    },
+                    {
+                        "data": "1 Lobelia Road\u000d\u000aKETTERING\u000d\u000aNorthamptonshire\u000d\u000aNN16 9TY\u000d\u000a",
+                        "name": "supplyAddress"
+                    },
+                    {
+                        "data": "",
+                        "name": "correspondenceAddress"
+                    },
+                    {
+                        "data": "01010101010101",
+                        "name": "daytimePhoneNumber"
+                    },
+                    {
+                        "data": false,
+                        "name": "contactByEMailAllowed"
+                    },
+                    {
+                        "data": false,
+                        "name": "contactByPostAllowed"
+                    },
+                    {
+                        "data": false,
+                        "name": "contactByTelephoneAllowed"
+                    },
+                    {
+                        "data": false,
+                        "name": "contactBySMSAllowed"
+                    },
+                    {
+                        "data": "1. Soon ScottishPower will send you an acknowledgement pack, which will contain information about your new contract, complete with their detailed terms and conditions of the contract.\u000a2. If you DO NOT cancel within 7 days, ScottishPower will begin registering your request and will contact your existing gas/electricity supplier(s) to arrange a transfer date. \u000a3. Within 4 ??? 6 weeks once the transfer date has been confirmed, ScottishPower will inform you about this, and will simply ask you to provide a meter reading(s) on that date.",
+                        "name": "nextSteps"
+                    },
+                    {
+                        "data": "022222222222222",
+                        "name": "eveningPhoneNumber"
+                    },
+                    {
+                        "data": "Tue, 01 Jan 1980 00:00:00 GMT",
+                        "name": "dateOfBirth"
+                    },
+                    {
+                        "data": "Thu, 21 Mar 2013 13:23:17 GMT",
+                        "name": "confirmDate"
+                    },
+                    {
+                        "data": "Yes",
+                        "name": "isSwitchHeld"
+                    },
+                    {
+                        "data": "Mon, 01 Apr 2013 00:00:00 GMT",
+                        "name": "heldUntilDate"
+                    }
+                ],
+                "name": "customerData"
+            }
+        ]
+    },
+    "links": [
+        
+    ]
+}

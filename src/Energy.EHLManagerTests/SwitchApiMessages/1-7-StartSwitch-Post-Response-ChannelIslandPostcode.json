@@ -1,0 +1,53 @@
+{
+    "data-template": {
+        "groups": [
+            {
+                "items": [
+                    {
+                        "data": "JE2 4PL",
+                        "mandatory": true,
+                        "name": "postcode",
+                        "prompt": "Enter your postcode",
+                        "validateAs": "/validate/ukPostcode"
+                    }
+                ],
+                "mandatory": true,
+                "name": "supplyPostcode"
+            },
+            {
+                "items": [
+                    {
+                        "data": "CTM",
+                        "mandatory": true,
+                        "name": "partnerReference"
+                    },
+                    {
+                        "data": "4071c577-513c-4e33-93d8-c7135122f167",
+                        "mandatory": true,
+                        "name": "apiKey"
+                    }
+                ],
+                "mandatory": true,
+                "name": "references"
+            }
+        ]
+    },
+    "errors": [
+        {
+            "message": {
+                "id": "/errors/domestic/channel-islands-not-supported",
+                "text": "Unfortunately this service is only available on the UK mainland"
+            }
+        }
+    ],
+    "links": [
+        {
+            "rel": "/rels/home /rels/bookmark",
+            "uri": "http://rest-predeploy.energyhelpline.com/domestic/energy"
+        },
+        {
+            "rel": "/rels/domestic/create-switch /rels/bookmark /rels/self",
+            "uri": "http://rest-predeploy.energyhelpline.com/domestic/energy/switches"
+        }
+    ]
+}

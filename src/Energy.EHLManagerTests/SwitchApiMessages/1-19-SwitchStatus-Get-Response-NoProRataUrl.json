@@ -1,0 +1,168 @@
+{
+    "links": [
+        {
+            "rel": "/rels/domestic/switch /rels/self",
+            "uri": "/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9?b=1+SxdN9QwjA1nP8RoesecNN8ctw"
+        },
+        {
+            "rel": "/rels/home /rels/bookmark",
+            "uri": "/domestic/energy"
+        },
+        {
+            "rel": "/rels/domestic/current-supply",
+            "uri": "/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9/current-supply?b=1+SxdN9QwjA1nP8RoesecNN8ctw"
+        },
+        {
+            "rel": "/rels/domestic/usage",
+            "uri": "/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9/usage?b=1+SxdN9QwjA1nP8RoesecNN8ctw"
+        },
+        {
+            "rel": "/rels/domestic/preferences",
+            "uri": "/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9/preferences?b=1+SxdN9QwjA1nP8RoesecNN8ctw"
+        },
+        {
+            "rel": "/rels/domestic/prepare-for-transfer",
+            "uri": "/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9/prepare-for-transfer?b=1+SxdN9QwjA1nP8RoesecNN8ctw"
+        },
+        {
+            "rel": "/rels/domestic/signup",
+            "uri": "/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9/signup?b=1+SxdN9QwjA1nP8RoesecNN8ctw"
+        },
+        {
+            "rel": "/rels/domestic/transfer /rels/next",
+            "uri": "http://predeploy-apitransfer.energyhelpline.com/domestic/energy/signup/e1b208db-54ab-4cb6-b592-a17f008f6dc9"
+        },
+        {
+            "rel": "/rels/domestic/future-supply",
+            "uri": "/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9/future-supply?b=1+SxdN9QwjA1nP8RoesecNN8ctw"
+        }
+    ],
+    "currentSupply": {
+        "details": {
+            "rel": "/rels/domestic/current-supply-details /rels/domestic/tariff-details",
+            "uri": "/domestic/energy/supplies/tariffSelectionG446490_E530862?t=RH5JU8M64vCC+6/MJ4AbKy2gz40"
+        },
+        "electricity": {
+            "economy7": false,
+            "paymentMethod": {
+                "id": "2",
+                "name": "Pay On Receipt Of Bill"
+            },
+            "supplier": {
+                "id": "59",
+                "name": "E.ON"
+            },
+            "supplierTariff": {
+                "id": "301",
+                "name": "E.ON"
+            }
+        },
+        "gas": {
+            "paymentMethod": {
+                "id": "2",
+                "name": "Pay On Receipt Of Bill"
+            },
+            "supplier": {
+                "id": "39",
+                "name": "British Gas"
+            },
+            "supplierTariff": {
+                "id": "44",
+                "name": "British Gas"
+            }
+        },
+        "supplyType": "SingleGasAndElectricity"
+    },
+    "currentUsage": {
+        "elec": {
+            "annualKWh": 3009,
+            "annualSpend": 480,
+            "usageProfile": {
+                "usage": {
+                    "items": [
+                        {
+                            "data": 40,
+                            "name": "usageAsSpend"
+                        },
+                        {
+                            "data": "1",
+                            "name": "spendPeriod"
+                        }
+                    ],
+                    "name": "elecSpend"
+                },
+                "usageType": {
+                    "id": "4"
+                }
+            }
+        },
+        "gas": {
+            "annualKWh": 5785,
+            "annualSpend": 360,
+            "usageProfile": {
+                "usage": {
+                    "items": [
+                        {
+                            "data": 30,
+                            "name": "usageAsSpend"
+                        },
+                        {
+                            "data": "1",
+                            "name": "spendPeriod"
+                        }
+                    ],
+                    "name": "gasSpend"
+                },
+                "usageType": {
+                    "id": "4"
+                }
+            }
+        }
+    },
+    "futureEnergySupply": {
+        "details": {
+            "rel": "/rels/domestic/future-supply-details /rels/domestic/tariff-details",
+            "uri": "/domestic/energy/supplies/tariffSelectionG592974?t=RH5JU8M64vCC+6/MJ4AbKy2gz40"
+        },
+        "gas": {
+            "paymentMethod": {
+                "id": "1",
+                "name": "Monthly Direct Debit"
+            },
+            "supplier": {
+                "id": "107",
+                "name": "Test Supplier"
+            },
+            "supplierTariff": {
+                "id": "107",
+                "name": "Test Supplier"
+            }
+        },
+        "supplyType": "SingleGas"
+    },
+    "id": "e1b208db-54ab-4cb6-b592-a17f008f6dc9",
+    "resultPreferences": {
+        "resultOrder": {
+            "id": "1",
+            "name": "ExpectedSaving"
+        },
+        "showPaymentTypes": [
+            {
+                "id": "1",
+                "name": "Monthly Direct Debit"
+            }
+        ],
+        "tariffFilterOptions": {
+            "id": "105",
+            "name": "All"
+        }
+    },
+    "status": "/domestic/energy/statuses/in-progress",
+    "supplyLocation": {
+        "region": {
+            "id": "1",
+            "name": "Eastern"
+        },
+        "supplyPostcode": "PE2 6YS"
+    }
+}

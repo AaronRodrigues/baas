@@ -1,0 +1,116 @@
+{
+    "data-template": {
+        "groups": [
+            {
+                "items": [
+                    {
+                        "acceptableValues": [
+                            {
+                                "id": "2",
+                                "name": "TariffsWithPaperBilling"
+                            },
+                            {
+                                "id": "5",
+                                "name": "TariffsWithNoStandingCharges"
+                            },
+                            {
+                                "id": "100",
+                                "name": "FixedOrCappedPriceTariffs"
+                            },
+                            {
+                                "id": "101",
+                                "name": "GreenTariffs"
+                            },
+                            {
+                                "id": "102",
+                                "name": "AccurateMonthlyBilling"
+                            },
+                            {
+                                "id": "104",
+                                "name": "TariffsWithInternetOnly"
+                            },
+                            {
+                                "id": "105",
+                                "name": "All"
+                            }
+                        ],
+                        "data": "105",
+                        "name": "tariffFilterOption",
+                        "type": "oneOf"
+                    }
+                ],
+                "name": "tariffFilterOptions"
+            },
+            {
+                "items": [
+                    {
+                        "acceptableValues": [
+                            {
+                                "id": "1",
+                                "name": "price"
+                            },
+                            {
+                                "id": "2",
+                                "name": "servicerating"
+                            }
+                        ],
+                        "data": "1",
+                        "name": "resultsOrder",
+                        "type": "oneOf"
+                    }
+                ],
+                "name": "resultsOrder"
+            },
+            {
+                "items": [
+                    {
+                        "acceptableValues": [
+                            {
+                                "id": "-1",
+                                "name": "Any of the above methods."
+                            },
+                            {
+                                "id": "2",
+                                "name": "Pay On Receipt Of Bill"
+                            },
+                            {
+                                "id": "1",
+                                "name": "Monthly Direct Debit"
+                            },
+                            {
+                                "id": "4",
+                                "name": "Quarterly Direct Debit"
+                            },
+                            {
+                                "id": "7",
+                                "name": "Weekly"
+                            },
+                            {
+                                "id": "10",
+                                "name": "Annual Advanced DD"
+                            },
+                            {
+                                "id": "14",
+                                "name": "Monthly in Advance DD"
+                            }
+                        ],
+                        "data": "1",
+                        "name": "paymentMethod",
+                        "type": "oneOf"
+                    }
+                ],
+                "name": "limitToPaymentType"
+            }
+        ]
+    },
+    "links": [
+        {
+            "rel": "/rels/domestic/switch",
+            "uri": "/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9?b=1+SxdN9QwjA1nP8RoesecNN8ctw"
+        },
+        {
+            "rel": "/rels/domestic/preferences /rels/self",
+            "uri": "/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9/preferences?b=1+SxdN9QwjA1nP8RoesecNN8ctw"
+        }
+    ]
+}

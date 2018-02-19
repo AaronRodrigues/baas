@@ -1,0 +1,16 @@
+{
+    "links": [
+        {
+            "rel": "/rels/domestic/switch",
+            "uri": "http://rest.energyhelpline.com/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9?b=DeqGfRm5ti5chPSeAY6mjkazjcg",
+        },
+        {
+            "rel": "/rels/domestic/current-supply /rels/next",
+            "uri": "http://rest.energyhelpline.com/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9/current-supply?b=DeqGfRm5ti5chPSeAY6mjkazjcg",
+        },
+        {
+            "rel": "/rels/domestic/region /rels/self",
+            "uri": "http://rest.energyhelpline.com/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9/region?b=DeqGfRm5ti5chPSeAY6mjkazjcg",
+        }
+    ],
+}

@@ -1,0 +1,83 @@
+{
+    "groups": [
+        {
+            "name": "electricityRegion",
+            "items": [
+                {
+                    "name": "region",
+                    "data": 10,
+                    "prompt": "Choose your region",
+                    "mandatory": true,
+                    "validateAs": null,
+                    "type": "oneOf",
+                    "rel": null,
+                    "acceptableValues": [
+                        {
+                            "id": "1",
+                            "name": "Eastern"
+                        },
+                        {
+                            "id": "2",
+                            "name": "East Midlands"
+                        },
+                        {
+                            "id": "3",
+                            "name": "London"
+                        },
+                        {
+                            "id": "4",
+                            "name": "MANWEB"
+                        },
+                        {
+                            "id": "5",
+                            "name": "Midlands"
+                        },
+                        {
+                            "id": "6",
+                            "name": "Northern"
+                        },
+                        {
+                            "id": "7",
+                            "name": "NORWEB"
+                        },
+                        {
+                            "id": "8",
+                            "name": "Scottish Hydro"
+                        },
+                        {
+                            "id": "9",
+                            "name": "Scottish Power"
+                        },
+                        {
+                            "id": "10",
+                            "name": "Seeboard"
+                        },
+                        {
+                            "id": "11",
+                            "name": "Southern"
+                        },
+                        {
+                            "id": "12",
+                            "name": "SWALEC"
+                        },
+                        {
+                            "id": "13",
+                            "name": "SWEB"
+                        },
+                        {
+                            "id": "14",
+                            "name": "Yorkshire"
+                        },
+                        {
+                            "id": "16",
+                            "name": "Northern Ireland"
+                        }
+                    ]
+                }
+            ],
+            "validateAs": null,
+            "mandatory": true
+        }
+    ],
+    "validateAs": null
+}

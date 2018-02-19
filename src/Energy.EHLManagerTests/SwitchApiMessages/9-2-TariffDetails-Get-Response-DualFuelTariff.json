@@ -1,0 +1,141 @@
+{
+	"links" : [{
+			"media" : "application/pdf",
+			"rel" : "/rels/domestic/supplier-terms-and-conditions",
+			"uri" : "http://rest-predeploy.energyhelpline.com/Uploads/SupplierDocs/npower%20All%20Tariffs%20Ts%20and%20Cs%2008082013.pdf?t=n8hTyXYxmthO7%2FpvUEgJa22%2BVXY"
+		}, {
+			"rel" : "/rels/domestic/future-supply-details /rels/self",
+			"uri" : "http://rest-predeploy.energyhelpline.com/domestic/energy/future-supplies/tariffSelectionG692262_E692038?t=n8hTyXYxmthO7/pvUEgJa22+VXYTJWtrYWgj4QkLNqawlIPC+9Kedw"
+		}
+	],
+	"gasExitZone" : "NA",
+    "region": {
+        "id": "1",
+        "name": "Eastern"
+    },
+    "supplies": [
+        {
+            "fuel": "electricity",
+            "supplier": {
+                "description": "first:utility is an independent utilities supplier offering gas and electricity, phone and broadband services to a range of consumer and business customers.\u000d\u000a\u000d\u000aWithin certain areas in the UK, customers can switch to a tariff that includes the free installation of smart meters which ensures 100% accurate billing across all its services. Customers in other areas of the UK can still take advantage of their cheap paperless billing tariff(s) with standard meters.\u000d\u000a\u000d\u000aUnfortunately, first:utility cannot supply customers living in the following areas of the UK:\u000d\u000a\u000d\u000a  Shetland\u000d\u000a  Hebrides\u000d\u000a  Kirkwall\u000d\u000a  Inverness\u000d\u000a  Paisley\u000d\u000a  Perth\u000d\u000a  Isle of Wight\u000d\u000a  Scilly Isles\u000d\u000a\u000d\u000aAs a new company to the energy market we have given first:utility a 3 star service rating. Customers should also note that first:utility require a credit check to be performed before applications are processed.\u000d\u000a\u000d\u000afirst:utility is a CarbonNeutral company.",
+                "environmental": {
+                    "CO2EmissionPerKwh": 0.417,
+                    "fuelMix": {
+                        "coal": 0.286,
+                        "naturalGas": 0.377,
+                        "nuclear": 0.281,
+                        "other": 0.035,
+                        "renewable": 0.021
+                    }
+                },
+                "id": "97",
+                "name": "first:utility",
+                "serviceStarRating": 3
+            },
+            "supplierTariff": {
+                "annualStandingChargeInPounds": 105.010500000000000000,
+                "discounts": "Dual fuel customers will receive a discount of £90 per year for electricity and £90 per year for gas. Discounts will be credited to your account on an annual basis after the end of a 12-month period with first:utility (and therefore not included in your annual savings figure). The discounts are subject to a minimum total energy spend of £600 (inc VAT) per year.",
+                "features": [
+                    {
+                        "tags": "Contact",
+                        "text": "UK based call centre"
+                    },
+                    {
+                        "tags": "Benefits",
+                        "text": "Smart meter technology"
+                    },
+                    {
+                        "tags": "Billing",
+                        "text": "Choice of paper or paperless billing"
+                    },
+                    {
+                        "tags": "Cancellation",
+                        "text": "Cancellation fees apply"
+                    },
+                    {
+                        "tags": "CappedOrFixed",
+                        "text": "Prices fixed until 30th June 2013"
+                    }
+                ],
+                "id": "1407",
+                "logo": {
+                    "media": "image/gif",
+                    "rel": "/rels/domestic/supplier-tariff-logo",
+                    "uri": "/domestic/energy/suppliers/logos/first-utility-logo_TRANS.gif"
+                },
+                "name": "first:utility - Smart as Standard Fixed V4",
+                "otherInformation": "n/a",
+                "otherServices": "n/a",
+                "paymentMethod": {
+                    "id": "1",
+                    "name": "Monthly Direct Debit"
+                },
+                "standingCharge": "28.77 p per day (£105.01 per year)",
+                "tariffInformation": "Smart as Standard Fixed V4 prices are fixed until 30th June 2013. There is a cancellation fee of  £30 per fuel if the customers switch away before the contract end date. Customers signing up to this product will also receive a dual fuel discount of £180 which will be credited to your account on an annual basis after the end of a 12-month period with first:utility (and therefore not included in your annual savings figure). Customers signing up to this tariff will be charged variable direct debits based on their actual energy consumption if they submit meter readings for that period.  Customer signing up to this tariff will receive paperless billing, however for an extra charge of £12 a year there is an option to receive a regular paper bill instead (not included in your savings figures).",
+                "unitCharge": "13.270 p"
+            }
+        },
+        {
+            "fuel": "gas",
+            "supplier": {
+                "description": "first:utility is an independent utilities supplier offering gas and electricity, phone and broadband services to a range of consumer and business customers.\u000d\u000a\u000d\u000aWithin certain areas in the UK, customers can switch to a tariff that includes the free installation of smart meters which ensures 100% accurate billing across all its services. Customers in other areas of the UK can still take advantage of their cheap paperless billing tariff(s) with standard meters.\u000d\u000a\u000d\u000aUnfortunately, first:utility cannot supply customers living in the following areas of the UK:\u000d\u000a\u000d\u000a  Shetland\u000d\u000a  Hebrides\u000d\u000a  Kirkwall\u000d\u000a  Inverness\u000d\u000a  Paisley\u000d\u000a  Perth\u000d\u000a  Isle of Wight\u000d\u000a  Scilly Isles\u000d\u000a\u000d\u000aAs a new company to the energy market we have given first:utility a 3 star service rating. Customers should also note that first:utility require a credit check to be performed before applications are processed.\u000d\u000a\u000d\u000afirst:utility is a CarbonNeutral company.",
+                "environmental": {
+                    "CO2EmissionPerKwh": 0.417,
+                    "fuelMix": {
+                        "coal": 0.286,
+                        "naturalGas": 0.377,
+                        "nuclear": 0.281,
+                        "other": 0.035,
+                        "renewable": 0.021
+                    }
+                },
+                "id": "97",
+                "name": "first:utility",
+                "serviceStarRating": 3
+            },
+            "supplierTariff": {
+                "annualStandingChargeInPounds": 160.658400000000000000,
+                "discounts": "Dual fuel customers will receive a discount of £90 per year for electricity and £90 per year for gas. Discounts will be credited to your account on an annual basis after the end of a 12-month period with first:utility (and therefore not included in your annual savings figure). The discounts are subject to a minimum total energy spend of £600 (inc VAT) per year.",
+                "features": [
+                    {
+                        "tags": "Contact",
+                        "text": "UK based call centre"
+                    },
+                    {
+                        "tags": "Benefits",
+                        "text": "<div>Smart meter technology</div>"
+                    },
+                    {
+                        "tags": "Billing",
+                        "text": "Choice of paper or paperless billing"
+                    },
+                    {
+                        "tags": "Cancellation",
+                        "text": "Cancellation fees apply"
+                    },
+                    {
+                        "tags": "CappedOrFixed",
+                        "text": "Prices fixed until 30th June 2013"
+                    }
+                ],
+                "id": "1407",
+                "logo": {
+                    "media": "image/gif",
+                    "rel": "/rels/domestic/supplier-tariff-logo",
+                    "uri": "/domestic/energy/suppliers/logos/first-utility-logo_TRANS.gif"
+                },
+                "name": "first:utility - Smart as Standard Fixed V4",
+                "otherInformation": "n/a",
+                "otherServices": "n/a",
+                "paymentMethod": {
+                    "id": "1",
+                    "name": "Monthly Direct Debit"
+                },
+                "standingCharge": "44.02 p per day (£160.66 per year)",
+                "tariffInformation": "Smart as Standard Fixed V4 prices are fixed until 30th June 2013. There is a cancellation fee of  £30 per fuel if the customers switch away before the contract end date. Customers signing up to this product will also receive a dual fuel discount of £180 which will be credited to your account on an annual basis after the end of a 12-month period with first:utility (and therefore not included in your annual savings figure). Customers signing up to this tariff will be charged variable direct debits based on their actual energy consumption if they submit meter readings for that period.  Customer signing up to this tariff will receive paperless billing, however for an extra charge of £12 a year there is an option to receive a regular paper bill instead (not included in your savings figures).",
+                "unitCharge": "4.116 p"
+            }
+        }
+    ],
+    "supplyType": "DualGasAndElectricity"
+}

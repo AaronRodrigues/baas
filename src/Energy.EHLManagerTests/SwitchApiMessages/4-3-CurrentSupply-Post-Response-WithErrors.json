@@ -1,0 +1,116 @@
+{
+    "data-template": {
+        "groups": [
+            {
+                "items": [
+                    {
+                        "data": true,
+                        "mandatory": true,
+                        "name": "compareGas",
+                        "type": "bool"
+                    },
+                    {
+                        "data": true,
+                        "mandatory": true,
+                        "name": "compareElec",
+                        "type": "bool"
+                    }
+                ],
+                "mandatory": true,
+                "name": "includedFuels"
+            },
+            {
+                "items": [
+                    {
+                        "data": "",
+                        "mandatory": true,
+                        "name": "supplier",
+                        "prompt": "Choose your supplier",
+                        "rel": "/rels/domestic/current-supplies",
+                        "type": "linked"
+                    },
+                    {
+                        "data": "44",
+                        "mandatory": true,
+                        "name": "supplierTariff",
+                        "prompt": "Choose your tariff",
+                        "rel": "/rels/domestic/current-supplies",
+                        "type": "linked"
+                    },
+                    {
+                        "data": "2",
+                        "mandatory": true,
+                        "name": "paymentMethod",
+                        "prompt": "Choose your payment method",
+                        "rel": "/rels/domestic/current-supplies",
+                        "type": "linked"
+                    }
+                ],
+                "name": "gasTariff"
+            },
+            {
+                "items": [
+                    {
+                        "data": "59",
+                        "mandatory": true,
+                        "name": "supplier",
+                        "prompt": "Choose your supplier",
+                        "rel": "/rels/domestic/current-supplies",
+                        "type": "linked"
+                    },
+                    {
+                        "data": "301",
+                        "mandatory": true,
+                        "name": "supplierTariff",
+                        "prompt": "Choose your tariff",
+                        "rel": "/rels/domestic/current-supplies",
+                        "type": "linked"
+                    },
+                    {
+                        "data": "2",
+                        "mandatory": true,
+                        "name": "paymentMethod",
+                        "prompt": "Choose your payment method",
+                        "rel": "/rels/domestic/current-supplies",
+                        "type": "linked"
+                    },
+                    {
+                        "data": false,
+                        "mandatory": true,
+                        "name": "economy7",
+                        "prompt": "Is your tariff an economy 7 tariff",
+                        "type": "bool"
+                    }
+                ],
+                "name": "elecTariff"
+            }
+        ],
+        "validateAs": "/validate/energySupply"
+    },
+    "errors": [
+        {
+            "group": "gasTariff",
+            "item": "supplier",
+            "message": {
+                "id": "/errors/missing-item",
+                "text": "Missing mandatory item"
+            }
+        }
+    ],
+    "linked-data": [
+        {
+            "rel": "/rels/domestic/current-supplies",
+            "uri": "http://rest-predeploy.energyhelpline.com/domestic/energy/current-supplies/1?t=WS/QhGowITS5PDUjjv+Q9sRuUI4"
+        }
+    ],
+    "links": [
+        {
+            "rel": "/rels/domestic/switch",
+            "uri": "http://rest-predeploy.energyhelpline.com/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9?b=s/RoPJMps64s6tm4/hlRjQCM6+o"
+        },
+        {
+            "rel": "/rels/domestic/current-supply /rels/self",
+            "uri": "http://rest-predeploy.energyhelpline.com/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9/current-supply?b=s/RoPJMps64s6tm4/hlRjQCM6+o"
+        }
+    ]
+}

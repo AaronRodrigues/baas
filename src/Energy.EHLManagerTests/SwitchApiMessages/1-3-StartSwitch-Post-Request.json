@@ -1,0 +1,33 @@
+{
+	"groups": [
+		{
+			"items": [
+				{
+					"data": "PE26YS",
+					"mandatory": true,
+					"name": "postcode",
+					"prompt": "Enter your postcode",
+					"validateAs": "/validate/ukPostcode"
+				}
+			],
+			"mandatory": true,
+			"name": "supplyPostcode"
+		},
+		{
+			"items": [
+				{
+					"data": "CTM",
+					"mandatory": true,
+					"name": "partnerReference"
+				},
+				{
+					"data": "4071c577-513c-4e33-93d8-c7135122f167",
+					"mandatory": true,
+					"name": "apiKey"
+				}
+			],
+			"mandatory": true,
+			"name": "references"
+		}
+	]
+}

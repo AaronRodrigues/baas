@@ -1,0 +1,67 @@
+{
+    "region": {
+        "id": "18",
+        "name": "All Regions"
+    },
+    "supplies": [
+        {
+            "fuel": "gas",
+            "supplier": {
+                "description": "Ebico is a small not-for-profit energy company founded in 1998. Their gas tariff (EquiGas) and electricity tariff (EquiPower) are typically good for prepayment customers but offer only a basic service.\u000d\u000a\u000d\u000aEbico uses SSE as their licensed supplier to deliver EquiGas and EquiPower.\u000d\u000a\u000d\u000aPlease note Consumer Focus do not make available any figures about their levels of service or complaints, and with their basic services, we have thus given them a moderate service rating.",
+                "environmental": {
+                    "CO2EmissionPerKwh": 0.413,
+                    "NuclearWastePerKwh": 0.00100,
+                    "fuelMix": {
+                        "coal": 0.223,
+                        "naturalGas": 0.55,
+                        "nuclear": 0.105,
+                        "other": 0.025,
+                        "renewable": 0.097
+                    }
+                },
+                "id": "80",
+                "name": "Ebico",
+                "serviceStarRating": 4
+            },
+            "supplierTariff": {
+                "annualStandingChargeInPounds": 0.000000000000000000,
+                "discounts": "n/a",
+                "features": [
+                    {
+                        "tags": "Other",
+                        "text": "Small UK social enterprise"
+                    },
+                    {
+                        "tags": "Other",
+                        "text": "Prices same irrespective of payment method"
+                    }
+                ],
+                "id": "545",
+				"durationWithCurrentSupplierInMonths": 8,
+				"exitFees" : 50,
+                "logo": {
+                    "media": "image/gif",
+                    "rel": "/rels/domestic/supplier-tariff-logo",
+                    "uri": "/domestic/energy/suppliers/logos/Ebico-logo_TRANS.gif"
+                },
+                "name": "Ebico - EquiGas",
+                "otherInformation": "n/a",
+                "otherServices": "n/a",
+                "paymentMethod": {
+                    "id": "1",
+                    "name": "Monthly Direct Debit"
+                },
+                "standingCharge": "0.00 p per day (£0.00 per year)",
+                "tariffInformation": "n/a",
+				tariffEndDate: "/Date(1388534400000+0000)/",
+				priceGuaranteedUntil: "/Date(1420070400000+0000)/",
+				"tariffComparisonRate" : 1.0000,
+				"personalTariffComparisonRate" : 2.0000,
+                "tariffInformation": "Customers on this tariff are guaranteed a 4% lower bill than npower’s Standard (off-line) variable prices until 30th November 2013. Prices are variable throughout this period. The guarantee applies to customers with average electricity consumption of 3,300 kWh, and includes the monthly direct debit discount. There is a £30 cancellation fee for this tariff if customers switch away before the end date. Customers signing up to this tariff will receive paperless billing. The savings quoted include any discounts associated with this tariff. To qualify, you must take your supply from npower and pay by the same payment method for a full 12 month period – this period does not have to be a Jan-Dec calendar year. The discounts will be paid to you annually and will be credited to your account at the end of each full year that you remain with npower. The estimated savings figure on the results table assumes tariff rates and discounts remain the same for a year. After the guaranteed period of 30th November 2013, customers on this tariff will automatically be moved to npower's Go Save tariff which may be more expensive than Electricity Online November 2013.",
+				"tariffType" : "Variable",
+                "unitCharge": "4.578 p"
+            }
+        }
+    ],
+    "supplyType": "SingleGas"
+}

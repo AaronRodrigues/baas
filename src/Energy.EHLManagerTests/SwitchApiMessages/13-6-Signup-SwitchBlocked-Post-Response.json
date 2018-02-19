@@ -1,0 +1,16 @@
+{
+    "links": [
+        {
+            "rel": "/rels/domestic/switch-blocked",
+            "uri": "https://rest-predeploy.energyhelpline.com/domestic/energy/switches/26d0f88b-966f-487f-8131-a28300c91b89/switch-blocked?b=YbMh3g+sCOEPeq4l72HIUmx1FXMpdYi1qEXh8leMd/zuYnyX4PgEdg"
+        },
+        {
+            "rel": "/rels/domestic/switch",
+            "uri": "https://rest-predeploy.energyhelpline.com/domestic/energy/switches/26d0f88b-966f-487f-8131-a28300c91b89?t=9sxZbMYRLTBokCDrO5uG7EGAt5YpdYi1qEXh8leMd/zuYnyX4PgEdg"
+        },
+        {
+            "rel": "/rels/domestic/signup /rels/self",
+            "uri": "https://rest-predeploy.energyhelpline.com/domestic/energy/switches/26d0f88b-966f-487f-8131-a28300c91b89/signup?t=9sxZbMYRLTBokCDrO5uG7EGAt5YpdYi1qEXh8leMd/zuYnyX4PgEdg"
+        }
+    ]
+}

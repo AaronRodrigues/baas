@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Energy.ProviderAdapter", "Energy.ProviderAdapter\Energy.ProviderAdapter.csproj", "{B49AC471-4EC9-437D-BB49-AE2994E24E93}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EEF446CB-72A5-4F03-8E27-A50A6E91984D} = {EEF446CB-72A5-4F03-8E27-A50A6E91984D}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Energy.EHLCommsLib", "Energy.EHLCommsLib\Energy.EHLCommsLib.csproj", "{EEF446CB-72A5-4F03-8E27-A50A6E91984D}"
 EndProject

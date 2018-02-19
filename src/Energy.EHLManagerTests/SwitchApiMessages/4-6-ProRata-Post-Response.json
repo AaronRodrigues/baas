@@ -1,0 +1,12 @@
+{
+    "links": [
+        {
+            "rel": "/rels/domestic/switch",
+            "uri": "http://rest-predeploy.energyhelpline.com/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9?b=tlifxqsNyCzxIJnRwtQKuZToQQw"
+        },
+        {
+            "rel": "/rels/domestic/prorata-preference /rels/self",
+            "uri": "http://rest-predeploy.energyhelpline.com/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9/proratapreference?b=tlifxqsNyCzxIJnRwtQKuZToQQw"
+        }
+    ]
+}

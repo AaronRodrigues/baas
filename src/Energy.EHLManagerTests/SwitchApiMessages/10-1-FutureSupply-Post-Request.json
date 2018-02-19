@@ -1,0 +1,15 @@
+{
+	"groups": [
+		{
+			"items": [
+				{
+					"data": "tariffSelectionG592974",
+					"mandatory": true,
+					"name": "id"
+				}
+			],
+			"mandatory": true,
+			"name": "futureSupply"
+		}
+	]
+}

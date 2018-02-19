@@ -1,0 +1,88 @@
+{
+	"groups": [
+		{
+			"items": [
+				{
+					"data": true,
+					"mandatory": true,
+					"name": "compareGas",
+					"type": "bool"
+				},
+				{
+					"data": true,
+					"mandatory": true,
+					"name": "compareElec",
+					"type": "bool"
+				}
+			],
+			"mandatory": true,
+			"name": "includedFuels"
+		},
+		{
+			"items": [
+				{
+					"data": "39",
+					"mandatory": true,
+					"name": "supplier",
+					"prompt": "Choose your supplier",
+					"rel": "/rels/domestic/current-supplies",
+					"type": "linked"
+				},
+				{
+					"data": "44",
+					"mandatory": true,
+					"name": "supplierTariff",
+					"prompt": "Choose your tariff",
+					"rel": "/rels/domestic/current-supplies",
+					"type": "linked"
+				},
+				{
+					"data": "2",
+					"mandatory": true,
+					"name": "paymentMethod",
+					"prompt": "Choose your payment method",
+					"rel": "/rels/domestic/current-supplies",
+					"type": "linked"
+				}
+			],
+			"name": "gasTariff"
+		},
+		{
+			"items": [
+				{
+					"data": "59",
+					"mandatory": true,
+					"name": "supplier",
+					"prompt": "Choose your supplier",
+					"rel": "/rels/domestic/current-supplies",
+					"type": "linked"
+				},
+				{
+					"data": "301",
+					"mandatory": true,
+					"name": "supplierTariff",
+					"prompt": "Choose your tariff",
+					"rel": "/rels/domestic/current-supplies",
+					"type": "linked"
+				},
+				{
+					"data": "2",
+					"mandatory": true,
+					"name": "paymentMethod",
+					"prompt": "Choose your payment method",
+					"rel": "/rels/domestic/current-supplies",
+					"type": "linked"
+				},
+				{
+					"data": false,
+					"mandatory": true,
+					"name": "economy7",
+					"prompt": "Is your tariff an economy 7 tariff",
+					"type": "bool"
+				}
+			],
+			"name": "elecTariff"
+		}
+	],
+	"validateAs": "/validate/energySupply"
+}

@@ -1,0 +1,16 @@
+{
+    "errors": [
+        {
+            "message": {
+                "id": "/errors/error",
+                "text": "Internal server error. Reference: 0797ec5c-dae4-4ef2-a623-621172a5eab1"
+            }
+        }
+    ],
+    "links": [
+        {
+            "rel": "/rels/home /rels/bookmark",
+            "uri": "http://rest-predeploy.energyhelpline.com/domestic/energy"
+        }
+    ]
+}
