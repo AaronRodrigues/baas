@@ -6,7 +6,7 @@ using Energy.EHLCommsLibTests.Helpers;
 using Energy.EHLCommsLibTests.Interfaces;
 using Rhino.Mocks;
 
-namespace Energy.EHLCommsLibTests
+namespace Energy.EHLCommsLibTests.Helpers
 {
     public class SwitchServicesTestsHelper
     {

@@ -8,6 +8,7 @@ using Energy.EHLCommsLib.External.Exceptions;
 using Energy.EHLCommsLib.External.Services;
 using Energy.EHLCommsLib.Interfaces;
 using Energy.EHLCommsLib.Models.Prices;
+using Energy.EHLCommsLibTests.Helpers;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -15,7 +16,7 @@ namespace Energy.EHLCommsLibTests
 {
 
     [TestFixture]
-    public class EhlCommsManagerTests
+    public class EhlCommsAggregatorTests
     {
         private const string TestPostcode = "pe26ys";
 
