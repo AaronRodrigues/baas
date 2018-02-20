@@ -30,6 +30,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -57,6 +62,7 @@
     <Compile Include="Contracts\CurrentSupplies\PaymentMethod.cs" />
     <Compile Include="Contracts\CurrentSupplies\Supplier.cs" />
     <Compile Include="Contracts\CurrentSupplies\SupplierTariff.cs" />
+    <Compile Include="Contracts\Group.cs" />
     <Compile Include="Contracts\Responses\ApiResponse.cs" />
     <Compile Include="Contracts\Responses\CurrentSupplies.cs" />
     <Compile Include="Contracts\Responses\SwitchesApiResponse.cs" />
@@ -71,12 +77,20 @@
     <Compile Include="Enums\PriceFeatureCategory.cs" />
     <Compile Include="Enums\UsagePeriod.cs" />
     <Compile Include="Extensions\ExtensionMethods.cs" />
+    <Compile Include="External\Exceptions\InvalidSwitchException.cs" />
+    <Compile Include="External\Services\SwitchServiceClient.cs" />
+    <Compile Include="External\Services\SwitchServiceHelper.cs" />
+    <Compile Include="Interfaces\IApplicationContext.cs" />
     <Compile Include="Interfaces\IEHLApiCalls.cs" />
     <Compile Include="Interfaces\IHttpClient.cs" />
+    <Compile Include="Interfaces\IHttpClientWrapper.cs" />
+    <Compile Include="Interfaces\ISwitchServiceClient.cs" />
     <Compile Include="Interfaces\ISwitchServiceHelper.cs" />
     <Compile Include="Models\BaseRequest.cs" />
     <Compile Include="Models\BaseResponse.cs" />
     <Compile Include="Models\EstimatorData.cs" />
+    <Compile Include="Models\Http\HttpClientRequest.cs" />
+    <Compile Include="Models\Http\HttpClientResponse.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\Prices\GetPricesRequest.cs" />
     <Compile Include="Models\Prices\GetPricesResponse.cs" />
@@ -86,7 +100,9 @@
     <Compile Include="Models\UsageData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

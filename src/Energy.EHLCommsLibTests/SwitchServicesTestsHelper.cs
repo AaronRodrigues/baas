@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Net;
+using Energy.EHLCommsLib.Interfaces;
+using Energy.EHLCommsLib.Models.Http;
+using Energy.EHLCommsLibTests.Helpers;
+using Energy.EHLCommsLibTests.Interfaces;
 using Rhino.Mocks;
 
 namespace Energy.EHLCommsLibTests

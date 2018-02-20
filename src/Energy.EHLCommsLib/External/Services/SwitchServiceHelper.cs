@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Energy.EHLCommsLib.Constants;
 using Energy.EHLCommsLib.Contracts.Common;
 using Energy.EHLCommsLib.Contracts.Common.Data;
 using Energy.EHLCommsLib.Contracts.Responses;
 using Energy.EHLCommsLib.Enums;
+using Energy.EHLCommsLib.External.Exceptions;
 using Energy.EHLCommsLib.Interfaces;
 using Energy.EHLCommsLib.Models;
+using Group = Energy.EHLCommsLib.Contracts.Group;
 
-namespace Energy.EHLCommsLib.External
+namespace Energy.EHLCommsLib.External.Services
 {
     public class SwitchServiceHelper : ISwitchServiceHelper
     {
@@ -95,7 +94,7 @@ namespace Energy.EHLCommsLib.External
                 foreach (var ehlError in ehlErrors)
                 {
                     var code = MapEhlMessageIdToMessageCode(ehlError.Message.Id);
-                    response.Messages.Add(new Entities.Message
+                    response.Messages.Add(new Models.Message
                     {
                         Code = MapEhlMessageIdToMessageCode(ehlError.Message.Id),
                         Item = ehlError.Item,
@@ -202,7 +201,7 @@ namespace Energy.EHLCommsLib.External
                         builder.AppendFormat("JourneyId = {0}", _applicationContext.JourneyId);
                         builder.AppendLine();
 
-                        Log.Info(builder.ToString());
+                        //Log.Info(builder.ToString());
 
                         var message = string.Format(
                             "Internal server error received from EHL\nMessage = '{0}', JourneyId = '{1}', Action='{2}', Url='{3}'",
@@ -250,11 +249,11 @@ namespace Energy.EHLCommsLib.External
 
             if (response.Exception != null)
             {
-                Log.LogException(logLevel, message, response.Exception);
+                //Log.LogException(logLevel, message, response.Exception);
             }
             else
             {
-                Log.LogMessage(logLevel, message);
+                //Log.LogMessage(logLevel, message);
             }
         }
     }

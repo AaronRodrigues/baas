@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Energy.EHLCommsLib.Contracts;
+﻿using System.Collections.Generic;
 using Energy.EHLCommsLib.Contracts.Common;
 using Energy.EHLCommsLib.Contracts.Common.Data;
 using Energy.EHLCommsLib.Contracts.Responses;
 using Energy.EHLCommsLib.Models;
+using Group = Energy.EHLCommsLib.Contracts.Group;
 
 namespace Energy.EHLCommsLib.Interfaces
 {
