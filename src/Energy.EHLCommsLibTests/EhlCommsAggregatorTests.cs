@@ -36,9 +36,9 @@ namespace Energy.EHLCommsLibTests
             //var switchServiceClient = new SwitchServiceClient(_httpClientWrapper, tokenContext);
             var switchServiceClient = new SwitchServiceClient(_httpClientWrapper);
             var switchServiceHelper = new SwitchServiceHelper(switchServiceClient, applicationContext);
-            var ehLApiCalls = new EHLApiCalls(switchServiceHelper);
+            //var ehLApiCalls = new EHLApiCalls(switchServiceHelper);
 
-            _ehlCommsAggregator = new EhlCommsAggregator(ehLApiCalls);
+            _ehlCommsAggregator = new EhlCommsAggregator(switchServiceHelper);
         }
 
         [TearDown]

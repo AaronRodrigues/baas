@@ -30,6 +30,22 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CTM.Common">
+      <HintPath>..\..\packages\CTM.Common.1.0.0\lib\net45\CTM.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CTM.Common.BuildingBlocks">
+      <HintPath>..\..\packages\CTM.Common.BuildingBlocks.1.0.0\lib\net45\CTM.Common.BuildingBlocks.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CTM.Common.Logging">
+      <HintPath>..\..\packages\CTM.Common.Logging.1.0.0\lib\net45\CTM.Common.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -62,14 +78,35 @@
     <Compile Include="Contracts\CurrentSupplies\PaymentMethod.cs" />
     <Compile Include="Contracts\CurrentSupplies\Supplier.cs" />
     <Compile Include="Contracts\CurrentSupplies\SupplierTariff.cs" />
+    <Compile Include="Contracts\CurrentSupply\Electricity.cs" />
+    <Compile Include="Contracts\CurrentSupply\EnergySupply.cs" />
+    <Compile Include="Contracts\CurrentSupply\Gas.cs" />
+    <Compile Include="Contracts\Environmental.cs" />
+    <Compile Include="Contracts\FutureSupplies\FutureSupplies.cs" />
+    <Compile Include="Contracts\FutureSupplies\FutureSupplyResult.cs" />
+    <Compile Include="Contracts\FutureSupplies\FutureSupplyResultSet.cs" />
+    <Compile Include="Contracts\FutureSupplies\SupplyDetails.cs" />
     <Compile Include="Contracts\Group.cs" />
     <Compile Include="Contracts\Responses\ApiResponse.cs" />
     <Compile Include="Contracts\Responses\CurrentSupplies.cs" />
+    <Compile Include="Contracts\Responses\CustomerData.cs" />
+    <Compile Include="Contracts\Responses\SwitchApiResponse.cs" />
     <Compile Include="Contracts\Responses\SwitchesApiResponse.cs" />
-    <Compile Include="EHLApiCalls.cs" />
+    <Compile Include="Contracts\Supplier.cs" />
+    <Compile Include="Contracts\SupplierFuelMix.cs" />
+    <Compile Include="Contracts\SwitchApiResponse\ProRata.cs" />
+    <Compile Include="Contracts\SwitchApiResponse\ResultPreferences.cs" />
+    <Compile Include="Contracts\SwitchApiResponse\SeasonalAdjustment.cs" />
+    <Compile Include="Contracts\SwitchApiResponse\SupplyLocation.cs" />
+    <Compile Include="Contracts\TagTextPair.cs" />
+    <Compile Include="Contracts\Usage\EnergyUsage.cs" />
+    <Compile Include="Contracts\Usage\Origin.cs" />
+    <Compile Include="Contracts\Usage\Usage.cs" />
     <Compile Include="EHLCommsAggregator.cs" />
+    <Compile Include="Entities\EhlApiResponse.cs" />
     <Compile Include="Enums\AppFormQuestionType.cs" />
     <Compile Include="Enums\CompareWhat.cs" />
+    <Compile Include="Enums\DetailedEstimator.cs" />
     <Compile Include="Enums\EnergyJourneyType.cs" />
     <Compile Include="Enums\MessageCode.cs" />
     <Compile Include="Enums\MessageType.cs" />
@@ -77,6 +114,8 @@
     <Compile Include="Enums\PriceFeatureCategory.cs" />
     <Compile Include="Enums\UsagePeriod.cs" />
     <Compile Include="Extensions\ExtensionMethods.cs" />
+    <Compile Include="Extensions\SwitchApiContractsExtensions.cs" />
+    <Compile Include="Extensions\TariffFeaturesExtensions.cs" />
     <Compile Include="External\Exceptions\InvalidSwitchException.cs" />
     <Compile Include="External\Services\SwitchServiceClient.cs" />
     <Compile Include="External\Services\SwitchServiceHelper.cs" />
@@ -86,6 +125,7 @@
     <Compile Include="Interfaces\IHttpClientWrapper.cs" />
     <Compile Include="Interfaces\ISwitchServiceClient.cs" />
     <Compile Include="Interfaces\ISwitchServiceHelper.cs" />
+    <Compile Include="Mappers\PriceResultsMapper.cs" />
     <Compile Include="Models\BaseRequest.cs" />
     <Compile Include="Models\BaseResponse.cs" />
     <Compile Include="Models\EstimatorData.cs" />

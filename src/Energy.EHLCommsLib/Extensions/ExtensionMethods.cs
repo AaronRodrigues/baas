@@ -72,5 +72,18 @@ namespace Energy.EHLCommsLib.Extensions
                     return AppFormQuestionType.Unknown;
             }
         }
+
+        public static string EhlSupplyType(this CompareWhat compareWhat)
+        {
+            switch (compareWhat)
+            {
+                case CompareWhat.Both:
+                    return "4";
+                case CompareWhat.Electricity:
+                    return "2";
+                default:
+                    return "1";
+            }
+        }
     }
 }
