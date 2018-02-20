@@ -36,18 +36,16 @@ namespace Energy.EHLCommsLib
         private SwitchesApiResponse _currentSupplyPostResponse;
         private SwitchesApiResponse _usagePostResponse;
         private SwitchesApiResponse _preferencesPostResponse;
-        private bool _tariffCustomFeatureEnabled;
 
         private bool _proRataCalculationApplied;
 
-        public EhlCommsAggregator(ISwitchServiceHelper switchServiceHelper, bool tariffCustomFeatureEnabled = false)
+        public EhlCommsAggregator(ISwitchServiceHelper switchServiceHelper)
         {
-            //AppSettings.Feature.TariffCustomFeatureEnabled
-            _tariffCustomFeatureEnabled = tariffCustomFeatureEnabled;
             _switchServiceHelper = switchServiceHelper;
         }
-
-        public GetPricesResponse GetPrices(GetPricesRequest request, Dictionary<string, string> customFeatures)
+        
+        //AppSettings.Feature.TariffCustomFeatureEnabled
+        public GetPricesResponse GetPrices(GetPricesRequest request, Dictionary<string, string> customFeatures, bool tariffCustomFeatureEnabled = false)
         {
             var response = new GetPricesResponse();
             _baseRequest = request;
@@ -67,7 +65,7 @@ namespace Energy.EHLCommsLib
                         var isPreferencesStageSuccessful = PreferencesStageIsSuccessful(request, response);
                         if (isPreferencesStageSuccessful.ApiCallWasSuccessful)
                         {
-                            PopulatePricesResponse(request, response, customFeatures);
+                            PopulatePricesResponse(request, response, customFeatures, tariffCustomFeatureEnabled);
                         }
                         else
                         {
@@ -161,7 +159,7 @@ namespace Energy.EHLCommsLib
             return ApiCallResponse("PreferencesStage", true);
         }
 
-        private void PopulatePricesResponse(GetPricesRequest request, GetPricesResponse response, Dictionary<string, string> customFeatures)
+        private void PopulatePricesResponse(GetPricesRequest request, GetPricesResponse response, Dictionary<string, string> customFeatures, bool tariffCustomFeatureEnabled)
         {
             var futureSupplyUrl = _preferencesPostResponse.GetNextRelUrl(FutureSupplyRel);
             var futureSupplyTemplate = _switchServiceHelper.GetApiDataTemplate(futureSupplyUrl, FutureSupplyRel);
@@ -173,7 +171,7 @@ namespace Energy.EHLCommsLib
             response.FutureSupplyUrl = futureSupplyUrl;
             response.AnnualEstimatedBill = GetCurrentAnnualSpend(futureSuppliesResponse, request);
             response.EstimatedUsage = GetEstimatedUsage(futureSuppliesResponse);
-            response.Results = futureSuppliesResponse.MapToPriceResults(request, customFeatures,_tariffCustomFeatureEnabled);
+            response.Results = futureSuppliesResponse.MapToPriceResults(request, customFeatures,tariffCustomFeatureEnabled);
             response.ProRataCalculationApplied = _proRataCalculationApplied;
             response.QuoteUrl = quoteLinkUrl;
         }

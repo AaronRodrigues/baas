@@ -210,7 +210,7 @@ namespace Energy.EHLCommsLibTests
                 {(supplierName + tariffName).Replace(" ", "").ToLower(), customFeatureText}
             };
 
-            var response = _ehlCommsAggregator.GetPrices(request, customFeatures);
+            var response = _ehlCommsAggregator.GetPrices(request, customFeatures, true);
 
             Assert.IsNotNull(response);
             Assert.IsNotNull(response.Results);
