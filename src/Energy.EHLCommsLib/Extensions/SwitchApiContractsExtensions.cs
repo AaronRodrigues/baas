@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Energy.EHLCommsLib.Contracts.Common;
 using Energy.EHLCommsLib.Contracts.Common.Data;
 using Energy.EHLCommsLib.Contracts.Responses;
@@ -34,15 +30,15 @@ namespace Energy.EHLCommsLib.Extensions
         public static Link GetExactLinkForRel(this ApiResponse response, string rel)
         {
             return response.Links != null
-                       ? response.Links.FirstOrDefault(l => l.Rel.Equals(rel))
-                       : null;
+                ? response.Links.FirstOrDefault(l => l.Rel.Equals(rel))
+                : null;
         }
 
         public static Link GetLinkForRel(this ApiResponse response, string rel)
         {
             return response.Links != null
-                       ? response.Links.FirstOrDefault(l => l.Rel.Contains(rel))
-                       : null;
+                ? response.Links.FirstOrDefault(l => l.Rel.Contains(rel))
+                : null;
         }
 
         public static string GetNextRelUrl(this ApiResponse response, string nextRel)

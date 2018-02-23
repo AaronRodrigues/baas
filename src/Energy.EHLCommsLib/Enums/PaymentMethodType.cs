@@ -1,5 +1,6 @@
 ﻿namespace Energy.EHLCommsLib.Enums
-{public enum PaymentMethodType
+{
+    public enum PaymentMethodType
     {
         Unknown = 0,
         MonthlyDirectDebit = 1,
@@ -19,6 +20,6 @@
         CashCheque = 15,
         Other = 16,
         CreditCardMandate = 17,
-        All = 18,
+        All = 18
     }
 }

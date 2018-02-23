@@ -6,6 +6,6 @@
         Monthly = 1,
         Quarterly = 2,
         Annually = 3,
-        SixMonthly = 4,
+        SixMonthly = 4
     }
 }

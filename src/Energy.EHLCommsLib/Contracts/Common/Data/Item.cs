@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Energy.EHLCommsLib.Contracts.Common.Data
 {
     [DataContract]
-    [KnownType(typeof(List<string>))]
-    [KnownType(typeof(ArrayList))]
+    [KnownType(typeof (List<string>))]
+    [KnownType(typeof (ArrayList))]
     public class Item
     {
         [DataMember(Name = "name")]

@@ -5,7 +5,6 @@
         public const string UsageTypeByEstimator = "1";
         public const string UsageTypeByKWhUsage = "3";
         public const string UsageTypeBySpend = "4";
-
         public const string SwitchRel = "/rels/domestic/switch";
         public const string CurrentSupplyRel = "/rels/domestic/current-supply";
         public const string ProRataRel = "/rels/domestic/prorata-preference";

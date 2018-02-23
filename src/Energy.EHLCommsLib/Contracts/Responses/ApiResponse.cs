@@ -11,13 +11,9 @@ using Energy.EHLCommsLib.Contracts.Common.Data;
 namespace Energy.EHLCommsLib.Contracts.Responses
 {
     [DataContract]
-    [KnownType(typeof(CurrentSupplies))]
+    [KnownType(typeof (CurrentSupplies))]
     public abstract class ApiResponse
     {
-        protected ApiResponse()
-        {
-        }
-
         [DataMember(Name = "links", EmitDefaultValue = false)]
         public List<Link> Links { get; set; }
 
@@ -34,9 +30,7 @@ namespace Energy.EHLCommsLib.Contracts.Responses
         public Exception Exception { get; set; }
 
         public HttpStatusCode? StatusCode { get; set; }
-
         public List<KeyValuePair<string, string>> HttpHeaders { get; set; }
-
         public string MediaType { get; set; }
 
         public bool IsExpectedError()

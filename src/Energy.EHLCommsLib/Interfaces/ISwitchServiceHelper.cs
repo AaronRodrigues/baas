@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
+using Energy.EHLCommsLib.Contracts;
 using Energy.EHLCommsLib.Contracts.Common;
 using Energy.EHLCommsLib.Contracts.Common.Data;
 using Energy.EHLCommsLib.Contracts.Responses;
 using Energy.EHLCommsLib.Models;
-using Group = Energy.EHLCommsLib.Contracts.Group;
 
 namespace Energy.EHLCommsLib.Interfaces
 {
@@ -14,14 +14,13 @@ namespace Energy.EHLCommsLib.Interfaces
         Item GetEhlItemForName(Group group, string name);
         Group GetEhlGroupForName(SwitchesApiResponse response, string name);
         void UpdateItemData(SwitchesApiResponse currentSupplyTemplate, string groupName, string itemName, string value);
-
         void HydrateSwitchResponseWithErrors(BaseResponse response, IEnumerable<Error> ehlErrors);
         SwitchesApiResponse GetApiDataTemplate(string url, string rel);
-
         string GetLinkedDataUrl(SwitchesApiResponse response, string rel);
-
         T GetSwitchesApiGetResponse<T>(string url, string relKey, BaseRequest request) where T : ApiResponse, new();
-        T GetSwitchesApiPostResponse<T>(string url, T responseDataToSend, string relKey, BaseRequest request) where T : ApiResponse, new();
+
+        T GetSwitchesApiPostResponse<T>(string url, T responseDataToSend, string relKey, BaseRequest request)
+            where T : ApiResponse, new();
 
         bool SuccessfulResponseFromEhl(SwitchesApiResponse response);
     }

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using Energy.EHLCommsLib.Constants;
 using Energy.EHLCommsLib.Contracts.Common;
 using Energy.EHLCommsLib.Contracts.Responses;
@@ -11,18 +8,19 @@ using Energy.EHLCommsLib.Interfaces;
 using Energy.EHLCommsLib.Models;
 using Energy.EHLCommsLib.Models.Http;
 using Newtonsoft.Json;
+using Message = Energy.EHLCommsLib.Contracts.Common.Message;
 
 namespace Energy.EHLCommsLib.External.Services
 {
     public class SwitchServiceClient : ISwitchServiceClient
     {
-        private readonly IHttpClientWrapper _httpClientWrapper;
         //private readonly IAuthenticationTokenContext _tokenContext;
 
         private BaseRequest _baseRequest;
-        private readonly string _apiBaseUri;
         private string _contentType;
         private string _webProxyAddress;
+        private readonly string _apiBaseUri;
+        private readonly IHttpClientWrapper _httpClientWrapper;
         //private string _contentType = AppSettings.Ehl.RequestContentType;
         //private string _webProxyAddress = AppSettings.WebClientProx;
         //private readonly string _apiBaseUri = AppSettings.Ehl.ApiBaseUrl;
@@ -66,7 +64,8 @@ namespace Energy.EHLCommsLib.External.Services
             return responseObject;
         }
 
-        public T GetSwitchesApiPostResponse<T>(string url, T responseDataToSend, string relKey) where T : ApiResponse, new()
+        public T GetSwitchesApiPostResponse<T>(string url, T responseDataToSend, string relKey)
+            where T : ApiResponse, new()
         {
             var dataToPost = JsonConvert.SerializeObject(responseDataToSend.DataTemplate);
 
@@ -169,7 +168,7 @@ namespace Energy.EHLCommsLib.External.Services
                 {
                     new Error
                     {
-                        Message = new Energy.EHLCommsLib.Contracts.Common.Message
+                        Message = new Message
                         {
                             Id = EhlErrorConstants.EhlErrorGeneric,
                             Text = "Internal server error. Reference:"

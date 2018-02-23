@@ -15,13 +15,13 @@ namespace Energy.EHLCommsLib
             _switchServiceHelper = switchServiceHelper;
         }
 
-        //AppSettings.Feature.TariffCustomFeatureEnabled
+        //TO DO : Add this value to config AppSettings.Feature.TariffCustomFeatureEnabled or get from MVC
         public GetPricesResponse GetPrices(GetPricesRequest request, Dictionary<string, string> customFeatures,
             bool tariffCustomFeatureEnabled = false)
         {
             var response = new GetPricesResponse();
             var ehlApiCalls = new EhlApiCalls(_switchServiceHelper, request);
-            var proRataCalculationApplied = false;
+            var pricesRetrievedSuccess = false;
 
             try
             {
@@ -32,11 +32,11 @@ namespace Energy.EHLCommsLib
                     var usageStageResult = ehlApiCalls.GetUsageEhlApiResponse(request, response, supplyStageResult.NextUrl);
                     if (usageStageResult.ApiCallWasSuccessful)
                     {
-                        proRataCalculationApplied = ehlApiCalls.UpdateCurrentSwitchStatus(request.SwitchUrl, response, request.IgnoreProRataComparison);
+                        var proRataCalculationApplied = ehlApiCalls.UpdateCurrentSwitchStatus(request.SwitchUrl, response, request.IgnoreProRataComparison);
                         var preferencesStageresult = ehlApiCalls.GetPreferenceEhlApiResponse(request, response, usageStageResult.NextUrl);
                         if (preferencesStageresult.ApiCallWasSuccessful)
                         {
-                            ehlApiCalls.PopulatePricesResponse(request, response, customFeatures, preferencesStageresult.NextUrl, tariffCustomFeatureEnabled, proRataCalculationApplied);
+                            ehlApiCalls.PopulatePricesResponseWithFutureSuppliesFromEhl(request, response, customFeatures, preferencesStageresult.NextUrl, tariffCustomFeatureEnabled, proRataCalculationApplied);
                         }
                         else
                         {
@@ -55,6 +55,7 @@ namespace Energy.EHLCommsLib
                     response.ErrorStage = supplyStageResult.ApiStage;
                     response.ErrorString = supplyStageResult.ConcatenatedErrorString;
                 }
+                pricesRetrievedSuccess = true;
             }
             catch (InvalidSwitchException)
             {

@@ -117,6 +117,7 @@
     <Compile Include="Enums\UsagePeriod.cs" />
     <Compile Include="Extensions\ExtensionMethods.cs" />
     <Compile Include="Extensions\GetPricesRequestExtensions.cs" />
+    <Compile Include="Extensions\GetPricesResponseExtensions.cs" />
     <Compile Include="Extensions\SwitchApiContractsExtensions.cs" />
     <Compile Include="Extensions\TariffFeaturesExtensions.cs" />
     <Compile Include="External\Exceptions\InvalidSwitchException.cs" />

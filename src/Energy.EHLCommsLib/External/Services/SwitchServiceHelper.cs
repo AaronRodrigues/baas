@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using Energy.EHLCommsLib.Constants;
+using Energy.EHLCommsLib.Contracts;
 using Energy.EHLCommsLib.Contracts.Common;
 using Energy.EHLCommsLib.Contracts.Common.Data;
 using Energy.EHLCommsLib.Contracts.Responses;
@@ -10,14 +11,14 @@ using Energy.EHLCommsLib.Enums;
 using Energy.EHLCommsLib.External.Exceptions;
 using Energy.EHLCommsLib.Interfaces;
 using Energy.EHLCommsLib.Models;
-using Group = Energy.EHLCommsLib.Contracts.Group;
+using Message = Energy.EHLCommsLib.Models.Message;
 
 namespace Energy.EHLCommsLib.External.Services
 {
     public class SwitchServiceHelper : ISwitchServiceHelper
     {
-        private readonly ISwitchServiceClient _switchServiceClient;
         private readonly IApplicationContext _applicationContext;
+        private readonly ISwitchServiceClient _switchServiceClient;
 
         public SwitchServiceHelper(ISwitchServiceClient switchServiceClient, IApplicationContext applicationContext)
         {
@@ -39,7 +40,8 @@ namespace Energy.EHLCommsLib.External.Services
                 .Uri;
         }
 
-        public T GetSwitchesApiGetResponse<T>(string url, string relKey, BaseRequest request) where T : ApiResponse, new()
+        public T GetSwitchesApiGetResponse<T>(string url, string relKey, BaseRequest request)
+            where T : ApiResponse, new()
         {
             var response = _switchServiceClient.For(request).GetSwitchesApiGetResponse<T>(url, relKey);
 
@@ -48,7 +50,8 @@ namespace Energy.EHLCommsLib.External.Services
             return response;
         }
 
-        public T GetSwitchesApiPostResponse<T>(string url, T responseDataToSend, string relKey, BaseRequest request) where T : ApiResponse, new()
+        public T GetSwitchesApiPostResponse<T>(string url, T responseDataToSend, string relKey, BaseRequest request)
+            where T : ApiResponse, new()
         {
             var response = _switchServiceClient.For(request).GetSwitchesApiPostResponse(url, responseDataToSend, relKey);
 
@@ -79,7 +82,8 @@ namespace Energy.EHLCommsLib.External.Services
             return response.DataTemplate.Groups.FirstOrDefault(@group => group.Name.Equals(name));
         }
 
-        public void UpdateItemData(SwitchesApiResponse currentSupplyTemplate, string groupName, string itemName, string value)
+        public void UpdateItemData(SwitchesApiResponse currentSupplyTemplate, string groupName, string itemName,
+            string value)
         {
             currentSupplyTemplate.DataTemplate.Groups
                 .First(g => g.Name.Equals(groupName))
@@ -94,7 +98,7 @@ namespace Energy.EHLCommsLib.External.Services
                 foreach (var ehlError in ehlErrors)
                 {
                     var code = MapEhlMessageIdToMessageCode(ehlError.Message.Id);
-                    response.Messages.Add(new Models.Message
+                    response.Messages.Add(new Message
                     {
                         Code = MapEhlMessageIdToMessageCode(ehlError.Message.Id),
                         Item = ehlError.Item,
@@ -107,6 +111,20 @@ namespace Energy.EHLCommsLib.External.Services
             response.ResponseStatusType = DetermineResponseStatusType(response);
 
             response.Success = false;
+        }
+
+        public SwitchesApiResponse GetApiDataTemplate(string url, string rel)
+        {
+            var response = _switchServiceClient.GetSwitchesApiGetResponse<SwitchesApiResponse>(url, rel);
+
+            HandleResponse(response, url, "TEMPLATE GET");
+
+            return response;
+        }
+
+        public bool SuccessfulResponseFromEhl(SwitchesApiResponse response)
+        {
+            return response.SuccessfulResponseFromEhl();
         }
 
         private MessageCode DetermineResponseStatusType(BaseResponse response)
@@ -127,20 +145,6 @@ namespace Energy.EHLCommsLib.External.Services
                 return MessageCode.InternalServerError;
 
             return MessageCode.Unknown;
-        }
-
-        public SwitchesApiResponse GetApiDataTemplate(string url, string rel)
-        {
-            var response = _switchServiceClient.GetSwitchesApiGetResponse<SwitchesApiResponse>(url, rel);
-
-            HandleResponse(response, url, "TEMPLATE GET");
-
-            return response;
-        }
-
-        public bool SuccessfulResponseFromEhl(SwitchesApiResponse response)
-        {
-            return response.SuccessfulResponseFromEhl();
         }
 
         private MessageCode MapEhlMessageIdToMessageCode(string ehlMessageId)
@@ -183,12 +187,16 @@ namespace Energy.EHLCommsLib.External.Services
 
             if (response.StatusCode == HttpStatusCode.InternalServerError && response.Errors != null)
             {
-                internalServerError = response.Errors.FirstOrDefault(o => o.Message != null && o.Message.Id == EhlErrorConstants.EhlErrorGeneric);
+                internalServerError =
+                    response.Errors.FirstOrDefault(
+                        o => o.Message != null && o.Message.Id == EhlErrorConstants.EhlErrorGeneric);
             }
 
             if (internalServerError != null)
             {
-                if (response.Exception != null && response.Exception.Message.StartsWith("The remote server returned an error: (500) Internal Server Error."))
+                if (response.Exception != null &&
+                    response.Exception.Message.StartsWith(
+                        "The remote server returned an error: (500) Internal Server Error."))
                 {
                     var ehlMessage = internalServerError.Message.Text;
 
@@ -196,7 +204,8 @@ namespace Energy.EHLCommsLib.External.Services
                     {
                         var builder = new StringBuilder();
 
-                        builder.AppendFormat("Invalid switch encountered while making a {0} request to EHL using url {1}.", action, url);
+                        builder.AppendFormat(
+                            "Invalid switch encountered while making a {0} request to EHL using url {1}.", action, url);
                         builder.AppendLine();
                         builder.AppendFormat("JourneyId = {0}", _applicationContext.JourneyId);
                         builder.AppendLine();
@@ -238,7 +247,8 @@ namespace Energy.EHLCommsLib.External.Services
             {
                 foreach (var error in response.Errors)
                 {
-                    builder.AppendFormat("Response includes message '{0}' with Id of '{1}'", error.Message.Text, error.Message.Id);
+                    builder.AppendFormat("Response includes message '{0}' with Id of '{1}'", error.Message.Text,
+                        error.Message.Id);
                     builder.AppendLine();
                 }
             }
@@ -250,10 +260,6 @@ namespace Energy.EHLCommsLib.External.Services
             if (response.Exception != null)
             {
                 //Log.LogException(logLevel, message, response.Exception);
-            }
-            else
-            {
-                //Log.LogMessage(logLevel, message);
             }
         }
     }

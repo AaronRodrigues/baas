@@ -4,12 +4,10 @@ using Energy.EHLCommsLib.Constants;
 using Energy.EHLCommsLib.Contracts.FutureSupplies;
 using Energy.EHLCommsLib.Contracts.Responses;
 using Energy.EHLCommsLib.Entities;
-using Energy.EHLCommsLib.Enums;
 using Energy.EHLCommsLib.Extensions;
 using Energy.EHLCommsLib.Interfaces;
 using Energy.EHLCommsLib.Models;
 using Energy.EHLCommsLib.Models.Prices;
-using Energy.EHLCommsLib.Mappers;
 
 namespace Energy.EHLCommsLib
 {
@@ -76,19 +74,14 @@ namespace Energy.EHLCommsLib
             return proRataCalculationApplied;
         }
 
-        public void PopulatePricesResponse(GetPricesRequest request, GetPricesResponse response, Dictionary<string, string> customFeatures, string futureSupplyUrl, bool tariffCustomFeatureEnabled, bool proRataCalculationApplied)
+        public void PopulatePricesResponseWithFutureSuppliesFromEhl(GetPricesRequest request, GetPricesResponse response, Dictionary<string, string> customFeatures, 
+            string futureSupplyUrl, bool tariffCustomFeatureEnabled, bool proRataCalculationApplied)
         {
-            var futureSupplyTemplate = _switchServiceHelper.GetApiDataTemplate(futureSupplyUrl, EhlApiConstants.FutureSupplyRel);
-            var futureSuppliesUrl = _switchServiceHelper.GetLinkedDataUrl(futureSupplyTemplate, EhlApiConstants.FutureSuppliesRel);
-            var futureSuppliesResponse = _switchServiceHelper.GetSwitchesApiGetResponse<FutureSupplies>(futureSuppliesUrl,
+            var futureSupplySwitchesApiResponse = _switchServiceHelper.GetApiDataTemplate(futureSupplyUrl, EhlApiConstants.FutureSupplyRel);
+            var futureSuppliesUrl = _switchServiceHelper.GetLinkedDataUrl(futureSupplySwitchesApiResponse, EhlApiConstants.FutureSuppliesRel);
+            var futureSuppliesApiPostResponse = _switchServiceHelper.GetSwitchesApiGetResponse<FutureSupplies>(futureSuppliesUrl,
                     EhlApiConstants.FutureSuppliesRel, _baseRequest);
-            var quoteLinkUrl = futureSuppliesResponse.Links.First(l => l.Rel.Contains(EhlApiConstants.QuoteLinkRel)).Uri;
-            response.FutureSupplyUrl = futureSupplyUrl;
-            response.AnnualEstimatedBill = GetCurrentAnnualSpend(futureSuppliesResponse, request);
-            response.EstimatedUsage = GetEstimatedUsage(futureSuppliesResponse);
-            response.Results = futureSuppliesResponse.MapToPriceResults(request, customFeatures, tariffCustomFeatureEnabled);
-            response.ProRataCalculationApplied = proRataCalculationApplied;
-            response.QuoteUrl = quoteLinkUrl;
+            response.PopulatePricesResponse(request, futureSuppliesApiPostResponse, customFeatures, futureSupplyUrl, tariffCustomFeatureEnabled, proRataCalculationApplied);
         }
 
         private EhlApiResponse ApiCallResponse(string typeOfRequest, GetPricesResponse response, SwitchesApiResponse switchesApiResponse, string rel = "")
@@ -108,32 +101,6 @@ namespace Energy.EHLCommsLib
             var errString = string.Empty;
             errString = switchesApiResponse.Errors.Aggregate(errString, (current, error) => current + error.Message.Text);
             return new EhlApiResponse { ApiCallWasSuccessful = false, ApiStage = typeOfRequest, ConcatenatedErrorString = errString };
-        }
-
-        private decimal GetCurrentAnnualSpend(FutureSupplies futureSuppliesResponse, GetPricesRequest request)
-        {
-            var currentBillValue = 0M;
-
-            if (request.CompareType != CompareWhat.Electricity)
-                currentBillValue += futureSuppliesResponse.Usage.Gas.AnnualSpend;
-
-            if (request.CompareType != CompareWhat.Gas)
-                currentBillValue += futureSuppliesResponse.Usage.Elec.AnnualSpend;
-
-            return decimal.Round(currentBillValue, 0);
-        }
-
-        private UsageData GetEstimatedUsage(FutureSupplies futureSuppliesResponse)
-        {
-            var estimatedUsage = new UsageData();
-
-            if (futureSuppliesResponse.CurrentSupply.Electricity != null)
-                estimatedUsage.ElectricityKwh = futureSuppliesResponse.Usage.Elec.AnnualKWh;
-
-            if (futureSuppliesResponse.CurrentSupply.Gas != null)
-                estimatedUsage.GasKwh = futureSuppliesResponse.Usage.Gas.AnnualKWh;
-
-            return estimatedUsage;
         }
     }
 }

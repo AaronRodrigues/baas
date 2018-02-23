@@ -10,11 +10,13 @@ namespace Energy.EHLCommsLib.Mappers
 {
     public static class PriceResultsMapper
     {
-        public static List<PriceResult> MapToPriceResults(this FutureSupplies ehlResults, GetPricesRequest request, Dictionary<string, string> customFeatures, bool tariffCustomFeatureEnabled)
+        public static List<PriceResult> MapToPriceResults(this FutureSupplies ehlResults, GetPricesRequest request,
+            Dictionary<string, string> customFeatures, bool tariffCustomFeatureEnabled)
         {
             var mappedResults = new List<PriceResult>();
 
-            var ehlResultsSet = ehlResults.Results.First(r => r.SupplyType.Id.Equals(request.CompareType.EhlSupplyType()));
+            var ehlResultsSet =
+                ehlResults.Results.First(r => r.SupplyType.Id.Equals(request.CompareType.EhlSupplyType()));
 
             foreach (var supply in ehlResultsSet.EnergySupplies)
             {
@@ -36,19 +38,22 @@ namespace Energy.EHLCommsLib.Mappers
                     TariffId = int.Parse(supply.SupplyDetails.Id),
                     TariffName = supply.SupplyDetails.Name,
                     TariffDetailsUrl = supply.SupplyDetails.FurtherDetails.Uri,
-                    PaymentMethod = (PaymentMethodType)paymentMethod,
+                    PaymentMethod = (PaymentMethodType) paymentMethod,
                     PaymentMethodId = paymentMethod,
                     CanApply = supply.CanApply,
                     CappedOrFixed = supply.SupplyDetails.Attributes.Any(a => a.Equals("CappedOrFixed")),
                     Green = supply.SupplyDetails.Attributes.Any(a => a.Equals("Green")),
-                    AccurateMonthlyBilling = supply.SupplyDetails.Attributes.Any(a => a.Equals("AccurateMonthlyBilling")),
+                    AccurateMonthlyBilling =
+                        supply.SupplyDetails.Attributes.Any(a => a.Equals("AccurateMonthlyBilling")),
                     StayWarm = supply.SupplyDetails.Attributes.Any(a => a.Equals("StayWarm")),
                     Economy10 = supply.SupplyDetails.Attributes.Any(a => a.Equals("Economy10")),
                     PaperLessBilling = supply.SupplyDetails.Attributes.Any(a => a.Equals("PaperlessBilling")),
                     PaperBilling = supply.SupplyDetails.Attributes.Any(a => a.Equals("PaperBilling")),
                     NoStandingCharges = supply.SupplyDetails.Attributes.Any(a => a.Equals("NoStandingCharges")),
                     RenewableFuelPercentage = supply.SupplyDetails.RenewableFuelPercentage,
-                    TotalExitFees = CalculateTotalExitFees(request.CompareType, supply.SupplyDetails.ExitFeesGas, supply.SupplyDetails.ExitFeesElectricity),
+                    TotalExitFees =
+                        CalculateTotalExitFees(request.CompareType, supply.SupplyDetails.ExitFeesGas,
+                            supply.SupplyDetails.ExitFeesElectricity),
                     CheapestBigSupplier = PromotionsValidator(supply.Promotions, "CheapestBigSupplier"),
                     CheapestLongFixed = PromotionsValidator(supply.Promotions, "CheapestLongFixed"),
                     CheapestShortFixed = PromotionsValidator(supply.Promotions, "CheapestShortFixed"),
@@ -56,8 +61,7 @@ namespace Energy.EHLCommsLib.Mappers
                     CheapestMediumFixed = PromotionsValidator(supply.Promotions, "CheapestMediumFixed"),
                     CheapestCanApply = PromotionsValidator(supply.Promotions, "CheapestCanApply"),
                     CheapestGreen = PromotionsValidator(supply.Promotions, "CheapestGreen"),
-                    CheapestHighestRated = PromotionsValidator(supply.Promotions, "CheapestHighestRated"),
-
+                    CheapestHighestRated = PromotionsValidator(supply.Promotions, "CheapestHighestRated")
                 };
 
                 priceResult.SupplierRating = priceResult.SupplierRating > 5 ? 5 : priceResult.SupplierRating;
@@ -68,10 +72,10 @@ namespace Energy.EHLCommsLib.Mappers
                 // Set CTM custom feature text
                 if (tariffCustomFeatureEnabled)
                 {
-                    priceResult.CustomFeatureText = SetCustomFeatureText(priceResult.SupplierName + priceResult.TariffName, customFeatures);
+                    priceResult.CustomFeatureText =
+                        SetCustomFeatureText(priceResult.SupplierName + priceResult.TariffName, customFeatures);
                     priceResult.HasTariffCustomFeature = priceResult.CustomFeatureText != null;
                 }
-
 
 
                 mappedResults.Add(priceResult);

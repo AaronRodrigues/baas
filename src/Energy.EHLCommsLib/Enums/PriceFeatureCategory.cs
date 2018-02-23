@@ -13,6 +13,6 @@
         Benefits,
         SpecialOffers,
         Duration,
-        Other,
+        Other
     }
 }

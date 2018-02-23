@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Energy.EHLCommsLib.Enums;
 
 namespace Energy.EHLCommsLib.Extensions
@@ -25,11 +21,11 @@ namespace Energy.EHLCommsLib.Extensions
 
         public static decimal RoundToNearest(this decimal val, decimal scale)
         {
-            var multipliedValue = (val * 100M / scale);
+            var multipliedValue = (val*100M/scale);
 
-            var result = Math.Round(multipliedValue) * scale;
+            var result = Math.Round(multipliedValue)*scale;
 
-            return result / 100;
+            return result/100;
         }
 
         public static string RemoveHtmlTags(this string input)

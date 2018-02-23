@@ -11,24 +11,34 @@ namespace Energy.EHLCommsLib.Models.Prices
         {
             KeyFeatures = new List<PriceFeature>();
         }
+
         public string Id { get; set; }
         public string ResultId { get; set; }
+
         [XmlIgnore]
         public int SupplierId { get; set; }
+
         public string SupplierName { get; set; }
         public int SupplierRating { get; set; }
+
         [XmlIgnore]
         public string SupplierCss { get; set; }
+
         [XmlIgnore]
         public int TariffId { get; set; }
+
         public string TariffName { get; set; }
+
         [XmlIgnore]
         public string TariffDetailsUrl { get; set; }
+
         public bool HasTariffCustomFeature { get; set; }
         public string CustomFeatureText { get; set; }
         public PaymentMethodType PaymentMethod { get; set; }
+
         [XmlIgnore]
         public int PaymentMethodId { get; set; }
+
         public bool CanApply { get; set; }
         public decimal AnnualSavings { get; set; }
         public decimal AnnualSpend { get; set; }
@@ -37,6 +47,7 @@ namespace Energy.EHLCommsLib.Models.Prices
         public decimal? GasAnnualSavings { get; set; }
         public decimal? GasAnnualSpend { get; set; }
         public List<PriceFeature> KeyFeatures { get; set; }
+
         public List<PriceFeature> TopNFeatures
         {
             get
@@ -47,7 +58,11 @@ namespace Energy.EHLCommsLib.Models.Prices
                 if (cappedFeature != null)
                     selectedFeatures.Add(cappedFeature);
 
-                var specialOffersFeature = KeyFeatures.FirstOrDefault(k => k.Category == PriceFeatureCategory.SpecialOffers && k.Description.ToLower().Contains("cashback"));
+                var specialOffersFeature =
+                    KeyFeatures.FirstOrDefault(
+                        k =>
+                            k.Category == PriceFeatureCategory.SpecialOffers &&
+                            k.Description.ToLower().Contains("cashback"));
                 if (specialOffersFeature != null)
                 {
                     selectedFeatures.Add(specialOffersFeature);
@@ -60,10 +75,9 @@ namespace Energy.EHLCommsLib.Models.Prices
 
                 return selectedFeatures;
             }
-
         }
-        public decimal RenewableFuelPercentage { get; set; }
 
+        public decimal RenewableFuelPercentage { get; set; }
         // Price attributes
         public bool PaperLessBilling { get; set; }
         public bool PaperBilling { get; set; }

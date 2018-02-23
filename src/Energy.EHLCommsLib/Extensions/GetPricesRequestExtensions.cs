@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Energy.EHLCommsLib.Constants;
 using Energy.EHLCommsLib.Contracts.Responses;
 using Energy.EHLCommsLib.Enums;
-using Energy.EHLCommsLib.Interfaces;
 using Energy.EHLCommsLib.Models.Prices;
 
 namespace Energy.EHLCommsLib.Extensions
@@ -102,7 +97,6 @@ namespace Energy.EHLCommsLib.Extensions
                         PopulateSpendUsageForGas(request, usageTemplate);
 
                     break;
-
             }
 
             if (compareElec && request.ElectricityEco7)
@@ -118,8 +112,10 @@ namespace Energy.EHLCommsLib.Extensions
             var compareElec = request.CompareType != CompareWhat.Gas;
             if (!compareElec) return;
             UpdateItemData(usageTemplate, "elecUsageType", "usageType", EhlApiConstants.UsageTypeBySpend);
-            UpdateItemData(usageTemplate, "elecSpend", "usageAsSpend", request.SpendData.ElectricitySpendAmount.ToString());
-            UpdateItemData(usageTemplate, "elecSpend", "spendPeriod", ((int)request.SpendData.ElectricitySpendPeriod).ToString());
+            UpdateItemData(usageTemplate, "elecSpend", "usageAsSpend",
+                request.SpendData.ElectricitySpendAmount.ToString());
+            UpdateItemData(usageTemplate, "elecSpend", "spendPeriod",
+                ((int) request.SpendData.ElectricitySpendPeriod).ToString());
         }
 
         private static void PopulateKWhUsage(GetPricesRequest request, SwitchesApiResponse usageTemplate)
@@ -128,13 +124,15 @@ namespace Energy.EHLCommsLib.Extensions
             {
                 UpdateItemData(usageTemplate, "gasUsageType", "usageType", EhlApiConstants.UsageTypeByKWhUsage);
                 UpdateItemData(usageTemplate, "gasKWhUsage", "usageAsKWh", request.UsageData.GasKwh.ToString());
-                UpdateItemData(usageTemplate, "gasKWhUsage", "usagePeriod", ((int)request.UsageData.GasUsagePeriod).ToString());
+                UpdateItemData(usageTemplate, "gasKWhUsage", "usagePeriod",
+                    ((int) request.UsageData.GasUsagePeriod).ToString());
             }
 
             if (request.CalculateElecBasedOnBillSpend) return;
             UpdateItemData(usageTemplate, "elecUsageType", "usageType", EhlApiConstants.UsageTypeByKWhUsage);
             UpdateItemData(usageTemplate, "elecKWhUsage", "usageAsKWh", request.UsageData.ElectricityKwh.ToString());
-            UpdateItemData(usageTemplate, "elecKWhUsage", "usagePeriod", ((int)request.UsageData.ElectricityUsagePeriod).ToString());
+            UpdateItemData(usageTemplate, "elecKWhUsage", "usagePeriod",
+                ((int) request.UsageData.ElectricityUsagePeriod).ToString());
         }
 
         private static void PopulateSpendUsageForGas(GetPricesRequest request, SwitchesApiResponse usageTemplate)
@@ -144,19 +142,26 @@ namespace Energy.EHLCommsLib.Extensions
             {
                 UpdateItemData(usageTemplate, "gasUsageType", "usageType", EhlApiConstants.UsageTypeBySpend);
                 UpdateItemData(usageTemplate, "gasSpend", "usageAsSpend", request.SpendData.GasSpendAmount.ToString());
-                UpdateItemData(usageTemplate, "gasSpend", "spendPeriod", ((int)request.SpendData.GasSpendPeriod).ToString());
+                UpdateItemData(usageTemplate, "gasSpend", "spendPeriod",
+                    ((int) request.SpendData.GasSpendPeriod).ToString());
             }
         }
 
-        private static void PopulateDetailedUsageForElectricity(GetPricesRequest request, SwitchesApiResponse usageTemplate)
+        private static void PopulateDetailedUsageForElectricity(GetPricesRequest request,
+            SwitchesApiResponse usageTemplate)
         {
             UpdateItemData(usageTemplate, "elecUsageType", "usageType", EhlApiConstants.UsageTypeByEstimator);
             UpdateItemData(usageTemplate, "elecDetailedEstimate", "houseType", request.EstimatorData.HouseType);
-            UpdateItemData(usageTemplate, "elecDetailedEstimate", "numberOfBedrooms", request.EstimatorData.NumberOfBedrooms);
-            UpdateItemData(usageTemplate, "elecDetailedEstimate", "mainCookingSource", request.EstimatorData.MainCookingSource);
-            UpdateItemData(usageTemplate, "elecDetailedEstimate", "cookingFrequency", ((int)CookingFrequency.Daily).ToString());
-            UpdateItemData(usageTemplate, "elecDetailedEstimate", "centralHeating", request.EstimatorData.MainHeatingSource);
-            UpdateItemData(usageTemplate, "elecDetailedEstimate", "numberOfOccupants", request.EstimatorData.NumberOfOccupants);
+            UpdateItemData(usageTemplate, "elecDetailedEstimate", "numberOfBedrooms",
+                request.EstimatorData.NumberOfBedrooms);
+            UpdateItemData(usageTemplate, "elecDetailedEstimate", "mainCookingSource",
+                request.EstimatorData.MainCookingSource);
+            UpdateItemData(usageTemplate, "elecDetailedEstimate", "cookingFrequency",
+                ((int) CookingFrequency.Daily).ToString());
+            UpdateItemData(usageTemplate, "elecDetailedEstimate", "centralHeating",
+                request.EstimatorData.MainHeatingSource);
+            UpdateItemData(usageTemplate, "elecDetailedEstimate", "numberOfOccupants",
+                request.EstimatorData.NumberOfOccupants);
             UpdateItemData(usageTemplate, "elecDetailedEstimate", "insulation", request.EstimatorData.HouseInsulation);
             UpdateItemData(usageTemplate, "elecDetailedEstimate", "energyUsage", request.EstimatorData.HouseOccupied);
         }
@@ -165,16 +170,22 @@ namespace Energy.EHLCommsLib.Extensions
         {
             UpdateItemData(usageTemplate, "gasUsageType", "usageType", EhlApiConstants.UsageTypeByEstimator);
             UpdateItemData(usageTemplate, "gasDetailedEstimate", "houseType", request.EstimatorData.HouseType);
-            UpdateItemData(usageTemplate, "gasDetailedEstimate", "numberOfBedrooms", request.EstimatorData.NumberOfBedrooms);
-            UpdateItemData(usageTemplate, "gasDetailedEstimate", "mainCookingSource", request.EstimatorData.MainCookingSource);
-            UpdateItemData(usageTemplate, "gasDetailedEstimate", "cookingFrequency", ((int)CookingFrequency.Daily).ToString());
-            UpdateItemData(usageTemplate, "gasDetailedEstimate", "centralHeating", request.EstimatorData.MainHeatingSource);
-            UpdateItemData(usageTemplate, "gasDetailedEstimate", "numberOfOccupants", request.EstimatorData.NumberOfOccupants);
+            UpdateItemData(usageTemplate, "gasDetailedEstimate", "numberOfBedrooms",
+                request.EstimatorData.NumberOfBedrooms);
+            UpdateItemData(usageTemplate, "gasDetailedEstimate", "mainCookingSource",
+                request.EstimatorData.MainCookingSource);
+            UpdateItemData(usageTemplate, "gasDetailedEstimate", "cookingFrequency",
+                ((int) CookingFrequency.Daily).ToString());
+            UpdateItemData(usageTemplate, "gasDetailedEstimate", "centralHeating",
+                request.EstimatorData.MainHeatingSource);
+            UpdateItemData(usageTemplate, "gasDetailedEstimate", "numberOfOccupants",
+                request.EstimatorData.NumberOfOccupants);
             UpdateItemData(usageTemplate, "gasDetailedEstimate", "insulation", request.EstimatorData.HouseInsulation);
             UpdateItemData(usageTemplate, "gasDetailedEstimate", "energyUsage", request.EstimatorData.HouseOccupied);
         }
 
-        private static void UpdateItemData(SwitchesApiResponse currentSupplyTemplate, string groupName, string itemName, string value)
+        private static void UpdateItemData(SwitchesApiResponse currentSupplyTemplate, string groupName, string itemName,
+            string value)
         {
             currentSupplyTemplate.DataTemplate.Groups
                 .First(g => g.Name.Equals(groupName))

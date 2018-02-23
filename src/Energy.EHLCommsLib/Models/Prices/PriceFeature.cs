@@ -5,7 +5,9 @@ namespace Energy.EHLCommsLib.Models.Prices
 {
     public class PriceFeature
     {
-        public PriceFeature() { }
+        public PriceFeature()
+        {
+        }
 
         public PriceFeature(PriceFeatureCategory category, string description)
         {
