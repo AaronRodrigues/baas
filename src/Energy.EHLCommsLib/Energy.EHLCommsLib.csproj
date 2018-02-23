@@ -62,6 +62,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\EhlApiConstants.cs" />
     <Compile Include="Constants\EhlErrorConstants.cs" />
     <Compile Include="Contracts\Common\Data\DataTemplate.cs" />
     <Compile Include="Contracts\Common\Data\Item.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Contracts\Usage\EnergyUsage.cs" />
     <Compile Include="Contracts\Usage\Origin.cs" />
     <Compile Include="Contracts\Usage\Usage.cs" />
+    <Compile Include="EHLApiCalls.cs" />
     <Compile Include="EHLCommsAggregator.cs" />
     <Compile Include="Entities\EhlApiResponse.cs" />
     <Compile Include="Enums\AppFormQuestionType.cs" />
@@ -114,13 +116,13 @@
     <Compile Include="Enums\PriceFeatureCategory.cs" />
     <Compile Include="Enums\UsagePeriod.cs" />
     <Compile Include="Extensions\ExtensionMethods.cs" />
+    <Compile Include="Extensions\GetPricesRequestExtensions.cs" />
     <Compile Include="Extensions\SwitchApiContractsExtensions.cs" />
     <Compile Include="Extensions\TariffFeaturesExtensions.cs" />
     <Compile Include="External\Exceptions\InvalidSwitchException.cs" />
     <Compile Include="External\Services\SwitchServiceClient.cs" />
     <Compile Include="External\Services\SwitchServiceHelper.cs" />
     <Compile Include="Interfaces\IApplicationContext.cs" />
-    <Compile Include="Interfaces\IEHLApiCalls.cs" />
     <Compile Include="Interfaces\IHttpClient.cs" />
     <Compile Include="Interfaces\IHttpClientWrapper.cs" />
     <Compile Include="Interfaces\ISwitchServiceClient.cs" />

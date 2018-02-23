@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CTM.Common.BuildingBlocks.Extensions;
 using Energy.EHLCommsLib.Contracts.FutureSupplies;
 using Energy.EHLCommsLib.Enums;
