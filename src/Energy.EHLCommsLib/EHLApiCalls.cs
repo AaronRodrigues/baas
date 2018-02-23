@@ -49,11 +49,12 @@ namespace Energy.EHLCommsLib
             return ApiCallResponse("PreferencesStage", response, preferencesSwitchesApiPostResponse, EhlApiConstants.FutureSupplyRel);
         }
 
-        public bool UpdateCurrentSwitchStatus(string switchesUrl, GetPricesResponse response, bool ignoreProRataComparison)
+        public bool UpdateCurrentSwitchStatus(GetPricesRequest request, GetPricesResponse response)
         {
+            var switchesUrl = request.SwitchUrl;
+            var ignoreProRataComparison = request.IgnoreProRataComparison;
             var proRataCalculationApplied = false;
             var switchStatus = _switchServiceHelper.GetSwitchesApiGetResponse<SwitchApiResponse>(switchesUrl, EhlApiConstants.SwitchRel, _baseRequest);
-
             if (switchStatus != null)
             {
                 response.CurrentSupplyDetailsUrl = switchStatus.CurrentSupply.Details.Uri;
