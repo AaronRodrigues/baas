@@ -52,7 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EhlCommsAggregatorIntegrationTests.cs" />
-    <Compile Include="Helpers\Class1.cs" />
+    <Compile Include="Helpers\ApplicationFormDataBuilder.cs" />
     <Compile Include="Http\AuthorizationClient.cs" />
     <Compile Include="Http\AuthenticationTokenRepository.cs" />
     <Compile Include="Http\IAuthenticationTokenContext.cs" />
