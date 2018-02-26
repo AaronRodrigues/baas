@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{95B91C08-875F-4254-A93E-02C4B1B1246E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Energy.EHLCommsLibIntegrationTests</RootNamespace>
+    <AssemblyName>Energy.EHLCommsLibIntegrationTests</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Practices.Unity">
+      <HintPath>..\..\lib\Unity\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\..\packages\NUnit.3.9.0\lib\net45\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\..\lib\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EhlCommsAggregatorIntegrationTests.cs" />
+    <Compile Include="Helpers\Class1.cs" />
+    <Compile Include="Http\AuthorizationClient.cs" />
+    <Compile Include="Http\AuthenticationTokenRepository.cs" />
+    <Compile Include="Http\IAuthenticationTokenContext.cs" />
+    <Compile Include="Http\IHttpClient.cs" />
+    <Compile Include="Http\IDataFetcher.cs" />
+    <Compile Include="Http\SystemTime.cs" />
+    <Compile Include="Http\Host.cs" />
+    <Compile Include="Http\HttpClient.cs" />
+    <Compile Include="Http\HttpClientWrapper.cs" />
+    <Compile Include="Http\HttpDataFetcher.cs" />
+    <Compile Include="Http\HttpResponse.cs" />
+    <Compile Include="Http\IAuthorizationClient.cs" />
+    <Compile Include="Http\IAuthenticationTokenRepository.cs" />
+    <Compile Include="Http\IResponse.cs" />
+    <Compile Include="Model\AddressLookupQuestion.cs" />
+    <Compile Include="Model\AppFormAddressHistoryQuestionGroup.cs" />
+    <Compile Include="Model\AppFormOverseasAddressHistoryQuestionGroup.cs" />
+    <Compile Include="Model\AppFormQuestion.cs" />
+    <Compile Include="Model\AppFormQuestionGroup.cs" />
+    <Compile Include="Model\ApplicationFormData.cs" />
+    <Compile Include="Model\BankAccountQuestion.cs" />
+    <Compile Include="Model\CheckboxQuestion.cs" />
+    <Compile Include="Model\DropdownQuestion.cs" />
+    <Compile Include="Model\MarketingFeedPriceResult.cs" />
+    <Compile Include="Model\ClientEmailRequest.cs" />
+    <Compile Include="Model\ClientPriceResultsMarketingFeedRequest.cs" />
+    <Compile Include="Model\DateQuestion.cs" />
+    <Compile Include="Model\EmailPriceResult.cs" />
+    <Compile Include="Helpers\EntityHelper.cs" />
+    <Compile Include="Model\GenerateTokenResponse.cs" />
+    <Compile Include="Model\JourneyState.cs" />
+    <Compile Include="Model\MultiCheckboxQuestion.cs" />
+    <Compile Include="Model\OptionItem.cs" />
+    <Compile Include="Model\OptionQuestion.cs" />
+    <Compile Include="Model\ResidencyPeriodQuestion.cs" />
+    <Compile Include="Model\SortCodeQuestion.cs" />
+    <Compile Include="Model\StartSwitchRequest.cs" />
+    <Compile Include="Model\StartSwitchResponse.cs" />
+    <Compile Include="Model\TextboxQuestion.cs" />
+    <Compile Include="Model\Token.cs" />
+    <Compile Include="Model\TokenResponse.cs" />
+    <Compile Include="Model\UnknownAppFormQuestion.cs" />
+    <Compile Include="Services\AuthenticationTokenContext.cs" />
+    <Compile Include="Services\AuthenticationTokenService.cs" />
+    <Compile Include="Services\IAuthenticationTokenService.cs" />
+    <Compile Include="Services\StartSwitchService.cs" />
+    <Compile Include="Model\SwitchApplication.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\SystemTime.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Energy.EHLCommsLib\Energy.EHLCommsLib.csproj">
+      <Project>{eef446cb-72a5-4f03-8e27-a50a6e91984d}</Project>
+      <Name>Energy.EHLCommsLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

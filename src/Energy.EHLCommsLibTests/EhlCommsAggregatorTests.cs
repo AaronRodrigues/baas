@@ -31,11 +31,11 @@ namespace Energy.EHLCommsLibTests
             _httpClientWrapper = MockRepository.GenerateMock<IHttpClientWrapper>();
             //var tokenContext = MockRepository.GenerateMock<IAuthenticationTokenContext>();
             //tokenContext.Stub(t => t.CurrentToken).Return(new Token {AccessToken = "SomeToken"});
-            var applicationContext = MockRepository.GenerateMock<IApplicationContext>();
+            //var applicationContext = MockRepository.GenerateMock<IApplicationContext>();
 
             //var switchServiceClient = new SwitchServiceClient(_httpClientWrapper, tokenContext);
             var switchServiceClient = new SwitchServiceClient(_httpClientWrapper);
-            var switchServiceHelper = new SwitchServiceHelper(switchServiceClient, applicationContext);
+            var switchServiceHelper = new SwitchServiceHelper(switchServiceClient);
             //var ehLApiCalls = new EHLApiCalls(switchServiceHelper);
 
             _ehlCommsAggregator = new EhlCommsAggregator(switchServiceHelper);

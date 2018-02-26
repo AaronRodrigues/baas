@@ -17,13 +17,13 @@ namespace Energy.EHLCommsLib.External.Services
 {
     public class SwitchServiceHelper : ISwitchServiceHelper
     {
-        private readonly IApplicationContext _applicationContext;
+        //private readonly IApplicationContext _applicationContext;
         private readonly ISwitchServiceClient _switchServiceClient;
 
-        public SwitchServiceHelper(ISwitchServiceClient switchServiceClient, IApplicationContext applicationContext)
+        public SwitchServiceHelper(ISwitchServiceClient switchServiceClient)//, IApplicationContext applicationContext)
         {
             _switchServiceClient = switchServiceClient;
-            _applicationContext = applicationContext;
+            //_applicationContext = applicationContext;
         }
 
         public void ApplyReference(SwitchesApiResponse response, string reference, string value)
@@ -207,7 +207,7 @@ namespace Energy.EHLCommsLib.External.Services
                         builder.AppendFormat(
                             "Invalid switch encountered while making a {0} request to EHL using url {1}.", action, url);
                         builder.AppendLine();
-                        builder.AppendFormat("JourneyId = {0}", _applicationContext.JourneyId);
+                        //builder.AppendFormat("JourneyId = {0}", _applicationContext.JourneyId);
                         builder.AppendLine();
 
                         //Log.Info(builder.ToString());
@@ -215,7 +215,7 @@ namespace Energy.EHLCommsLib.External.Services
                         var message = string.Format(
                             "Internal server error received from EHL\nMessage = '{0}', JourneyId = '{1}', Action='{2}', Url='{3}'",
                             ehlMessage,
-                            _applicationContext.JourneyId,
+                            0,//_applicationContext.JourneyId,
                             action,
                             url);
 
@@ -238,7 +238,7 @@ namespace Energy.EHLCommsLib.External.Services
 
             builder.AppendFormat("Issue occurred while making a {0} request to EHL using url {1}.", action, url);
             builder.AppendLine();
-            builder.AppendFormat("JourneyId = {0}", _applicationContext.JourneyId);
+            //builder.AppendFormat("JourneyId = {0}", _applicationContext.JourneyId);
             builder.AppendLine();
             builder.AppendFormat("Status code returned was {0}", response.StatusCode);
             builder.AppendLine();

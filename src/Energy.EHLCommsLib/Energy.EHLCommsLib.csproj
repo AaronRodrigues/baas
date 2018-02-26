@@ -89,10 +89,13 @@
     <Compile Include="Contracts\FutureSupplies\SupplyDetails.cs" />
     <Compile Include="Contracts\Group.cs" />
     <Compile Include="Contracts\Responses\ApiResponse.cs" />
+    <Compile Include="Contracts\Responses\AddressSearchResult.cs" />
     <Compile Include="Contracts\Responses\CurrentSupplies.cs" />
     <Compile Include="Contracts\Responses\CustomerData.cs" />
+    <Compile Include="Contracts\Responses\SignupApiResponse.cs" />
     <Compile Include="Contracts\Responses\SwitchApiResponse.cs" />
     <Compile Include="Contracts\Responses\SwitchesApiResponse.cs" />
+    <Compile Include="Contracts\Signup\QuestionGroupStatus.cs" />
     <Compile Include="Contracts\Supplier.cs" />
     <Compile Include="Contracts\SupplierFuelMix.cs" />
     <Compile Include="Contracts\SwitchApiResponse\ProRata.cs" />
@@ -124,7 +127,6 @@
     <Compile Include="External\Services\SwitchServiceClient.cs" />
     <Compile Include="External\Services\SwitchServiceHelper.cs" />
     <Compile Include="Interfaces\IApplicationContext.cs" />
-    <Compile Include="Interfaces\IHttpClient.cs" />
     <Compile Include="Interfaces\IHttpClientWrapper.cs" />
     <Compile Include="Interfaces\ISwitchServiceClient.cs" />
     <Compile Include="Interfaces\ISwitchServiceHelper.cs" />

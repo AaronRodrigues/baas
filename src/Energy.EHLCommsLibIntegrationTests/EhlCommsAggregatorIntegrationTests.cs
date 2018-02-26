@@ -1,0 +1,125 @@
+﻿using Energy.EHLCommsLib;
+using Energy.EHLCommsLib.Enums;
+using Energy.EHLCommsLib.External.Services;
+using Energy.EHLCommsLibIntegrationTests.Helpers;
+using Energy.EHLCommsLibIntegrationTests.Http;
+using Energy.EHLCommsLibIntegrationTests.Model;
+using Energy.EHLCommsLibIntegrationTests.Services;
+using NUnit.Framework;
+
+namespace Energy.EHLCommsLibTests
+{
+
+    [TestFixture]
+    public class EhlCommsAggregatorIntegrationTests
+    {
+        private const string TestPostcode = "pe26ys";
+        private string ApiKey = System.Environment.GetEnvironmentVariable("ehl_api_key");
+
+        private StartSwitchService _startSwitchService;
+        private EhlCommsAggregator _ehlCommsAggregator;
+
+        [SetUp]
+        public void Setup()
+        {
+            var httpClient = new HttpClient();
+            var httpClientWrapper = new HttpClientWrapper(httpClient);
+            var authenticationTokenService = new AuthenticationTokenService(new AuthorizationClient());
+            var tokenContext = new AuthenticationTokenContext(authenticationTokenService);
+            var switchServiceHelper = new SwitchServiceHelper(new SwitchServiceClient(httpClientWrapper));
+
+            _startSwitchService = new StartSwitchService(switchServiceHelper);
+            _ehlCommsAggregator = new EhlCommsAggregator(switchServiceHelper);
+        }
+
+        [Test]
+        public void Should_ReturnPrices_For_KwhUsageWithoutEconomy7()
+        {
+            var startSwitchResponse = _startSwitchService.StartSwitch(new StartSwitchRequest { Postcode = TestPostcode, ApiKey = ApiKey });
+            var pricesRequest = EntityHelper.GenerateValidPricesRequest(startSwitchResponse);
+            pricesRequest.EnergyJourneyType = EnergyJourneyType.HaveMyBill;
+
+            var resultsResponse = _ehlCommsAggregator.GetPrices(pricesRequest, null);
+
+            Assert.AreEqual(true, resultsResponse.Success);
+            Assert.AreNotEqual(0, resultsResponse.Results);
+        }
+
+        [Test]
+        public void Should_ReturnPrices_For_KwhUsageWithEconomy7()
+        {
+            var startSwitchResponse = _startSwitchService.StartSwitch(new StartSwitchRequest { Postcode = TestPostcode, ApiKey = ApiKey });
+            var pricesRequest = EntityHelper.GenerateValidPricesRequest(startSwitchResponse);
+            pricesRequest.EnergyJourneyType = EnergyJourneyType.HaveMyBill;
+            pricesRequest.PercentageNightUsage = 0.65m;
+            pricesRequest.ElectricityEco7 = true;
+
+            var resultsResponse = _ehlCommsAggregator.GetPrices(pricesRequest, null);
+
+            Assert.AreEqual(true, resultsResponse.Success);
+            Assert.AreNotEqual(0, resultsResponse.Results);
+        }
+
+        [Test]
+        public void Should_ReturnPrices_For_SpendUsageOnDontHaveMyBillJourney()
+        {
+            var startSwitchResponse = _startSwitchService.StartSwitch(new StartSwitchRequest { Postcode = TestPostcode, ApiKey = ApiKey });
+            var pricesRequest = EntityHelper.GenerateValidPricesRequest(startSwitchResponse);
+            pricesRequest.EnergyJourneyType = EnergyJourneyType.DontHaveMyBill;
+
+            var resultsResponse = _ehlCommsAggregator.GetPrices(pricesRequest, null);
+
+            Assert.AreEqual(true, resultsResponse.Success);
+            Assert.AreNotEqual(0, resultsResponse.Results);
+        }
+
+        [Test]
+        public void Should_ReturnPrices_For_EstimatorUsageOnDontHaveMyBillJourney()
+        {
+            var startSwitchResponse = _startSwitchService.StartSwitch(new StartSwitchRequest { Postcode = TestPostcode, ApiKey = ApiKey });
+            var pricesRequest = EntityHelper.GenerateValidPricesRequest(startSwitchResponse);
+            pricesRequest.EnergyJourneyType = EnergyJourneyType.DontHaveMyBill;
+            pricesRequest.UseDetailedEstimatorForElectricity = true;
+            pricesRequest.UseDetailedEstimatorForGas = true;
+
+            var resultsResponse = _ehlCommsAggregator.GetPrices(pricesRequest, null);
+
+            Assert.AreEqual(true, resultsResponse.Success);
+            Assert.AreNotEqual(0, resultsResponse.Results);
+        }
+
+        [Test]
+        public void Should_ReturnPrices_For_ElectricityOnlyEstimatorUsageOnDontHaveMyBillJourney()
+        {
+            var startSwitchResponse = _startSwitchService.StartSwitch(new StartSwitchRequest { Postcode = TestPostcode, ApiKey = ApiKey });
+            var pricesRequest = EntityHelper.GenerateValidPricesRequest(startSwitchResponse);
+            pricesRequest.EnergyJourneyType = EnergyJourneyType.DontHaveMyBill;
+            pricesRequest.UseDetailedEstimatorForElectricity = true;
+            pricesRequest.UseDetailedEstimatorForGas = false;
+            pricesRequest.SpendData.GasSpendAmount = 150;
+            pricesRequest.SpendData.GasSpendPeriod = UsagePeriod.Monthly;
+
+            var resultsResponse = _ehlCommsAggregator.GetPrices(pricesRequest, null);
+
+            Assert.AreEqual(true, resultsResponse.Success);
+            Assert.AreNotEqual(0, resultsResponse.Results);
+        }
+
+        [Test]
+        public void Should_ReturnPrices_For_GasOnlyEstimatorUsageOnDontHaveMyBillJourney()
+        {
+            var startSwitchResponse = _startSwitchService.StartSwitch(new StartSwitchRequest { Postcode = TestPostcode, ApiKey = ApiKey });
+            var pricesRequest = EntityHelper.GenerateValidPricesRequest(startSwitchResponse);
+            pricesRequest.EnergyJourneyType = EnergyJourneyType.DontHaveMyBill;
+            pricesRequest.UseDetailedEstimatorForElectricity = false;
+            pricesRequest.UseDetailedEstimatorForGas = true;
+            pricesRequest.SpendData.ElectricitySpendAmount = 150;
+            pricesRequest.SpendData.ElectricitySpendPeriod = UsagePeriod.Monthly;
+
+            var resultsResponse = _ehlCommsAggregator.GetPrices(pricesRequest, null);
+
+            Assert.AreEqual(true, resultsResponse.Success);
+            Assert.AreNotEqual(0, resultsResponse.Results);
+        }
+    }
+}

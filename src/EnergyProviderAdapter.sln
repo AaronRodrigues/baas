@@ -12,6 +12,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Energy.EHLCommsLib", "Energ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Energy.EHLCommsLibTests", "Energy.EHLCommsLibTests\Energy.EHLCommsLibTests.csproj", "{D66C6727-0C92-4BC5-BD4B-6B8752ADB0A5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Energy.EHLCommsLibIntegrationTests", "Energy.EHLCommsLibIntegrationTests\Energy.EHLCommsLibIntegrationTests.csproj", "{95B91C08-875F-4254-A93E-02C4B1B1246E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EEF446CB-72A5-4F03-8E27-A50A6E91984D} = {EEF446CB-72A5-4F03-8E27-A50A6E91984D}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +35,10 @@ Global
 		{D66C6727-0C92-4BC5-BD4B-6B8752ADB0A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D66C6727-0C92-4BC5-BD4B-6B8752ADB0A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D66C6727-0C92-4BC5-BD4B-6B8752ADB0A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95B91C08-875F-4254-A93E-02C4B1B1246E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95B91C08-875F-4254-A93E-02C4B1B1246E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95B91C08-875F-4254-A93E-02C4B1B1246E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95B91C08-875F-4254-A93E-02C4B1B1246E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
