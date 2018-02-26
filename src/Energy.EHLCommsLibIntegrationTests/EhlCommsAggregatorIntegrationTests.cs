@@ -1,4 +1,5 @@
-﻿using Energy.EHLCommsLib;
+﻿using CTM.Energy.External.Services;
+using Energy.EHLCommsLib;
 using Energy.EHLCommsLib.Enums;
 using Energy.EHLCommsLib.External.Services;
 using Energy.EHLCommsLibIntegrationTests.Helpers;
@@ -26,7 +27,8 @@ namespace Energy.EHLCommsLibTests
             var httpClientWrapper = new HttpClientWrapper(httpClient);
             var authenticationTokenService = new AuthenticationTokenService(new AuthorizationClient());
             var tokenContext = new AuthenticationTokenContext(authenticationTokenService);
-            var switchServiceHelper = new SwitchServiceHelper(new SwitchServiceClient(httpClientWrapper));
+            var switchServiceHelper = new SwitchServiceHelper(new SwitchServiceClient(httpClientWrapper, tokenContext));
+
 
             _startSwitchService = new StartSwitchService(switchServiceHelper);
             _ehlCommsAggregator = new EhlCommsAggregator(switchServiceHelper);

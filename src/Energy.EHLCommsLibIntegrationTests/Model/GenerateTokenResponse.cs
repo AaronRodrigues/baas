@@ -1,3 +1,5 @@
+using Energy.EHLCommsLib.Models.Http;
+
 namespace Energy.EHLCommsLibIntegrationTests.Model
 {
     public class GenerateTokenResponse

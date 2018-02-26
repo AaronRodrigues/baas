@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Energy.EHLCommsLibIntegrationTests.Model;
+﻿using Energy.EHLCommsLib.Models.Http;
 
 
 namespace Energy.EHLCommsLibIntegrationTests.Http

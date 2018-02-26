@@ -1,6 +1,6 @@
 using System.Threading;
-using Energy.EHLCommsLibIntegrationTests.Http;
-using Energy.EHLCommsLibIntegrationTests.Model;
+using Energy.EHLCommsLib.InterfacesHttp;
+using Energy.EHLCommsLib.Models.Http;
 
 
 namespace Energy.EHLCommsLibIntegrationTests.Services

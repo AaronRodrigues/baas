@@ -1,4 +1,5 @@
-﻿using Energy.EHLCommsLibIntegrationTests.Model;
+﻿using Energy.EHLCommsLib.Models.Http;
+using Energy.EHLCommsLibIntegrationTests.Model;
 
 namespace Energy.EHLCommsLibIntegrationTests.Http { 
 

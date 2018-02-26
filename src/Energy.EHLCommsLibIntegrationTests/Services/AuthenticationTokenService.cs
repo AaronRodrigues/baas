@@ -1,4 +1,5 @@
 using System;
+using Energy.EHLCommsLib.Models.Http;
 using Energy.EHLCommsLibIntegrationTests.Http;
 using Energy.EHLCommsLibIntegrationTests.Model;
 
@@ -23,7 +24,7 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
 
             try
             {
-                var tokenResponse = _authorizationClient.WithBaseUri("https://rest-predeploy.energyhelpline.com").WithResource("/token")
+                var tokenResponse = _authorizationClient.WithBaseUri("https://rest.staging.energyhelpline.com").WithResource("/token")
                     .RequestToken(Environment.GetEnvironmentVariable("ehl_authentication_token_username"),
                                   Environment.GetEnvironmentVariable("ehl_authentication_token_password"), 
                                   DomesticScope);

@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using CTM.Energy.External.Services;
 using Energy.EHLCommsLib;
 using Energy.EHLCommsLib.Enums;
 using Energy.EHLCommsLib.External.Exceptions;
 using Energy.EHLCommsLib.External.Services;
 using Energy.EHLCommsLib.Interfaces;
+using Energy.EHLCommsLib.InterfacesHttp;
+using Energy.EHLCommsLib.Models.Http;
 using Energy.EHLCommsLib.Models.Prices;
 using Energy.EHLCommsLibTests.Helpers;
 using NUnit.Framework;
@@ -29,14 +32,11 @@ namespace Energy.EHLCommsLibTests
         {
 
             _httpClientWrapper = MockRepository.GenerateMock<IHttpClientWrapper>();
-            //var tokenContext = MockRepository.GenerateMock<IAuthenticationTokenContext>();
-            //tokenContext.Stub(t => t.CurrentToken).Return(new Token {AccessToken = "SomeToken"});
-            //var applicationContext = MockRepository.GenerateMock<IApplicationContext>();
+            var tokenContext = MockRepository.GenerateMock<IAuthenticationTokenContext>();
+            tokenContext.Stub(t => t.CurrentToken).Return(new Token {AccessToken = "SomeToken"});
 
-            //var switchServiceClient = new SwitchServiceClient(_httpClientWrapper, tokenContext);
-            var switchServiceClient = new SwitchServiceClient(_httpClientWrapper);
+            var switchServiceClient = new SwitchServiceClient(_httpClientWrapper, tokenContext);
             var switchServiceHelper = new SwitchServiceHelper(switchServiceClient);
-            //var ehLApiCalls = new EHLApiCalls(switchServiceHelper);
 
             _ehlCommsAggregator = new EhlCommsAggregator(switchServiceHelper);
         }

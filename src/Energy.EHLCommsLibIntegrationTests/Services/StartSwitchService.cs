@@ -11,7 +11,7 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
 {
     public class StartSwitchService
     {
-        private const string Ehl_ApiEntryPointUrl = "https://rest-predeploy.energyhelpline.com";
+        private const string Ehl_ApiEntryPointUrl = "https://rest.staging.energyhelpline.com";
         private const string PartnerReference = "CTM123";
 
         private const string NextRel = "/rels/next";

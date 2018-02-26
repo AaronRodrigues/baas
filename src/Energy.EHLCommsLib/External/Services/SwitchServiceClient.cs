@@ -5,32 +5,25 @@ using Energy.EHLCommsLib.Constants;
 using Energy.EHLCommsLib.Contracts.Common;
 using Energy.EHLCommsLib.Contracts.Responses;
 using Energy.EHLCommsLib.Interfaces;
+using Energy.EHLCommsLib.InterfacesHttp;
 using Energy.EHLCommsLib.Models;
 using Energy.EHLCommsLib.Models.Http;
 using Newtonsoft.Json;
-using Message = Energy.EHLCommsLib.Contracts.Common.Message;
 
-namespace Energy.EHLCommsLib.External.Services
+namespace CTM.Energy.External.Services
 {
     public class SwitchServiceClient : ISwitchServiceClient
     {
-        //private readonly IAuthenticationTokenContext _tokenContext;
+        private readonly IHttpClientWrapper _httpClientWrapper;
+        private readonly IAuthenticationTokenContext _tokenContext;
 
         private BaseRequest _baseRequest;
-        private string _contentType;
-        private string _webProxyAddress;
-        private readonly string _apiBaseUri;
-        private readonly IHttpClientWrapper _httpClientWrapper;
-        //private string _contentType = AppSettings.Ehl.RequestContentType;
-        //private string _webProxyAddress = AppSettings.WebClientProx;
-        //private readonly string _apiBaseUri = AppSettings.Ehl.ApiBaseUrl;
+        private readonly string _apiBaseUri = "";
 
-
-        //public SwitchServiceClient(IHttpClientWrapper httpClientWrapper, IAuthenticationTokenContext tokenContext)
-        public SwitchServiceClient(IHttpClientWrapper httpClientWrapper)
+        public SwitchServiceClient(IHttpClientWrapper httpClientWrapper, IAuthenticationTokenContext tokenContext)
         {
             _httpClientWrapper = httpClientWrapper;
-            //_tokenContext = tokenContext;
+            _tokenContext = tokenContext;
         }
 
         public ISwitchServiceClient For(BaseRequest baseRequest)
@@ -55,8 +48,7 @@ namespace Energy.EHLCommsLib.External.Services
             }
             catch (Exception)
             {
-                //Log.Error(string.Format("EHL ERROR - EHL returned invalid JSON from a GET to Url '{0}'. Most likely they returned the HTML of their error page.",
-                //    apiUrl));
+                //Log.Error(string.Format("EHL ERROR - EHL returned invalid JSON from a GET to Url '{0}'. Most likely they returned the HTML of their error page.", apiUrl));
 
                 responseObject = InternalServerError<T>();
             }
@@ -64,12 +56,11 @@ namespace Energy.EHLCommsLib.External.Services
             return responseObject;
         }
 
-        public T GetSwitchesApiPostResponse<T>(string url, T responseDataToSend, string relKey)
-            where T : ApiResponse, new()
+        public T GetSwitchesApiPostResponse<T>(string url, T responseDataToSend, string relKey) where T : ApiResponse, new()
         {
             var dataToPost = JsonConvert.SerializeObject(responseDataToSend.DataTemplate);
 
-            var apiUrl = string.Format("{0}{1}", _apiBaseUri, url);
+            var apiUrl = string.Format("{0}{1}", "", url);
 
             var response = PostJsonTo(apiUrl, dataToPost);
 
@@ -146,14 +137,14 @@ namespace Energy.EHLCommsLib.External.Services
             var request = new HttpClientRequest
             {
                 Url = url,
-                ContentType = _contentType,
-                WebProxyAddress = _webProxyAddress
+                ContentType = "application/vnd-fri-domestic-energy+json;version=2.0",
+                WebProxyAddress = ""
             };
 
-            //if (_tokenContext.TokenExpired())
-            //    _tokenContext.GetNewToken();
+            if (_tokenContext.TokenExpired())
+                _tokenContext.GetNewToken();
 
-            //request.AuthorizationToken = string.Format("Bearer {0}", _tokenContext.CurrentToken.AccessToken);
+            request.AuthorizationToken = string.Format("Bearer {0}", _tokenContext.CurrentToken.AccessToken);
 
             return request;
         }
@@ -168,11 +159,11 @@ namespace Energy.EHLCommsLib.External.Services
                 {
                     new Error
                     {
-                        Message = new Message
-                        {
-                            Id = EhlErrorConstants.EhlErrorGeneric,
-                            Text = "Internal server error. Reference:"
-                        }
+                        //Message = new Energy.EHLCommsLib.Contracts.Common.Error.Message
+                        //{
+                        //    Id = EhlErrorConstants.EhlErrorGeneric,
+                        //    Text = "Internal server error. Reference:"
+                        //}
                     }
                 }
             };
