@@ -24,21 +24,17 @@ namespace Energy.EHLCommsLib.Extensions
         public static Item GetItem(this DataTemplate template, string groupName, string itemName)
         {
             var group = template.Groups.FirstOrDefault(g => g.Name.Equals(groupName));
-            return group == null ? null : group.Items.FirstOrDefault(i => i.Name.Equals(itemName));
+            return @group?.Items.FirstOrDefault(i => i.Name.Equals(itemName));
         }
 
         public static Link GetExactLinkForRel(this ApiResponse response, string rel)
         {
-            return response.Links != null
-                ? response.Links.FirstOrDefault(l => l.Rel.Equals(rel))
-                : null;
+            return response.Links?.FirstOrDefault(l => l.Rel.Equals(rel));
         }
 
         public static Link GetLinkForRel(this ApiResponse response, string rel)
         {
-            return response.Links != null
-                ? response.Links.FirstOrDefault(l => l.Rel.Contains(rel))
-                : null;
+            return response.Links?.FirstOrDefault(l => l.Rel.Contains(rel));
         }
 
         public static string GetNextRelUrl(this ApiResponse response, string nextRel)

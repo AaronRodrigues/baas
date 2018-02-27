@@ -47,22 +47,21 @@ namespace Energy.EHLCommsLib.Extensions
             var arrayIndex = 0;
             var inside = false;
 
-            for (var i = 0; i < input.Length; i++)
+            foreach (var @let in input)
             {
-                var let = input[i];
-                if (let == '<')
+                if (@let == '<')
                 {
                     inside = true;
                     continue;
                 }
-                if (let == '>')
+                if (@let == '>')
                 {
                     inside = false;
                     continue;
                 }
                 if (!inside)
                 {
-                    array[arrayIndex] = let;
+                    array[arrayIndex] = @let;
                     arrayIndex++;
                 }
             }

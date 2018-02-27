@@ -1,13 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Net;
-using CTM.Energy.Common.Interfaces;
 using Energy.EHLCommsLib.Interfaces;
+using Energy.EHLCommsLib.Interfaces.Http;
 using Energy.EHLCommsLib.Models.Http;
 
 
 namespace Energy.EHLCommsLibIntegrationTests.Http
 {
+    //TO DO: investigate whether this method should be moved to comm library, and if it should add logging, metrics, exception handling
     public class HttpClientWrapper : IHttpClientWrapper
     {
         private readonly IHttpClient _httpClient;
@@ -30,8 +31,8 @@ namespace Energy.EHLCommsLibIntegrationTests.Http
                 var watch = System.Diagnostics.Stopwatch.StartNew();
 
                 var httpResponse = _httpClient.Post(request.Url, request.Data);
-                response.ResponseStatusCode = httpResponse != null ? httpResponse.StatusCode : (HttpStatusCode?)null;
-                response.Data = httpResponse != null ? httpResponse.BodyAsString() : null;
+                response.ResponseStatusCode = httpResponse?.StatusCode;
+                response.Data = httpResponse?.BodyAsString();
 
                 watch.Stop();
                 //var elapsedMs = watch.ElapsedMilliseconds;
@@ -102,30 +103,15 @@ namespace Energy.EHLCommsLibIntegrationTests.Http
 
         private string GetWebExceptionResponseStream(WebException webEx)
         {
-            if (webEx.Response != null)
+            if (webEx.Response == null) return null;
+            using (var stream = webEx.Response.GetResponseStream())
             {
-                using (var stream = webEx.Response.GetResponseStream())
+                if (stream == null) return null;
+                using (var reader = new StreamReader(stream))
                 {
-                    if (stream != null)
-                    {
-                        using (var reader = new StreamReader(stream))
-                        {
-                            return reader.ReadToEnd().Trim();
-                        }
-                    }
+                    return reader.ReadToEnd().Trim();
                 }
             }
-
-            return null;
-        }
-
-        private string RemoveQueryStringFromUrl(string url)
-        {
-            var uriScheme = new Uri(url).Scheme;
-            var uriHost = new Uri(url).Host;
-            var uriPath = new Uri(url).LocalPath;
-            var convertedUrl = uriScheme + "://" + uriHost + uriPath;
-            return convertedUrl;
         }
     }
 }

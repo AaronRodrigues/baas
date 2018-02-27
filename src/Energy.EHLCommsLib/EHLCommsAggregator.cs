@@ -6,6 +6,8 @@ using Energy.EHLCommsLib.Models.Prices;
 
 namespace Energy.EHLCommsLib
 {
+    //TO DO : Logging
+    //TO DO : Add this value to config AppSettings.Feature.TariffCustomFeatureEnabled or get from MVC
     public class EhlCommsAggregator
     {
         private readonly ISwitchServiceHelper _switchServiceHelper;
@@ -14,8 +16,6 @@ namespace Energy.EHLCommsLib
         {
             _switchServiceHelper = switchServiceHelper;
         }
-        //TO DO : Logging
-        //TO DO : Add this value to config AppSettings.Feature.TariffCustomFeatureEnabled or get from MVC
         public GetPricesResponse GetPrices(GetPricesRequest request, Dictionary<string, string> customFeatures,
             bool tariffCustomFeatureEnabled = false)
         {

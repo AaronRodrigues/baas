@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Dynamic;
 using Energy.EHLCommsLib.Enums;
 
 namespace Energy.EHLCommsLibIntegrationTests.Model

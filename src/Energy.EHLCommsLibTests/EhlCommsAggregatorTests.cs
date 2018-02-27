@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using CTM.Energy.External.Services;
 using Energy.EHLCommsLib;
 using Energy.EHLCommsLib.Enums;
 using Energy.EHLCommsLib.External.Exceptions;
 using Energy.EHLCommsLib.External.Services;
 using Energy.EHLCommsLib.Interfaces;
-using Energy.EHLCommsLib.InterfacesHttp;
-using Energy.EHLCommsLib.Models.Http;
 using Energy.EHLCommsLib.Models.Prices;
 using Energy.EHLCommsLibTests.Helpers;
 using NUnit.Framework;
@@ -23,7 +20,7 @@ namespace Energy.EHLCommsLibTests
     {
         private const string TestPostcode = "pe26ys";
 
-        private EhlCommsAggregator _ehlCommsAggregator { get; set; }
+        private EhlCommsAggregator EhlCommsAggregator { get; set; }
         private IHttpClientWrapper _httpClientWrapper;
         private readonly SwitchServicesTestsHelper _switchHelper = new SwitchServicesTestsHelper();
 
@@ -32,13 +29,11 @@ namespace Energy.EHLCommsLibTests
         {
 
             _httpClientWrapper = MockRepository.GenerateMock<IHttpClientWrapper>();
-            var tokenContext = MockRepository.GenerateMock<IAuthenticationTokenContext>();
-            tokenContext.Stub(t => t.CurrentToken).Return(new Token {AccessToken = "SomeToken"});
 
-            var switchServiceClient = new SwitchServiceClient(_httpClientWrapper, tokenContext);
+            var switchServiceClient = new SwitchServiceClient(_httpClientWrapper);
             var switchServiceHelper = new SwitchServiceHelper(switchServiceClient);
 
-            _ehlCommsAggregator = new EhlCommsAggregator(switchServiceHelper);
+            EhlCommsAggregator = new EhlCommsAggregator(switchServiceHelper);
         }
 
         [TearDown]
@@ -104,7 +99,7 @@ namespace Energy.EHLCommsLibTests
             request.EstimatorData.NumberOfBedrooms = "5";
             request.EstimatorData.NumberOfOccupants = "2";
 
-            var response = _ehlCommsAggregator.GetPrices(request, null);
+            var response = EhlCommsAggregator.GetPrices(request, null);
 
             Assert.IsNotNull(response);
             Assert.IsNotNull(response.Results);
@@ -122,7 +117,7 @@ namespace Energy.EHLCommsLibTests
             request.SpendData.GasSpendAmount = 50;
             request.SpendData.GasSpendPeriod = UsagePeriod.Monthly;
 
-            var response = _ehlCommsAggregator.GetPrices(request, null);
+            var response = EhlCommsAggregator.GetPrices(request, null);
 
             Assert.IsNotNull(response);
             Assert.IsNotNull(response.Results);
@@ -142,7 +137,7 @@ namespace Energy.EHLCommsLibTests
             request.SpendData.GasSpendAmount = 50;
             request.SpendData.GasSpendPeriod = UsagePeriod.Monthly;
 
-            var response = _ehlCommsAggregator.GetPrices(request, null);
+            var response = EhlCommsAggregator.GetPrices(request, null);
 
             Assert.IsNotNull(response);
             Assert.IsTrue(response.Messages.Count > 0);
@@ -160,7 +155,7 @@ namespace Energy.EHLCommsLibTests
             request.UsageData.ElectricityKwh = 1000;
             request.UsageData.ElectricityUsagePeriod = UsagePeriod.Monthly;
 
-            var response = _ehlCommsAggregator.GetPrices(request, null);
+            var response = EhlCommsAggregator.GetPrices(request, null);
 
             Assert.IsNotNull(response);
             Assert.IsNotNull(response.Results);
@@ -180,7 +175,7 @@ namespace Energy.EHLCommsLibTests
             request.SpendData.GasSpendAmount = 50;
             request.SpendData.GasSpendPeriod = UsagePeriod.Monthly;
 
-            var response = _ehlCommsAggregator.GetPrices(request, null);
+            var response = EhlCommsAggregator.GetPrices(request, null);
 
             Assert.IsNotNull(response);
             Assert.IsNotNull(response.Results);
@@ -210,7 +205,7 @@ namespace Energy.EHLCommsLibTests
                 {(supplierName + tariffName).Replace(" ", "").ToLower(), customFeatureText}
             };
 
-            var response = _ehlCommsAggregator.GetPrices(request, customFeatures, true);
+            var response = EhlCommsAggregator.GetPrices(request, customFeatures, true);
 
             Assert.IsNotNull(response);
             Assert.IsNotNull(response.Results);
@@ -230,7 +225,7 @@ namespace Energy.EHLCommsLibTests
 
             var request = GetStubPricesRequest();
 
-            var response = _ehlCommsAggregator.GetPrices(request, null);
+            var response = EhlCommsAggregator.GetPrices(request, null);
 
             Assert.IsNotNull(response);
             Assert.IsTrue(response.Messages.Count > 0);
@@ -247,7 +242,7 @@ namespace Energy.EHLCommsLibTests
 
             var request = GetStubPricesRequest();
 
-            Assert.Throws<InvalidSwitchException>(() => _ehlCommsAggregator.GetPrices(request, null));
+            Assert.Throws<InvalidSwitchException>(() => EhlCommsAggregator.GetPrices(request, null));
 
         }
 
@@ -266,7 +261,7 @@ namespace Energy.EHLCommsLibTests
 
             var request = GetStubPricesRequest();
 
-            var response = _ehlCommsAggregator.GetPrices(request, null);
+            var response = EhlCommsAggregator.GetPrices(request, null);
 
             Assert.IsNotNull(response);
             Assert.IsTrue(response.Messages.Count > 0);
@@ -287,7 +282,7 @@ namespace Energy.EHLCommsLibTests
 
             var request = GetStubPricesRequest();
 
-            var response = _ehlCommsAggregator.GetPrices(request, null);
+            var response = EhlCommsAggregator.GetPrices(request, null);
 
             Assert.IsNotNull(response);
             Assert.IsTrue(response.Messages.Count > 0);
@@ -306,7 +301,7 @@ namespace Energy.EHLCommsLibTests
             request.UsageData.ElectricityKwh = 1000;
             request.UsageData.ElectricityUsagePeriod = UsagePeriod.Monthly;
 
-            var response = _ehlCommsAggregator.GetPrices(request, null);
+            var response = EhlCommsAggregator.GetPrices(request, null);
 
             Assert.IsNotNull(response);
             Assert.That(response.ProRataCalculationApplied, Is.True);
@@ -326,7 +321,7 @@ namespace Energy.EHLCommsLibTests
             request.UsageData.ElectricityKwh = 1000;
             request.UsageData.ElectricityUsagePeriod = UsagePeriod.Monthly;
             request.IgnoreProRataComparison = true;
-            var response = _ehlCommsAggregator.GetPrices(request, null);
+            var response = EhlCommsAggregator.GetPrices(request, null);
 
             Assert.IsNotNull(response);
             Assert.That(response.ProRataCalculationApplied, Is.False);
@@ -356,7 +351,7 @@ namespace Energy.EHLCommsLibTests
             request.UsageData.ElectricityKwh = 1000;
             request.UsageData.ElectricityUsagePeriod = UsagePeriod.Monthly;
 
-            var response = _ehlCommsAggregator.GetPrices(request, null);
+            var response = EhlCommsAggregator.GetPrices(request, null);
 
             Assert.IsNotNull(response);
             Assert.That(response.ProRataCalculationApplied, Is.False);

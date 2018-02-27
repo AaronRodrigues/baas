@@ -1,9 +1,9 @@
 ﻿using System.IO;
 using System.Net;
 using System.Text;
-using CTM.Energy.Common.Interfaces;
+using Energy.EHLCommsLib.Interfaces.Http;
 
-namespace Energy.EHLCommsLibIntegrationTests.Http
+namespace Energy.EHLCommsLib.Models.Http
 {
     public class HttpResponse : IResponse
     {
@@ -11,9 +11,9 @@ namespace Energy.EHLCommsLibIntegrationTests.Http
 
         public HttpResponse(HttpWebResponse webResponse) { _rawWebResponse = webResponse; }
 
-        public HttpStatusCode StatusCode { get { return _rawWebResponse.StatusCode; } }
+        public HttpStatusCode StatusCode => _rawWebResponse.StatusCode;
 
-        public string StatusDescription { get { return _rawWebResponse.StatusDescription; } }
+        public string StatusDescription => _rawWebResponse.StatusDescription;
 
         public string BodyAsString()
         {
@@ -27,7 +27,8 @@ namespace Energy.EHLCommsLibIntegrationTests.Http
         {
             using (var memoryStream = new MemoryStream())
             {
-                _rawWebResponse.GetResponseStream().CopyTo(memoryStream);
+                var responseStream = _rawWebResponse.GetResponseStream();
+                responseStream?.CopyTo(memoryStream);
                 return memoryStream.ToArray();
             }
         }

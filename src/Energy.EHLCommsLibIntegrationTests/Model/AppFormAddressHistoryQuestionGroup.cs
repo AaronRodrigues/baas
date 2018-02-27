@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace Energy.EHLCommsLibIntegrationTests.Model
 {
@@ -9,11 +9,11 @@ namespace Energy.EHLCommsLibIntegrationTests.Model
         {
         }
 
-        public AppFormAddressHistoryQuestionGroup(string name, string tags) :base (name, tags)
+        public AppFormAddressHistoryQuestionGroup(string name, string tags) : base(name, tags)
         {
-            
+
         }
-        
+
         public int AddressHistoryMonthsRequired { get; set; }
     }
 }

@@ -1,30 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using System.Text;
-using CTM.Energy.Common.Interfaces;
-using Energy.EHLCommsLib.Interfaces;
-using Microsoft.Practices.ObjectBuilder2;
+using Energy.EHLCommsLib.Interfaces.Http;
+using Energy.EHLCommsLib.Models.Http;
 
-namespace Energy.EHLCommsLibIntegrationTests.Http
+namespace Energy.EHLCommsLib.Http
 {
     public class HttpClient : IHttpClient
     {
         private bool _allowRedirect = true;
-        private Dictionary<string, string> _headerFields = new Dictionary<string, string>();
-        
+        private readonly Dictionary<string, string> _headerFields = new Dictionary<string, string>();
+
         public HttpClient()
         {
-            TimeOutValue = (45*1000);
-
-            //if(!string.IsNullOrWhiteSpace(AppSettings.WebClientProxy))
-            //{
-            //    WebProxy = new WebProxy(AppSettings.WebClientProxy);
-            //}
-
+            TimeOutValue = (45 * 1000);
         }
 
         public int? TimeOutValue;
-        public readonly WebProxy WebProxy;
 
         public string ContentType { get; set; }
         public string AcceptHeader { get; set; }
@@ -79,11 +71,6 @@ namespace Energy.EHLCommsLibIntegrationTests.Http
                 request.Timeout = TimeOutValue.Value;
             }
 
-            if (WebProxy != null)
-            {
-                request.Proxy = WebProxy;
-            }
-
             if (ContentType != null)
             {
                 request.ContentType = ContentType;
@@ -96,7 +83,10 @@ namespace Energy.EHLCommsLibIntegrationTests.Http
 
             if (_headerFields.Count > 0)
             {
-                _headerFields.ForEach(x=> request.Headers.Add(x.Key, x.Value));
+                foreach (var headerField in _headerFields)
+                {
+                    request.Headers.Add(headerField.Key,headerField.Value);
+                }
             }
 
             if (!string.IsNullOrWhiteSpace(AuthorizationToken))

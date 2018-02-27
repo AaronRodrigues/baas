@@ -90,14 +90,7 @@ namespace Energy.EHLCommsLibIntegrationTests.Model
             Type = AppFormQuestionType.Unknown;
             Statements = new List<Statement>();
         }
-
-        public virtual string DataBinding
-        {
-            get
-            {
-                return string.Format("value: dynamicData.{0}.{1}.data", GroupName, FieldName);
-            }
-        }
+        public virtual string DataBinding => string.Format("value: dynamicData.{0}.{1}.data", GroupName, FieldName);
 
         public virtual dynamic DynamicData
         {
@@ -122,10 +115,7 @@ namespace Energy.EHLCommsLibIntegrationTests.Model
         public List<Statement> Statements { get; set; }
         public bool HasServerError { get; set; }
 
-        public  bool IsAnOptionQuestion
-        {
-            get { return Type == AppFormQuestionType.DropdownList || Type == AppFormQuestionType.MultiBool; }
-        }
+        public  bool IsAnOptionQuestion => Type == AppFormQuestionType.DropdownList || Type == AppFormQuestionType.MultiBool;
 
         public virtual void Initialise(string groupName, Item questionItem, SignupApiResponse response)
         {
@@ -142,12 +132,7 @@ namespace Energy.EHLCommsLibIntegrationTests.Model
 
         private string GetGuidanceMessage(Item questionItem)
         {
-            if (questionItem.Guidance == null)
-            {
-                return string.Empty;
-            }
-            
-            var guidence = questionItem.Guidance.FirstOrDefault();
+            var guidence = questionItem.Guidance?.FirstOrDefault();
             
             if (guidence == null)
             {

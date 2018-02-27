@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Energy.EHLCommsLib;
 using Energy.EHLCommsLib.Contracts.Responses;
 using Energy.EHLCommsLib.Enums;
 using Energy.EHLCommsLib.Extensions;
@@ -11,7 +10,7 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
 {
     public class StartSwitchService
     {
-        private const string Ehl_ApiEntryPointUrl = "https://rest.staging.energyhelpline.com";
+        private const string EhlApiEntryPointUrl = "https://rest.staging.energyhelpline.com";
         private const string PartnerReference = "CTM123";
 
         private const string NextRel = "/rels/next";
@@ -81,7 +80,7 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
 
         private SwitchesApiResponse RegisterPostcode(string postcode, string apiKey)
         {
-            var url = Ehl_ApiEntryPointUrl + StartSwitchUrl;
+            const string url = EhlApiEntryPointUrl + StartSwitchUrl;
             var switchTemplate = _switchServiceHelper.GetApiDataTemplate(url, SwitchRel);
 
             // Add data template info

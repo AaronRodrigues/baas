@@ -4,6 +4,7 @@ using CTM.Quoting.Provider;
 
 namespace Energy.ProviderAdapter
 {
+    //TO DO: Add data for quoting integration
     public class EnergyProviderAdapter : IProviderAdapter<EnergyEnquiry, EnergyQuote>
     {
         private readonly string providerName;

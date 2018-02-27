@@ -108,8 +108,7 @@ namespace Energy.EHLCommsLib.Mappers
         {
             string customFeatureText = null;
 
-            if (customFeatures != null)
-                customFeatures.TryGetValue(tariffKey.Replace(" ", "").ToLower(), out customFeatureText);
+            customFeatures?.TryGetValue(tariffKey.Replace(" ", "").ToLower(), out customFeatureText);
 
             return customFeatureText;
         }

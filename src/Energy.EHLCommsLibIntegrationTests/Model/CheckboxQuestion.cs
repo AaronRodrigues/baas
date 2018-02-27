@@ -12,13 +12,7 @@ namespace Energy.EHLCommsLibIntegrationTests.Model
             Type = AppFormQuestionType.Bool;
         }
 
-        public override string DataBinding
-        {
-            get
-            {
-                return string.Format("checked: dynamicData.{0}.{1}.data", GroupName, FieldName);
-            }
-        }
+        public override string DataBinding => string.Format("checked: dynamicData.{0}.{1}.data", GroupName, FieldName);
 
         public override dynamic DynamicData
         {
@@ -28,7 +22,7 @@ namespace Energy.EHLCommsLibIntegrationTests.Model
 
                 field.fieldName = FieldName;
 
-                if (Data == null || string.IsNullOrWhiteSpace(Data.ToString()))
+                if (string.IsNullOrWhiteSpace(Data?.ToString()))
                     field.data = false;
                 else
                     field.data = Data;

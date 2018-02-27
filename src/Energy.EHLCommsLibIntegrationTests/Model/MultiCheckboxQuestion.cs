@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Energy.EHLCommsLib.Contracts.Common.Data;
 using Energy.EHLCommsLib.Contracts.Responses;
 using Energy.EHLCommsLib.Enums;
@@ -22,47 +23,29 @@ namespace Energy.EHLCommsLibIntegrationTests.Model
 
             HashSet<string> selectedValues = new HashSet<string>();
 
-            if (this.AcceptableItems != null && questionItem.Data != null && questionItem.Data.GetType() == typeof (JArray))
+            if (AcceptableItems != null && questionItem.Data != null && questionItem.Data.GetType() == typeof (JArray))
             {
-                foreach (var selectedItem in (JArray)questionItem.Data)
+                foreach (string item in ((JArray)questionItem.Data).Select(selectedItem => selectedItem.Value<string>()).Where(item => selectedValues.Contains(item) == false))
                 {
-                    string item = selectedItem.Value<string>();
-                    if (selectedValues.Contains(item) == false)
-                    {
-                        selectedValues.Add(item);
-                    }
+                    selectedValues.Add(item);
                 }
 
-                foreach (var acceptableItem in this.AcceptableItems)
+                foreach (var acceptableItem in AcceptableItems.Where(acceptableItem => selectedValues.Contains(acceptableItem.Id)))
                 {
-                    if (selectedValues.Contains(acceptableItem.Id) == true)
-                    {
-                        acceptableItem.Data = true;
-                    }
+                    acceptableItem.Data = true;
                 }
             }
 
             Data = null;
         }
 
-        public override string DataBinding
-        {
-            get
-            {
-                return string.Format("checked: dynamicData.{0}.{1}.data", GroupName, FieldName);
-            }
-        }
-        
+        public override string DataBinding => string.Format("checked: dynamicData.{0}.{1}.data", GroupName, FieldName);
+
         public override dynamic DynamicData
         {
             get
             {
-                var data = base.DynamicData;
-
-                if (data.data == null)
-                {
-                    data.data = new List<string>();
-                }
+                var data = base.DynamicData ?? new List<string>();
 
                 return data;
             }

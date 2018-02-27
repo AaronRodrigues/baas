@@ -24,16 +24,16 @@ namespace Energy.EHLCommsLibIntegrationTests.Model
                     dob = DateTime.Parse(Data.ToString());
                 }
 
-                field.data = dob.HasValue ? dob.Value.ToString("yyyy-MM-dd") : string.Empty;
+                field.data = dob?.ToString("yyyy-MM-dd") ?? string.Empty;
 
                 field.day = new ExpandoObject();
-                field.day.data = dob.HasValue ? dob.Value.Day : 1;
+                field.day.data = dob?.Day ?? 1;
 
                 field.month = new ExpandoObject();
-                field.month.data = dob.HasValue ? dob.Value.Month : 1;
+                field.month.data = dob?.Month ?? 1;
 
                 field.year = new ExpandoObject();
-                field.year.data = dob.HasValue ? dob.Value.Year : 0;
+                field.year.data = dob?.Year ?? 0;
 
                 return field;
             }

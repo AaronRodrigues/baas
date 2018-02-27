@@ -15,15 +15,14 @@ using Message = Energy.EHLCommsLib.Models.Message;
 
 namespace Energy.EHLCommsLib.External.Services
 {
+    //TO DO: Move this logic to some external library because it used in tests only
     public class SwitchServiceHelper : ISwitchServiceHelper
     {
-        //private readonly IApplicationContext _applicationContext;
         private readonly ISwitchServiceClient _switchServiceClient;
 
-        public SwitchServiceHelper(ISwitchServiceClient switchServiceClient)//, IApplicationContext applicationContext)
+        public SwitchServiceHelper(ISwitchServiceClient switchServiceClient)
         {
             _switchServiceClient = switchServiceClient;
-            //_applicationContext = applicationContext;
         }
 
         public void ApplyReference(SwitchesApiResponse response, string reference, string value)
@@ -43,7 +42,7 @@ namespace Energy.EHLCommsLib.External.Services
         public T GetSwitchesApiGetResponse<T>(string url, string relKey, BaseRequest request)
             where T : ApiResponse, new()
         {
-            var response = _switchServiceClient.For(request).GetSwitchesApiGetResponse<T>(url, relKey);
+            var response = _switchServiceClient.GetSwitchesApiGetResponse<T>(url, relKey);
 
             HandleResponse(response, url, "GET");
 
@@ -53,7 +52,7 @@ namespace Energy.EHLCommsLib.External.Services
         public T GetSwitchesApiPostResponse<T>(string url, T responseDataToSend, string relKey, BaseRequest request)
             where T : ApiResponse, new()
         {
-            var response = _switchServiceClient.For(request).GetSwitchesApiPostResponse(url, responseDataToSend, relKey);
+            var response = _switchServiceClient.GetSwitchesApiPostResponse(url, responseDataToSend, relKey);
 
             HandleResponse(response, url, "POST");
 

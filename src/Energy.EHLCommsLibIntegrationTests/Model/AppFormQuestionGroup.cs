@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
-using Energy.EHLCommsLib.Contracts.Common.Data;
 
 namespace Energy.EHLCommsLibIntegrationTests.Model
 {

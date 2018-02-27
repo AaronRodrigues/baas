@@ -1,42 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using Energy.EHLCommsLib.Constants;
 using Energy.EHLCommsLib.Contracts.Common;
 using Energy.EHLCommsLib.Contracts.Responses;
 using Energy.EHLCommsLib.Interfaces;
-using Energy.EHLCommsLib.InterfacesHttp;
-using Energy.EHLCommsLib.Models;
 using Energy.EHLCommsLib.Models.Http;
 using Newtonsoft.Json;
 
-namespace CTM.Energy.External.Services
+namespace Energy.EHLCommsLib.External.Services
 {
+    //TO DO: Move this logic to some external library because it used in tests only
     public class SwitchServiceClient : ISwitchServiceClient
     {
         private readonly IHttpClientWrapper _httpClientWrapper;
-        private readonly IAuthenticationTokenContext _tokenContext;
 
-        private BaseRequest _baseRequest;
-        private readonly string _apiBaseUri = "";
-
-        public SwitchServiceClient(IHttpClientWrapper httpClientWrapper, IAuthenticationTokenContext tokenContext)
+        public SwitchServiceClient(IHttpClientWrapper httpClientWrapper)
         {
             _httpClientWrapper = httpClientWrapper;
-            _tokenContext = tokenContext;
-        }
-
-        public ISwitchServiceClient For(BaseRequest baseRequest)
-        {
-            _baseRequest = baseRequest;
-            return this;
         }
 
         public T GetSwitchesApiGetResponse<T>(string url, string relKey) where T : ApiResponse, new()
         {
-            var apiUrl = string.Format("{0}{1}", _apiBaseUri, url);
-
-            var response = GetApiResponse(apiUrl);
+           var response = GetApiResponse(url);
 
             T responseObject;
 
@@ -140,11 +125,6 @@ namespace CTM.Energy.External.Services
                 ContentType = "application/vnd-fri-domestic-energy+json;version=2.0",
                 WebProxyAddress = ""
             };
-
-            if (_tokenContext.TokenExpired())
-                _tokenContext.GetNewToken();
-
-            request.AuthorizationToken = string.Format("Bearer {0}", _tokenContext.CurrentToken.AccessToken);
 
             return request;
         }

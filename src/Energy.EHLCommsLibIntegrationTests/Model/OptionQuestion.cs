@@ -28,9 +28,7 @@ namespace Energy.EHLCommsLibIntegrationTests.Model
         
         protected List<OptionItem> MapAcceptableValues(Item ehlQuestionItem)
         {
-            return ehlQuestionItem.AcceptableValues == null
-                       ? new List<OptionItem>()
-                       : ehlQuestionItem.AcceptableValues.Select(a => new OptionItem { Id = a.Id, Name = a.Name }).ToList();
+            return ehlQuestionItem.AcceptableValues?.Select(a => new OptionItem { Id = a.Id, Name = a.Name }).ToList() ?? new List<OptionItem>();
         }
     }
 }

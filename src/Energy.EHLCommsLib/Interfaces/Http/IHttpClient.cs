@@ -1,6 +1,4 @@
-﻿using Energy.EHLCommsLibIntegrationTests.Http;
-
-namespace CTM.Energy.Common.Interfaces
+﻿namespace Energy.EHLCommsLib.Interfaces.Http
 {
     public interface IHttpClient
     {

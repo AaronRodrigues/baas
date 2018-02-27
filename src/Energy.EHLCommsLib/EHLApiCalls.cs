@@ -15,7 +15,7 @@ namespace Energy.EHLCommsLib
     {
 
         private readonly ISwitchServiceHelper _switchServiceHelper;
-        private BaseRequest _baseRequest;
+        private readonly BaseRequest _baseRequest;
 
         public EhlApiCalls(ISwitchServiceHelper switchServiceHelper, BaseRequest baseRequest)
         {
@@ -55,23 +55,17 @@ namespace Energy.EHLCommsLib
             var ignoreProRataComparison = request.IgnoreProRataComparison;
             var proRataCalculationApplied = false;
             var switchStatus = _switchServiceHelper.GetSwitchesApiGetResponse<SwitchApiResponse>(switchesUrl, EhlApiConstants.SwitchRel, _baseRequest);
-            if (switchStatus != null)
-            {
-                response.CurrentSupplyDetailsUrl = switchStatus.CurrentSupply.Details.Uri;
-                if (switchStatus.Links.Count > 0)
-                {
-                    var proRataUrl = switchStatus.Links.SingleOrDefault(l => l.Rel.Equals(EhlApiConstants.ProRataRel));
-                    if (proRataUrl != null && !string.IsNullOrWhiteSpace(proRataUrl.Uri))
-                    {
-                        var proRataTemplate = _switchServiceHelper.GetApiDataTemplate(proRataUrl.Uri, EhlApiConstants.ProRataRel);
-                        var proRataValue = ignoreProRataComparison ? "false" : "true";
-                        _switchServiceHelper.UpdateItemData(proRataTemplate, "proRataPreference", "preferProRataCalculations",
-                            proRataValue);
-                        _switchServiceHelper.GetSwitchesApiPostResponse(proRataUrl.Uri, proRataTemplate, EhlApiConstants.ProRataRel, _baseRequest);
-                        proRataCalculationApplied = !ignoreProRataComparison;
-                    }
-                }
-            }
+            if (switchStatus == null) return proRataCalculationApplied;
+            response.CurrentSupplyDetailsUrl = switchStatus.CurrentSupply.Details.Uri;
+            if (switchStatus.Links.Count <= 0) return proRataCalculationApplied;
+            var proRataUrl = switchStatus.Links.SingleOrDefault(l => l.Rel.Equals(EhlApiConstants.ProRataRel));
+            if (string.IsNullOrWhiteSpace(proRataUrl?.Uri)) return proRataCalculationApplied;
+            var proRataTemplate = _switchServiceHelper.GetApiDataTemplate(proRataUrl.Uri, EhlApiConstants.ProRataRel);
+            var proRataValue = ignoreProRataComparison ? "false" : "true";
+            _switchServiceHelper.UpdateItemData(proRataTemplate, "proRataPreference", "preferProRataCalculations",
+                proRataValue);
+            _switchServiceHelper.GetSwitchesApiPostResponse(proRataUrl.Uri, proRataTemplate, EhlApiConstants.ProRataRel, _baseRequest);
+            proRataCalculationApplied = !ignoreProRataComparison;
             return proRataCalculationApplied;
         }
 

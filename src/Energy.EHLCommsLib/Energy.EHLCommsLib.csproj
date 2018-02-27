@@ -126,8 +126,10 @@
     <Compile Include="External\Exceptions\InvalidSwitchException.cs" />
     <Compile Include="External\Services\SwitchServiceClient.cs" />
     <Compile Include="External\Services\SwitchServiceHelper.cs" />
+    <Compile Include="Http\HttpClient.cs" />
+    <Compile Include="Interfaces\Http\IHttpClient.cs" />
+    <Compile Include="Interfaces\Http\IResponse.cs" />
     <Compile Include="Interfaces\IApplicationContext.cs" />
-    <Compile Include="Interfaces\IAuthenticationTokenContext.cs" />
     <Compile Include="Interfaces\IHttpClientWrapper.cs" />
     <Compile Include="Interfaces\ISwitchServiceClient.cs" />
     <Compile Include="Interfaces\ISwitchServiceHelper.cs" />
@@ -137,6 +139,7 @@
     <Compile Include="Models\EstimatorData.cs" />
     <Compile Include="Models\Http\HttpClientRequest.cs" />
     <Compile Include="Models\Http\HttpClientResponse.cs" />
+    <Compile Include="Models\Http\HttpResponse.cs" />
     <Compile Include="Models\Http\Token.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\Prices\GetPricesRequest.cs" />
@@ -150,6 +153,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

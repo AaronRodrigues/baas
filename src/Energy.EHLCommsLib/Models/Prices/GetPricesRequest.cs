@@ -35,15 +35,9 @@ namespace Energy.EHLCommsLib.Models.Prices
         public int Eco7NightUsageValue { get; set; }
         public int DefaultElectricitySupplierId { get; set; }
 
-        public bool CalculateElecBasedOnBillSpend
-        {
-            get { return SpendData.ElectricitySpendAmount > 0; }
-        }
+        public bool CalculateElecBasedOnBillSpend => SpendData.ElectricitySpendAmount > 0;
 
-        public bool CalculateGasBasedOnBillSpend
-        {
-            get { return SpendData.GasSpendAmount > 0; }
-        }
+        public bool CalculateGasBasedOnBillSpend => SpendData.GasSpendAmount > 0;
 
         public Guid JourneyId { get; set; }
         public bool IgnoreProRataComparison { get; set; }
