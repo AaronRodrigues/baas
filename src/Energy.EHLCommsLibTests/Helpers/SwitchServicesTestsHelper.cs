@@ -2,14 +2,13 @@
 using System.Net;
 using Energy.EHLCommsLib.Interfaces;
 using Energy.EHLCommsLib.Models.Http;
-using Energy.EHLCommsLibTests.Interfaces;
+using System.IO;
 using Rhino.Mocks;
 
 namespace Energy.EHLCommsLibTests.Helpers
 {
     public class SwitchServicesTestsHelper
     {
-        private static readonly IFileManager FileManager = new FileManager();
 
         public SwitchServicesTestsHelper Mock_StartSwitchGetRequest(IHttpClientWrapper httpClientWrapper)
         {
@@ -248,7 +247,8 @@ namespace Energy.EHLCommsLibTests.Helpers
                     return string.Empty;
             }
 
-            return FileManager.ReadContentsOf(fileName);
+            return File.ReadAllText(fileName);
+
         }
 
         #endregion
