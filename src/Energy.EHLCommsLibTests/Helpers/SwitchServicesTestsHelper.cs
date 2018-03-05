@@ -10,33 +10,6 @@ namespace Energy.EHLCommsLibTests.Helpers
     public class SwitchServicesTestsHelper
     {
 
-        public SwitchServicesTestsHelper Mock_StartSwitchGetRequest(IHttpClientWrapper httpClientWrapper)
-        {
-            httpClientWrapper.Expect(
-                c =>
-                c.CallGet(Arg<HttpClientRequest>.Matches(r => r.Url.EndsWith("domestic/energy/switches"))))
-                             .Return(new HttpClientResponse
-                             {
-                                 Data = GetJsonFor("StartSwitch_GetResponse")
-                             });
-
-            return this;
-        }
-
-        public SwitchServicesTestsHelper Mock_StartSwitchPostRequest(IHttpClientWrapper httpClientWrapper, Func<string> function = null)
-        {
-            var message = function == null ? GetJsonFor("StartSwitch_PostResponse") : function();
-
-            httpClientWrapper.Expect(
-                c =>
-                c.CallPost(Arg<HttpClientRequest>.Matches(r => r.Url.EndsWith("domestic/energy/switches"))))
-                             .Return(new HttpClientResponse
-                             {
-                                 Data = message
-                             });
-            return this;
-        }
-
         public SwitchServicesTestsHelper Mock_ApiGetRequest(IHttpClientWrapper httpClientWrapper, string jsonKey, string urlFilter, HttpStatusCode? responseStatusCode = null, WebException exception = null)
         {
             httpClientWrapper.Expect(

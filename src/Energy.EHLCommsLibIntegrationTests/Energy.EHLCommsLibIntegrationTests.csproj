@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="EhlCommsAggregatorIntegrationTests.cs" />
     <Compile Include="Http\HttpClientWrapper.cs" />
+    <Compile Include="Interfaces\ISwitchServiceHelper.cs" />
     <Compile Include="Model\AppFormQuestion\AddressLookupQuestion.cs" />
     <Compile Include="Model\AppFormQuestion\AppFormQuestion.cs" />
     <Compile Include="Model\AppFormQuestion\BankAccountQuestion.cs" />
