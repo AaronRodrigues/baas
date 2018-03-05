@@ -56,23 +56,6 @@ namespace Energy.EHLCommsLibIntegrationTests.Http
             return response;
         }
 
-        private HttpStatusCode? GetHttpStatusCode(WebException webEx)
-        {
-            var httpResponse = webEx.Response as HttpWebResponse;
-            return httpResponse != null ? httpResponse.StatusCode : (HttpStatusCode?)null;
-        }
 
-        private string GetWebExceptionResponseStream(WebException webEx)
-        {
-            if (webEx.Response == null) return null;
-            using (var stream = webEx.Response.GetResponseStream())
-            {
-                if (stream == null) return null;
-                using (var reader = new StreamReader(stream))
-                {
-                    return reader.ReadToEnd().Trim();
-                }
-            }
-        }
     }
 }

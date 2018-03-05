@@ -15,11 +15,11 @@ using Energy.EHLCommsLib.Interfaces;
 
 namespace Energy.EHLCommsLibIntegrationTests.Services
 {
-    public class SwitchServiceHelper 
+    public class SwitchHelper 
     {
         private readonly ISwitchServiceClient _switchServiceClient;
 
-        public SwitchServiceHelper(ISwitchServiceClient switchServiceClient)
+        public SwitchHelper(ISwitchServiceClient switchServiceClient)
         {
             _switchServiceClient = switchServiceClient;
         }

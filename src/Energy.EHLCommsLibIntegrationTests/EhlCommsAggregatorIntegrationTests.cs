@@ -7,7 +7,6 @@ using Energy.EHLCommsLibIntegrationTests.Http;
 using Energy.EHLCommsLibIntegrationTests.Model;
 using Energy.EHLCommsLibIntegrationTests.Services;
 using NUnit.Framework;
-using SwitchServiceHelper = Energy.EHLCommsLibIntegrationTests.Services.SwitchServiceHelper;
 
 namespace Energy.EHLCommsLibIntegrationTests
 {
@@ -18,7 +17,7 @@ namespace Energy.EHLCommsLibIntegrationTests
         private const string TestPostcode = "pe26ys";
         private readonly string _apiKey = System.Environment.GetEnvironmentVariable("ehl_api_key");
 
-        private StartSwitchService _startSwitchService;
+        private StartSwitchHelper _startSwitchHelper;
         private EhlCommsAggregator _ehlCommsAggregator;
 
         [SetUp]
@@ -27,16 +26,16 @@ namespace Energy.EHLCommsLibIntegrationTests
             var httpClient = new HttpClient();
             var httpClientWrapper = new HttpClientWrapper(httpClient);
             var switchServiceClient = new SwitchServiceClient(httpClientWrapper);
-            var switchServiceHelper = new SwitchServiceHelper(switchServiceClient);
+            var switchServiceHelper = new SwitchHelper(switchServiceClient);
 
-            _startSwitchService = new StartSwitchService(switchServiceHelper);
+            _startSwitchHelper = new StartSwitchHelper(switchServiceHelper);
             _ehlCommsAggregator = new EhlCommsAggregator(switchServiceClient);
         }
 
         [Test]
         public void Should_ReturnPrices_For_KwhUsageWithoutEconomy7()
         {
-            var startSwitchResponse = _startSwitchService.StartSwitch(new StartSwitchRequest { Postcode = TestPostcode, ApiKey = _apiKey });
+            var startSwitchResponse = _startSwitchHelper.StartSwitch(new StartSwitchRequest { Postcode = TestPostcode, ApiKey = _apiKey });
             var pricesRequest = EntityHelper.GenerateValidPricesRequest(startSwitchResponse);
             pricesRequest.EnergyJourneyType = EnergyJourneyType.HaveMyBill;
 
@@ -49,7 +48,7 @@ namespace Energy.EHLCommsLibIntegrationTests
         [Test]
         public void Should_ReturnPrices_For_KwhUsageWithEconomy7()
         {
-            var startSwitchResponse = _startSwitchService.StartSwitch(new StartSwitchRequest { Postcode = TestPostcode, ApiKey = _apiKey });
+            var startSwitchResponse = _startSwitchHelper.StartSwitch(new StartSwitchRequest { Postcode = TestPostcode, ApiKey = _apiKey });
             var pricesRequest = EntityHelper.GenerateValidPricesRequest(startSwitchResponse);
             pricesRequest.EnergyJourneyType = EnergyJourneyType.HaveMyBill;
             pricesRequest.PercentageNightUsage = 0.65m;
@@ -64,7 +63,7 @@ namespace Energy.EHLCommsLibIntegrationTests
         [Test]
         public void Should_ReturnPrices_For_SpendUsageOnDontHaveMyBillJourney()
         {
-            var startSwitchResponse = _startSwitchService.StartSwitch(new StartSwitchRequest { Postcode = TestPostcode, ApiKey = _apiKey });
+            var startSwitchResponse = _startSwitchHelper.StartSwitch(new StartSwitchRequest { Postcode = TestPostcode, ApiKey = _apiKey });
             var pricesRequest = EntityHelper.GenerateValidPricesRequest(startSwitchResponse);
             pricesRequest.EnergyJourneyType = EnergyJourneyType.DontHaveMyBill;
 
@@ -77,7 +76,7 @@ namespace Energy.EHLCommsLibIntegrationTests
         [Test]
         public void Should_ReturnPrices_For_EstimatorUsageOnDontHaveMyBillJourney()
         {
-            var startSwitchResponse = _startSwitchService.StartSwitch(new StartSwitchRequest { Postcode = TestPostcode, ApiKey = _apiKey });
+            var startSwitchResponse = _startSwitchHelper.StartSwitch(new StartSwitchRequest { Postcode = TestPostcode, ApiKey = _apiKey });
             var pricesRequest = EntityHelper.GenerateValidPricesRequest(startSwitchResponse);
             pricesRequest.EnergyJourneyType = EnergyJourneyType.DontHaveMyBill;
             pricesRequest.UseDetailedEstimatorForElectricity = true;
@@ -92,7 +91,7 @@ namespace Energy.EHLCommsLibIntegrationTests
         [Test]
         public void Should_ReturnPrices_For_ElectricityOnlyEstimatorUsageOnDontHaveMyBillJourney()
         {
-            var startSwitchResponse = _startSwitchService.StartSwitch(new StartSwitchRequest { Postcode = TestPostcode, ApiKey = _apiKey });
+            var startSwitchResponse = _startSwitchHelper.StartSwitch(new StartSwitchRequest { Postcode = TestPostcode, ApiKey = _apiKey });
             var pricesRequest = EntityHelper.GenerateValidPricesRequest(startSwitchResponse);
             pricesRequest.EnergyJourneyType = EnergyJourneyType.DontHaveMyBill;
             pricesRequest.UseDetailedEstimatorForElectricity = true;
@@ -109,7 +108,7 @@ namespace Energy.EHLCommsLibIntegrationTests
         [Test]
         public void Should_ReturnPrices_For_GasOnlyEstimatorUsageOnDontHaveMyBillJourney()
         {
-            var startSwitchResponse = _startSwitchService.StartSwitch(new StartSwitchRequest { Postcode = TestPostcode, ApiKey = _apiKey });
+            var startSwitchResponse = _startSwitchHelper.StartSwitch(new StartSwitchRequest { Postcode = TestPostcode, ApiKey = _apiKey });
             var pricesRequest = EntityHelper.GenerateValidPricesRequest(startSwitchResponse);
             pricesRequest.EnergyJourneyType = EnergyJourneyType.DontHaveMyBill;
             pricesRequest.UseDetailedEstimatorForElectricity = false;

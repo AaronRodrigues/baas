@@ -9,7 +9,7 @@ using Energy.EHLCommsLibIntegrationTests.Model;
 
 namespace Energy.EHLCommsLibIntegrationTests.Services
 {
-    public class StartSwitchService
+    public class StartSwitchHelper
     {
         private const string EhlApiEntryPointUrl = "https://rest.staging.energyhelpline.com";
         private const string PartnerReference = "CTM123";
@@ -24,13 +24,13 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
         private const string UnknownRegionId = "0";
         private const string NorthernIrelandRegionId = "16";
 
-        private readonly SwitchServiceHelper _switchServiceHelper;
+        private readonly SwitchHelper _switchHelper;
 
         private BaseRequest _baseRequest;
 
-        public StartSwitchService(SwitchServiceHelper switchServiceHelper)
+        public StartSwitchHelper(SwitchHelper switchHelper)
         {
-            _switchServiceHelper = switchServiceHelper;
+            _switchHelper = switchHelper;
         }
 
         public StartSwitchResponse StartSwitch(StartSwitchRequest request)
@@ -45,7 +45,7 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
 
             if (registerResponse.Errors != null && registerResponse.Errors.Count > 0)
             {
-                _switchServiceHelper.HydrateSwitchResponseWithErrors(response, registerResponse.Errors);
+                _switchHelper.HydrateSwitchResponseWithErrors(response, registerResponse.Errors);
                 return response;
             }
 
@@ -82,14 +82,14 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
         private SwitchesApiResponse RegisterPostcode(string postcode, string apiKey)
         {
             const string url = EhlApiEntryPointUrl + StartSwitchUrl;
-            var switchTemplate = _switchServiceHelper.GetApiDataTemplate(url, SwitchRel);
+            var switchTemplate = _switchHelper.GetApiDataTemplate(url, SwitchRel);
 
             // Add data template info
-            _switchServiceHelper.ApplyReference(switchTemplate, "partnerReference", PartnerReference);
-            _switchServiceHelper.ApplyReference(switchTemplate, "apiKey", apiKey);
+            _switchHelper.ApplyReference(switchTemplate, "partnerReference", PartnerReference);
+            _switchHelper.ApplyReference(switchTemplate, "apiKey", apiKey);
             switchTemplate.DataTemplate.Groups[0].Items[0].Data = postcode;
 
-            return _switchServiceHelper.GetSwitchesApiPostResponse(url, switchTemplate, SwitchRel, _baseRequest);
+            return _switchHelper.GetSwitchesApiPostResponse(url, switchTemplate, SwitchRel, _baseRequest);
         }
 
         private bool NorthernIrelandPostcode(string postCode, SwitchesApiResponse registerResponse)
@@ -97,7 +97,7 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
             if (postCode.ToLower().StartsWith("bt"))
             {
                 var switchUrl = registerResponse.Links.First(l => l.Rel.Contains(SwitchRel)).Uri;
-                var switchStatus = _switchServiceHelper.GetSwitchesApiGetResponse<SwitchApiResponse>(switchUrl, SwitchRel, _baseRequest);
+                var switchStatus = _switchHelper.GetSwitchesApiGetResponse<SwitchApiResponse>(switchUrl, SwitchRel, _baseRequest);
                 if (switchStatus != null)
                     return switchStatus.SupplyLocation.Region.Id.Equals(NorthernIrelandRegionId);
             }
@@ -112,7 +112,7 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
 
             // Get current supply template
             var currentSupplyUrl = ehlResponse.Links.First(l => l.Rel.Contains(CurrentSupplyRel) && l.Rel.Contains(NextRel)).Uri;
-            var currentSupplyResponse = _switchServiceHelper.GetApiDataTemplate(currentSupplyUrl, CurrentSupplyRel);
+            var currentSupplyResponse = _switchHelper.GetApiDataTemplate(currentSupplyUrl, CurrentSupplyRel);
 
             var response = MapToEnergyResponse(currentSupplyResponse);
             response.SwitchId = switchId;
@@ -124,7 +124,7 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
         private string GetSwitchId(SwitchesApiResponse ehlResponse)
         {
             var switchUrl = ehlResponse.Links.First(l => l.Rel.Contains(SwitchRel)).Uri;
-            var switchStatus = _switchServiceHelper.GetSwitchesApiGetResponse<SwitchApiResponse>(switchUrl, SwitchRel, _baseRequest);
+            var switchStatus = _switchHelper.GetSwitchesApiGetResponse<SwitchApiResponse>(switchUrl, SwitchRel, _baseRequest);
             return switchStatus != null ? switchStatus.Id : string.Empty;
         }
 
@@ -132,20 +132,20 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
         {
             var response = new StartSwitchResponse
             {
-                CompareGas = (bool)_switchServiceHelper.GetEhlItemForName(ehlResponse, "compareGas").Data,
-                CompareElectricity = (bool)_switchServiceHelper.GetEhlItemForName(ehlResponse, "compareElec").Data
+                CompareGas = (bool)_switchHelper.GetEhlItemForName(ehlResponse, "compareGas").Data,
+                CompareElectricity = (bool)_switchHelper.GetEhlItemForName(ehlResponse, "compareElec").Data
             };
 
-            var group = _switchServiceHelper.GetEhlGroupForName(ehlResponse, "gasTariff");
-            response.DefaultGasSupplierId = int.Parse(_switchServiceHelper.GetEhlItemForName(group, "supplier").Data.ToString());
-            response.DefaultGasSupplierTariffId = int.Parse(_switchServiceHelper.GetEhlItemForName(group, "supplierTariff").Data.ToString());
-            response.DefaultGasPaymentMethod = (string)_switchServiceHelper.GetEhlItemForName(group, "paymentMethod").Data;
+            var group = _switchHelper.GetEhlGroupForName(ehlResponse, "gasTariff");
+            response.DefaultGasSupplierId = int.Parse(_switchHelper.GetEhlItemForName(group, "supplier").Data.ToString());
+            response.DefaultGasSupplierTariffId = int.Parse(_switchHelper.GetEhlItemForName(group, "supplierTariff").Data.ToString());
+            response.DefaultGasPaymentMethod = (string)_switchHelper.GetEhlItemForName(group, "paymentMethod").Data;
 
-            group = _switchServiceHelper.GetEhlGroupForName(ehlResponse, "elecTariff");
-            response.DefaultElecSupplierId = int.Parse(_switchServiceHelper.GetEhlItemForName(group, "supplier").Data.ToString());
-            response.DefaultElecSupplierTariffId = int.Parse(_switchServiceHelper.GetEhlItemForName(group, "supplierTariff").Data.ToString());
-            response.DefaultElecPaymentMethod = (string)_switchServiceHelper.GetEhlItemForName(group, "paymentMethod").Data;
-            response.DefaultElecEconomy7 = (bool)_switchServiceHelper.GetEhlItemForName(group, "economy7").Data;
+            group = _switchHelper.GetEhlGroupForName(ehlResponse, "elecTariff");
+            response.DefaultElecSupplierId = int.Parse(_switchHelper.GetEhlItemForName(group, "supplier").Data.ToString());
+            response.DefaultElecSupplierTariffId = int.Parse(_switchHelper.GetEhlItemForName(group, "supplierTariff").Data.ToString());
+            response.DefaultElecPaymentMethod = (string)_switchHelper.GetEhlItemForName(group, "paymentMethod").Data;
+            response.DefaultElecEconomy7 = (bool)_switchHelper.GetEhlItemForName(group, "economy7").Data;
 
             response.SwitchStatusUrl = ehlResponse.Links.First(l => l.Rel.Equals(SwitchRel)).Uri;
             response.CurrentSupplyUrl = ehlResponse.Links.First(l => l.Rel.Contains(CurrentSupplyRel)).Uri;
@@ -157,14 +157,14 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
         private bool RegionHasBeenSuggested(SwitchesApiResponse registerResponse, out SwitchesApiResponse regionTemplate)
         {
             var regionUrl = registerResponse.Links.First(l => l.Rel.Contains(RegionRel)).Uri;
-            regionTemplate = _switchServiceHelper.GetApiDataTemplate(regionUrl, RegionRel);
+            regionTemplate = _switchHelper.GetApiDataTemplate(regionUrl, RegionRel);
             var region = regionTemplate.DataTemplate.Groups[0].Items[0].Data;
             return region != null && !region.Equals(UnknownRegionId);
         }
 
         private SwitchesApiResponse GetRegionConfirmationResponse(string url, SwitchesApiResponse regionTemplate)
         {
-            return _switchServiceHelper.GetSwitchesApiPostResponse(url, regionTemplate, RegionRel, _baseRequest);
+            return _switchHelper.GetSwitchesApiPostResponse(url, regionTemplate, RegionRel, _baseRequest);
         }
     }
 }

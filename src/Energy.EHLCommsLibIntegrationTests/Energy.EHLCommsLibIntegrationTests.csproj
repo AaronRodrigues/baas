@@ -69,9 +69,9 @@
     <Compile Include="Model\StartSwitchResponse.cs" />
     <Compile Include="Model\AppFormQuestion\TextboxQuestion.cs" />
     <Compile Include="Model\AppFormQuestion\UnknownAppFormQuestion.cs" />
-    <Compile Include="Services\StartSwitchService.cs" />
+    <Compile Include="Helpers\StartSwitchHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\SwitchServiceHelper.cs" />
+    <Compile Include="Helpers\SwitchHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Energy.EHLCommsLib\Energy.EHLCommsLib.csproj">
