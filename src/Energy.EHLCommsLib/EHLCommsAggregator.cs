@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Energy.EHLCommsLib.External.Exceptions;
+using Energy.EHLCommsLib.External.Services;
 using Energy.EHLCommsLib.Interfaces;
 using Energy.EHLCommsLib.Models.Prices;
 
@@ -12,9 +13,9 @@ namespace Energy.EHLCommsLib
     {
         private readonly ISwitchServiceHelper _switchServiceHelper;
 
-        public EhlCommsAggregator(ISwitchServiceHelper switchServiceHelper)
+        public EhlCommsAggregator(ISwitchServiceClient switchServiceClient)
         {
-            _switchServiceHelper = switchServiceHelper;
+            _switchServiceHelper = new SwitchServiceHelper(switchServiceClient);
         }
         public GetPricesResponse GetPrices(GetPricesRequest request, Dictionary<string, string> customFeatures,
             bool tariffCustomFeatureEnabled = false)

@@ -26,7 +26,7 @@ namespace Energy.EHLCommsLib
         public EhlApiResponse GetSupplierEhlApiResponse(GetPricesRequest request, GetPricesResponse response)
         {
             var currentSwitchesApiResponse = _switchServiceHelper.GetApiDataTemplate(request.CurrentSupplyUrl, EhlApiConstants.CurrentSupplyRel);
-            if (!_switchServiceHelper.SuccessfulResponseFromEhl(currentSwitchesApiResponse))
+            if (!currentSwitchesApiResponse.SuccessfulResponseFromEhl())
                 return ApiCallResponse("CustomerSupplyStage", response, currentSwitchesApiResponse, EhlApiConstants.UsageRel);
             request.PopulateCurrentSupplyWithRequestData(currentSwitchesApiResponse);
             var currentSwitchesApiPostResponse = _switchServiceHelper.GetSwitchesApiPostResponse(request.CurrentSupplyUrl, currentSwitchesApiResponse, EhlApiConstants.CurrentSupplyRel, _baseRequest);
@@ -81,7 +81,7 @@ namespace Energy.EHLCommsLib
 
         private EhlApiResponse ApiCallResponse(string typeOfRequest, GetPricesResponse response, SwitchesApiResponse switchesApiResponse, string rel = "")
         {
-            if (!_switchServiceHelper.SuccessfulResponseFromEhl(switchesApiResponse))
+            if (!switchesApiResponse.SuccessfulResponseFromEhl())
             {
                 _switchServiceHelper.HydrateSwitchResponseWithErrors(response, switchesApiResponse.Errors);
             }

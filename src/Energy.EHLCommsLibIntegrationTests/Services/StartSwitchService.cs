@@ -2,9 +2,10 @@
 using Energy.EHLCommsLib.Contracts.Responses;
 using Energy.EHLCommsLib.Enums;
 using Energy.EHLCommsLib.Extensions;
-using Energy.EHLCommsLib.Interfaces;
 using Energy.EHLCommsLib.Models;
 using Energy.EHLCommsLibIntegrationTests.Model;
+using Energy.EHLCommsLibIntegrationTests.Interfaces;
+
 
 namespace Energy.EHLCommsLibIntegrationTests.Services
 {

@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using Energy.EHLCommsLib.Contracts;
 using Energy.EHLCommsLib.Contracts.Common;
 using Energy.EHLCommsLib.Contracts.Common.Data;
 using Energy.EHLCommsLib.Contracts.Responses;
 using Energy.EHLCommsLib.Models;
+using Energy.EHLCommsLib.Contracts;
 
-namespace Energy.EHLCommsLib.Interfaces
+namespace Energy.EHLCommsLibIntegrationTests.Interfaces
 {
     public interface ISwitchServiceHelper
     {
@@ -21,5 +21,7 @@ namespace Energy.EHLCommsLib.Interfaces
 
         T GetSwitchesApiPostResponse<T>(string url, T responseDataToSend, string relKey, BaseRequest request)
             where T : ApiResponse, new();
+        bool SuccessfulResponseFromEhl(SwitchesApiResponse response);
+
     }
 }

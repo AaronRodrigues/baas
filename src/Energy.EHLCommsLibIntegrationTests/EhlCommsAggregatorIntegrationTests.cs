@@ -7,6 +7,7 @@ using Energy.EHLCommsLibIntegrationTests.Http;
 using Energy.EHLCommsLibIntegrationTests.Model;
 using Energy.EHLCommsLibIntegrationTests.Services;
 using NUnit.Framework;
+using SwitchServiceHelper = Energy.EHLCommsLibIntegrationTests.Services.SwitchServiceHelper;
 
 namespace Energy.EHLCommsLibIntegrationTests
 {
@@ -25,10 +26,11 @@ namespace Energy.EHLCommsLibIntegrationTests
         {
             var httpClient = new HttpClient();
             var httpClientWrapper = new HttpClientWrapper(httpClient);
-            var switchServiceHelper = new SwitchServiceHelper(new SwitchServiceClient(httpClientWrapper));
+            var switchServiceClient = new SwitchServiceClient(httpClientWrapper);
+            var switchServiceHelper = new SwitchServiceHelper(switchServiceClient);
 
             _startSwitchService = new StartSwitchService(switchServiceHelper);
-            _ehlCommsAggregator = new EhlCommsAggregator(switchServiceHelper);
+            _ehlCommsAggregator = new EhlCommsAggregator(switchServiceClient);
         }
 
         [Test]

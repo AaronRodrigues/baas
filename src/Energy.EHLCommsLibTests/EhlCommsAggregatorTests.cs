@@ -31,9 +31,8 @@ namespace Energy.EHLCommsLibTests
             _httpClientWrapper = MockRepository.GenerateMock<IHttpClientWrapper>();
 
             var switchServiceClient = new SwitchServiceClient(_httpClientWrapper);
-            var switchServiceHelper = new SwitchServiceHelper(switchServiceClient);
 
-            EhlCommsAggregator = new EhlCommsAggregator(switchServiceHelper);
+            EhlCommsAggregator = new EhlCommsAggregator(switchServiceClient);
         }
 
         [TearDown]

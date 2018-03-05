@@ -3,19 +3,19 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using Energy.EHLCommsLib.Constants;
-using Energy.EHLCommsLib.Contracts;
 using Energy.EHLCommsLib.Contracts.Common;
 using Energy.EHLCommsLib.Contracts.Common.Data;
 using Energy.EHLCommsLib.Contracts.Responses;
 using Energy.EHLCommsLib.Enums;
 using Energy.EHLCommsLib.External.Exceptions;
-using Energy.EHLCommsLib.Interfaces;
 using Energy.EHLCommsLib.Models;
 using Message = Energy.EHLCommsLib.Models.Message;
+using Energy.EHLCommsLib.Contracts;
+using Energy.EHLCommsLib.Interfaces;
+using ISwitchServiceHelper = Energy.EHLCommsLibIntegrationTests.Interfaces.ISwitchServiceHelper;
 
-namespace Energy.EHLCommsLib.External.Services
+namespace Energy.EHLCommsLibIntegrationTests.Services
 {
-    //TO DO: Move this logic to some external library because it used in tests only
     public class SwitchServiceHelper : ISwitchServiceHelper
     {
         private readonly ISwitchServiceClient _switchServiceClient;
@@ -120,7 +120,7 @@ namespace Energy.EHLCommsLib.External.Services
 
             return response;
         }
-       
+
 
         private MessageCode DetermineResponseStatusType(BaseResponse response)
         {
@@ -257,5 +257,11 @@ namespace Energy.EHLCommsLib.External.Services
                 //Log.LogException(logLevel, message, response.Exception);
             }
         }
+
+        public bool SuccessfulResponseFromEhl(SwitchesApiResponse response)
+        {
+            return response.SuccessfulResponseFromEhl();
+        }
+
     }
 }

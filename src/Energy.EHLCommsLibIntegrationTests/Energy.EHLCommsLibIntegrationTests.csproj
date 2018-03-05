@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="EhlCommsAggregatorIntegrationTests.cs" />
     <Compile Include="Http\HttpClientWrapper.cs" />
+    <Compile Include="Interfaces\ISwitchServiceHelper.cs" />
     <Compile Include="Model\AddressLookupQuestion.cs" />
     <Compile Include="Model\AppFormAddressHistoryQuestionGroup.cs" />
     <Compile Include="Model\AppFormOverseasAddressHistoryQuestionGroup.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Services\StartSwitchService.cs" />
     <Compile Include="Model\SwitchApplication.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\SwitchServiceHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Energy.EHLCommsLib\Energy.EHLCommsLib.csproj">
