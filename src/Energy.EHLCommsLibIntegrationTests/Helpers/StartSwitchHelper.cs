@@ -13,6 +13,8 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
     {
         private const string EhlApiEntryPointUrl = "https://rest.staging.energyhelpline.com";
         private const string PartnerReference = "CTM123";
+        private const string TestPostcode = "pe26ys";
+        private readonly string ApiKey = System.Environment.GetEnvironmentVariable("ehl_api_key");
 
         private const string NextRel = "/rels/next";
         private const string StartSwitchUrl = "/domestic/energy/switches";
@@ -22,7 +24,6 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
         private const string CurrentSuppliesRel = "/rels/domestic/current-supplies";
 
         private const string UnknownRegionId = "0";
-        private const string NorthernIrelandRegionId = "16";
 
         private readonly SwitchHelper _switchHelper;
 
@@ -33,48 +34,28 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
             _switchHelper = switchHelper;
         }
 
-        public StartSwitchResponse StartSwitch(StartSwitchRequest request)
+        public StartSwitchResponse StartSwitch()
         {
             var response = new StartSwitchResponse();
-            var errorMessage = "Your postcode has not been recognised, please check you have entered it correctly and if you still need help call the switching support team on <b>0800&nbsp;093&nbsp;6831</b>.";
 
-            _baseRequest = request;
+            _baseRequest = new StartSwitchRequest {Postcode = TestPostcode, ApiKey = ApiKey};
 
-            // Send postcode to EHL to start switch journey including validation and registration of postcode
-            var registerResponse = RegisterPostcode(request.Postcode, request.ApiKey);
+            var registerResponse = RegisterPostcode(TestPostcode, ApiKey);
 
-            if (registerResponse.Errors != null && registerResponse.Errors.Count > 0)
-            {
-                _switchHelper.HydrateSwitchResponseWithErrors(response, registerResponse.Errors);
-                return response;
-            }
-
-            if (registerResponse.NextStep().Is(CurrentSupplyRel))
-            {
-                if (NorthernIrelandPostcode(request.Postcode, registerResponse))
-                    errorMessage = "Unfortunately this service is not available in Northern Ireland.";
-                else
-                    return GetStartSwitchResponse(registerResponse);
-            }
+            if (registerResponse.NextStep().Is(CurrentSupplyRel)) return GetStartSwitchResponse(registerResponse);
 
             if (registerResponse.NextStep().Is(RegionRel))
             {
                 SwitchesApiResponse regionTemplate;
                 if (RegionHasBeenSuggested(registerResponse, out regionTemplate))
                 {
-                    // Get region data template
                     var regionUrl = registerResponse.Links.First(l => l.Rel.Contains(RegionRel) && l.Rel.Contains(NextRel)).Uri;
                     var regionConfirmationResponse = GetRegionConfirmationResponse(regionUrl, regionTemplate);
 
-                    if (regionConfirmationResponse.NextStep().Is(CurrentSupplyRel))
-                    {
-                        return GetStartSwitchResponse(regionConfirmationResponse);
-                    }
+                    if (regionConfirmationResponse.NextStep().Is(CurrentSupplyRel)) return GetStartSwitchResponse(regionConfirmationResponse);
                 }
             }
 
-            response.Messages.Add(new Message { Type = MessageType.Error, Text = errorMessage });
-            response.Success = false;
 
             return response;
         }
@@ -92,25 +73,11 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
             return _switchHelper.GetSwitchesApiPostResponse(url, switchTemplate, SwitchRel, _baseRequest);
         }
 
-        private bool NorthernIrelandPostcode(string postCode, SwitchesApiResponse registerResponse)
-        {
-            if (postCode.ToLower().StartsWith("bt"))
-            {
-                var switchUrl = registerResponse.Links.First(l => l.Rel.Contains(SwitchRel)).Uri;
-                var switchStatus = _switchHelper.GetSwitchesApiGetResponse<SwitchApiResponse>(switchUrl, SwitchRel, _baseRequest);
-                if (switchStatus != null)
-                    return switchStatus.SupplyLocation.Region.Id.Equals(NorthernIrelandRegionId);
-            }
-
-            return false;
-        }
-
         private StartSwitchResponse GetStartSwitchResponse(SwitchesApiResponse ehlResponse)
         {
             var switchId = GetSwitchId(ehlResponse);
             _baseRequest.SwitchId = switchId;
 
-            // Get current supply template
             var currentSupplyUrl = ehlResponse.Links.First(l => l.Rel.Contains(CurrentSupplyRel) && l.Rel.Contains(NextRel)).Uri;
             var currentSupplyResponse = _switchHelper.GetApiDataTemplate(currentSupplyUrl, CurrentSupplyRel);
 
