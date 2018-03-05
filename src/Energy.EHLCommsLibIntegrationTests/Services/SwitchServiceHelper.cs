@@ -12,11 +12,10 @@ using Energy.EHLCommsLib.Models;
 using Message = Energy.EHLCommsLib.Models.Message;
 using Energy.EHLCommsLib.Contracts;
 using Energy.EHLCommsLib.Interfaces;
-using ISwitchServiceHelper = Energy.EHLCommsLibIntegrationTests.Interfaces.ISwitchServiceHelper;
 
 namespace Energy.EHLCommsLibIntegrationTests.Services
 {
-    public class SwitchServiceHelper : ISwitchServiceHelper
+    public class SwitchServiceHelper 
     {
         private readonly ISwitchServiceClient _switchServiceClient;
 

@@ -5,7 +5,6 @@ using Energy.EHLCommsLib.Extensions;
 
 using Energy.EHLCommsLib.Models;
 using Energy.EHLCommsLibIntegrationTests.Model;
-using Energy.EHLCommsLibIntegrationTests.Interfaces;
 
 
 namespace Energy.EHLCommsLibIntegrationTests.Services
@@ -25,11 +24,11 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
         private const string UnknownRegionId = "0";
         private const string NorthernIrelandRegionId = "16";
 
-        private readonly ISwitchServiceHelper _switchServiceHelper;
+        private readonly SwitchServiceHelper _switchServiceHelper;
 
         private BaseRequest _baseRequest;
 
-        public StartSwitchService(ISwitchServiceHelper switchServiceHelper)
+        public StartSwitchService(SwitchServiceHelper switchServiceHelper)
         {
             _switchServiceHelper = switchServiceHelper;
         }
