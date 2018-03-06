@@ -60,67 +60,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="SwitchApiMessages\1-12-StartSwitch-RegionSuggested-Get-Response.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="SwitchApiMessages\1-14-StartSwitch-RegionSuggested-Post-Response.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="SwitchApiMessages\1-16-SwitchStatus-Get-Response.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="SwitchApiMessages\1-17-SwitchStatus-NorthernIrelandRegion-Get-Response.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="SwitchApiMessages\1-18-SwitchStatus-Get-Response-ConfirmedSwitch.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="SwitchApiMessages\1-19-SwitchStatus-Get-Response-NoProRataUrl.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="SwitchApiMessages\1-2-StartSwitch-Get-Response.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="SwitchApiMessages\1-4-StartSwitch-Post-Response-ValidRegion.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="SwitchApiMessages\1-6-StartSwitch-Post-Response-InvalidPostcode.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="SwitchApiMessages\1-7-StartSwitch-Post-Response-ChannelIslandPostcode.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="SwitchApiMessages\10-2-FutureSupply-Post-Response.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="SwitchApiMessages\10-3-FutureSupply-Post-Response-WithErrors.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="SwitchApiMessages\11-2-PrepareForTransfer-Get-Response.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="SwitchApiMessages\11-4-PrepareForTransfer-Post-Response.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="SwitchApiMessages\12-1-HeldApplicationConfirmation-Feed.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="SwitchApiMessages\12-2-NonHeldApplicationConfirmation-Feed.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="SwitchApiMessages\13-2-Signup-Get-Response.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="SwitchApiMessages\13-3-Signup-Get-Response-WithErrors.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="SwitchApiMessages\13-4-Signup-Post-Response-WithErrors.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="SwitchApiMessages\13-5-Signup-Post-Response.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="SwitchApiMessages\13-6-Signup-SwitchBlocked-Post-Response.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="SwitchApiMessages\2-2-CurrentSupply-Get-Response.json">
@@ -130,9 +73,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="SwitchApiMessages\2-4-CurrentSupply-Get-Response-WithError-InternalServerError.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="SwitchApiMessages\3-2-CurrentSupplies-Get-Response.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="SwitchApiMessages\4-2-CurrentSupply-Post-Response.json">
@@ -168,22 +108,7 @@
     <None Include="SwitchApiMessages\7-2-FutureSupply-Get-Response.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="SwitchApiMessages\7-3-FutureSupply-Get-Response-WithErrors.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="SwitchApiMessages\8-2-FutureSupplies-Get-Response.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="SwitchApiMessages\9-2-TariffDetails-Get-Response-DualFuelTariff.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="SwitchApiMessages\9-3-TariffDetails-Get-Response-GasOnlyTariff.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="SwitchApiMessages\9-4-TariffDetails-Get-Response-ElectricityOnlyTariff.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="SwitchApiMessages\9-5-TariffDetails-Get-Response-DualFuelTariff-With-NoSupplierTermsLink.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
