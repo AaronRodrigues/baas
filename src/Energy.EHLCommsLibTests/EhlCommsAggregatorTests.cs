@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using Energy.EHLCommsLib;
@@ -23,6 +24,20 @@ namespace Energy.EHLCommsLibTests
         private EhlCommsAggregator EhlCommsAggregator { get; set; }
         private IHttpClientWrapper _httpClientWrapper;
         private readonly SwitchServicesTestsHelper _switchHelper = new SwitchServicesTestsHelper();
+
+
+        [OneTimeSetUp]
+        public void RunBeforeAnyTests()
+        {
+            var dir = Path.GetDirectoryName(typeof(EhlCommsAggregatorTests).Assembly.Location);
+            if (dir != null)
+            {
+                Environment.CurrentDirectory = dir;
+                Directory.SetCurrentDirectory(dir);
+            }
+            else
+                throw new Exception("Path.GetDirectoryName(typeof(EhlCommsAggregatorTests).Assembly.Location) returned null");
+        }
 
         [SetUp]
         public void SetUp()
