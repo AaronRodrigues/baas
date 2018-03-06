@@ -15,11 +15,11 @@ namespace Energy.EHLCommsLib
     {
 
         private readonly IEhlHttpClient _ehlHttpClient;
-        private string _journeyId;
+        private readonly string _journeyId;
 
-        public EhlApiCalls(string journeyId)
+        public EhlApiCalls(IEhlHttpClient ehlHttpClient, string journeyId)
         {
-           _ehlHttpClient = new EhlHttpClient();
+           _ehlHttpClient = ehlHttpClient;
             _journeyId = journeyId;
         }
 

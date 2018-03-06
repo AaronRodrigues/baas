@@ -10,29 +10,29 @@ namespace Energy.EHLCommsLibTests.Helpers
     public class SwitchServicesTestsHelper
     {
 
-        public SwitchServicesTestsHelper Mock_ApiGetRequest(IHttpClientWrapper httpClientWrapper, string jsonKey, string urlFilter, HttpStatusCode? responseStatusCode = null, WebException exception = null)
+        public SwitchServicesTestsHelper Mock_ApiGetRequest(IEhlHttpClient ehlHttpClient, string jsonKey, string urlFilter, HttpStatusCode? responseStatusCode = null, WebException exception = null)
         {
-            httpClientWrapper.Expect(
-                c =>
-                c.CallGet(Arg<HttpClientRequest>.Matches(r => r.Url.Contains(urlFilter))))
-                             .Return(new HttpClientResponse
-                             {
-                                 Data = GetJsonFor(jsonKey),
-                                 ResponseStatusCode = responseStatusCode,
-                                 Exception = exception
-                             });
+            //httpClientWrapper.Expect(
+            //    c =>
+            //    c.CallGet(Arg<HttpClientRequest>.Matches(r => r.Url.Contains(urlFilter))))
+            //                 .Return(new HttpClientResponse
+            //                 {
+            //                     Data = GetJsonFor(jsonKey),
+            //                     ResponseStatusCode = responseStatusCode,
+            //                     Exception = exception
+            //                 });
             return this;
         }
 
-        public SwitchServicesTestsHelper Mock_ApiPostRequest(IHttpClientWrapper httpClientWrapper, string jsonKey, string urlFilter)
+        public SwitchServicesTestsHelper Mock_ApiPostRequest(IEhlHttpClient ehlHttpClient, string jsonKey, string urlFilter)
         {
-            httpClientWrapper.Expect(
-                c =>
-                c.CallPost(Arg<HttpClientRequest>.Matches(r => r.Url.Contains(urlFilter))))
-                             .Return(new HttpClientResponse
-                             {
-                                 Data = GetJsonFor(jsonKey)
-                             });
+            //httpClientWrapper.Expect(
+            //    c =>
+            //    c.CallPost(Arg<HttpClientRequest>.Matches(r => r.Url.Contains(urlFilter))))
+            //                 .Return(new HttpClientResponse
+            //                 {
+            //                     Data = GetJsonFor(jsonKey)
+            //                 });
             return this;
         }
 

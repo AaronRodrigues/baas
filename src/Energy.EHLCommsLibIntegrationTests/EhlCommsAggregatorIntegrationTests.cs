@@ -28,9 +28,10 @@ namespace Energy.EHLCommsLibIntegrationTests
             var httpClientWrapper = new HttpClientWrapper(httpClient);
             var switchServiceClient = new SwitchServiceClient(httpClientWrapper);
             var switchServiceHelper = new SwitchHelper(switchServiceClient);
+            var ehlHttpClient = new EhlHttpClient();
 
             _startSwitchHelper = new StartSwitchHelper(switchServiceHelper);
-            _ehlCommsAggregator = new EhlCommsAggregator(switchServiceClient);
+            _ehlCommsAggregator = new EhlCommsAggregator(ehlHttpClient);
 
             var startSwitchResponse = _startSwitchHelper.StartSwitch();
 

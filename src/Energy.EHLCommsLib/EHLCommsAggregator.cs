@@ -13,11 +13,11 @@ namespace Energy.EHLCommsLib
     //TO DO : Add journeyId
     public class EhlCommsAggregator
     {
-        private readonly ISwitchServiceHelper _switchServiceHelper;
+        private readonly IEhlHttpClient _ehlHttpClient;
 
-        public EhlCommsAggregator(ISwitchServiceClient switchServiceClient)
+        public EhlCommsAggregator(IEhlHttpClient ehlHttpClient)
         {
-            _switchServiceHelper = new SwitchServiceHelper(switchServiceClient, new HttpClient());
+            _ehlHttpClient = ehlHttpClient;
         }
         public GetPricesResponse GetPrices(GetPricesRequest request, Dictionary<string, string> customFeatures,
             bool tariffCustomFeatureEnabled = false)
@@ -51,7 +51,7 @@ namespace Energy.EHLCommsLib
             bool tariffCustomFeatureEnabled)
         {
             var journeyId = "";
-            var ehlApiCalls = new EhlApiCalls(journeyId);
+            var ehlApiCalls = new EhlApiCalls(_ehlHttpClient, journeyId);
             //Log.Info(string.Format("GetPrices started for JourneyId = {0}, SwitchId = {1}, SwitchUrl = {2}", request.JourneyId, request.SwitchId, request.SwitchUrl));
             var supplyStageResult = ehlApiCalls.GetSupplierEhlApiResponse(request, response);
             if (!supplyStageResult.ApiCallWasSuccessful)
