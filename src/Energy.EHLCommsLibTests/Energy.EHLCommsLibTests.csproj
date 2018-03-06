@@ -60,56 +60,56 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="SwitchApiMessages\1-16-SwitchStatus-Get-Response.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="SwitchApiMessages\CurrentSupply-GetResponse-WithError-AlreadySwitched.json" >
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="SwitchApiMessages\1-19-SwitchStatus-Get-Response-NoProRataUrl.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="SwitchApiMessages\CurrentSupply-GetResponse-WithError-InternalServerError.json" >
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="SwitchApiMessages\2-2-CurrentSupply-Get-Response.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="SwitchApiMessages\CurrentSupply_GetResponse.json" >
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="SwitchApiMessages\2-3-CurrentSupply-Get-Response-WithError-AlreadySwitched.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="SwitchApiMessages\CurrentSupply_PostResponse.json" >
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="SwitchApiMessages\2-4-CurrentSupply-Get-Response-WithError-InternalServerError.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="SwitchApiMessages\CurrentSupply_PostResponse_WithErrors.json" >
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="SwitchApiMessages\4-2-CurrentSupply-Post-Response.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="SwitchApiMessages\FutureSupplies-GetResponse.json" >
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="SwitchApiMessages\4-3-CurrentSupply-Post-Response-WithErrors.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="SwitchApiMessages\FutureSupply-GetResponse.json" >
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="SwitchApiMessages\4-5-ProRata-Get-Response.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="SwitchApiMessages\Preferences-GetResponse.json" >
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="SwitchApiMessages\4-6-ProRata-Post-Response.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="SwitchApiMessages\Preferences-PostResponse.json" >
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="SwitchApiMessages\5-2-Usage-Get-Response.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="SwitchApiMessages\ProRata-GetResponse.json" >
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="SwitchApiMessages\5-4-Usage-Post-Response.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="SwitchApiMessages\ProRata-PostResponse.json" >
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="SwitchApiMessages\5-5-Usage-Post-Response-WithErrors-NegativeElecUsage.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="SwitchApiMessages\SwitchStatus_GetResponse.json" >
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="SwitchApiMessages\5-6-Usage-Post-Response-WithErrors-NegativeGasUsage.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="SwitchApiMessages\SwitchStatus_GetResponse_NoProRataUrl.json" >
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="SwitchApiMessages\6-2-Preferences-Get-Response.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="SwitchApiMessages\Usage-GetResponse.json" >
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="SwitchApiMessages\6-4-Preferences-Post-Response.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="SwitchApiMessages\Usage-PostResponse-WithError-NegativeElecUsage.json" >
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="SwitchApiMessages\7-2-FutureSupply-Get-Response.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="SwitchApiMessages\Usage-PostResponse-WithError-NegativeGasUsage.json" >
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="SwitchApiMessages\8-2-FutureSupplies-Get-Response.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Include="SwitchApiMessages\Usage-PostResponse.json" >
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
