@@ -35,7 +35,6 @@ namespace Energy.EHLCommsLibIntegrationTests
             var startSwitchResponse = _startSwitchHelper.StartSwitch();
 
 
-
             pricesRequest = EntityHelper.GenerateValidPricesRequest(startSwitchResponse);
 
 

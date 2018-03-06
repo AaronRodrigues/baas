@@ -65,7 +65,6 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
             const string url = EhlApiEntryPointUrl + StartSwitchUrl;
             var switchTemplate = _switchHelper.GetApiDataTemplate(url, SwitchRel);
 
-            // Add data template info
             _switchHelper.ApplyReference(switchTemplate, "partnerReference", PartnerReference);
             _switchHelper.ApplyReference(switchTemplate, "apiKey", apiKey);
             switchTemplate.DataTemplate.Groups[0].Items[0].Data = postcode;
