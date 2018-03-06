@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Energy.EHLCommsLib.External.Exceptions;
 using Energy.EHLCommsLib.External.Services;
+using Energy.EHLCommsLib.Http;
 using Energy.EHLCommsLib.Interfaces;
 using Energy.EHLCommsLib.Models.Prices;
 
@@ -9,19 +10,19 @@ namespace Energy.EHLCommsLib
 {
     //TO DO : Logging
     //TO DO : Add this value to config AppSettings.Feature.TariffCustomFeatureEnabled or get from MVC
+    //TO DO : Add journeyId
     public class EhlCommsAggregator
     {
         private readonly ISwitchServiceHelper _switchServiceHelper;
 
         public EhlCommsAggregator(ISwitchServiceClient switchServiceClient)
         {
-            _switchServiceHelper = new SwitchServiceHelper(switchServiceClient);
+            _switchServiceHelper = new SwitchServiceHelper(switchServiceClient, new HttpClient());
         }
         public GetPricesResponse GetPrices(GetPricesRequest request, Dictionary<string, string> customFeatures,
             bool tariffCustomFeatureEnabled = false)
         {
             var response = new GetPricesResponse();
-
             try
             {
                 var pricesRetrievedSuccess = ApplyDataFromEhlToPricesResponse(request, response, customFeatures, tariffCustomFeatureEnabled);
@@ -45,11 +46,12 @@ namespace Energy.EHLCommsLib
 
             return response;
         }
-
+        //TO DO add journey id
         private bool ApplyDataFromEhlToPricesResponse(GetPricesRequest request, GetPricesResponse response, Dictionary<string, string> customFeatures,
             bool tariffCustomFeatureEnabled)
         {
-            var ehlApiCalls = new EhlApiCalls(_switchServiceHelper, request);
+            var journeyId = "";
+            var ehlApiCalls = new EhlApiCalls(journeyId);
             //Log.Info(string.Format("GetPrices started for JourneyId = {0}, SwitchId = {1}, SwitchUrl = {2}", request.JourneyId, request.SwitchId, request.SwitchUrl));
             var supplyStageResult = ehlApiCalls.GetSupplierEhlApiResponse(request, response);
             if (!supplyStageResult.ApiCallWasSuccessful)

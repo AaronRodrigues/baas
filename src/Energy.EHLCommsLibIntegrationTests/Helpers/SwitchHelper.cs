@@ -24,14 +24,14 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
             _switchServiceClient = switchServiceClient;
         }
 
-        public void ApplyReference(SwitchesApiResponse response, string reference, string value)
+        public void ApplyReference(ApiResponse response, string reference, string value)
         {
             var item = GetEhlItemForName(response, reference);
             if (item != null)
                 item.Data = value;
         }
 
-        public string GetLinkedDataUrl(SwitchesApiResponse response, string rel)
+        public string GetLinkedDataUrl(ApiResponse response, string rel)
         {
             return response.LinkedDataSources
                 .First(l => l.Rel.Equals(rel))
@@ -41,7 +41,7 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
         public T GetSwitchesApiGetResponse<T>(string url, string relKey, BaseRequest request)
             where T : ApiResponse, new()
         {
-            var response = _switchServiceClient.GetSwitchesApiGetResponse<T>(url, relKey);
+            var response = _switchServiceClient.GetSwitchesApiGetResponse<T>(url);
 
             HandleResponse(response, url, "GET");
 
@@ -75,12 +75,12 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
             return group.Items.FirstOrDefault(i => i.Name.Equals(name));
         }
 
-        public Group GetEhlGroupForName(SwitchesApiResponse response, string name)
+        public Group GetEhlGroupForName(ApiResponse response, string name)
         {
             return response.DataTemplate.Groups.FirstOrDefault(@group => group.Name.Equals(name));
         }
 
-        public void UpdateItemData(SwitchesApiResponse currentSupplyTemplate, string groupName, string itemName,
+        public void UpdateItemData(ApiResponse currentSupplyTemplate, string groupName, string itemName,
             string value)
         {
             currentSupplyTemplate.DataTemplate.Groups
@@ -111,9 +111,9 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
             response.Success = false;
         }
 
-        public SwitchesApiResponse GetApiDataTemplate(string url, string rel)
+        public ApiResponse GetApiDataTemplate(string url, string rel)
         {
-            var response = _switchServiceClient.GetSwitchesApiGetResponse<SwitchesApiResponse>(url, rel);
+            var response = _switchServiceClient.GetSwitchesApiGetResponse<ApiResponse>(url);
 
             HandleResponse(response, url, "TEMPLATE GET");
 
@@ -257,7 +257,7 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
             }
         }
 
-        public bool SuccessfulResponseFromEhl(SwitchesApiResponse response)
+        public bool SuccessfulResponseFromEhl(ApiResponse response)
         {
             return response.SuccessfulResponseFromEhl();
         }

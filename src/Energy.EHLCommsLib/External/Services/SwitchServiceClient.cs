@@ -19,7 +19,7 @@ namespace Energy.EHLCommsLib.External.Services
             _httpClientWrapper = httpClientWrapper;
         }
 
-        public T GetSwitchesApiGetResponse<T>(string url, string relKey) where T : ApiResponse, new()
+        public T GetSwitchesApiGetResponse<T>(string url) where T : ApiResponse, new()
         {
            var response = GetApiResponse(url);
 

@@ -46,7 +46,7 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
 
             if (registerResponse.NextStep().Is(RegionRel))
             {
-                SwitchesApiResponse regionTemplate;
+                ApiResponse regionTemplate;
                 if (RegionHasBeenSuggested(registerResponse, out regionTemplate))
                 {
                     var regionUrl = registerResponse.Links.First(l => l.Rel.Contains(RegionRel) && l.Rel.Contains(NextRel)).Uri;
@@ -60,7 +60,7 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
             return response;
         }
 
-        private SwitchesApiResponse RegisterPostcode(string postcode, string apiKey)
+        private ApiResponse RegisterPostcode(string postcode, string apiKey)
         {
             const string url = EhlApiEntryPointUrl + StartSwitchUrl;
             var switchTemplate = _switchHelper.GetApiDataTemplate(url, SwitchRel);
@@ -73,7 +73,7 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
             return _switchHelper.GetSwitchesApiPostResponse(url, switchTemplate, SwitchRel, _baseRequest);
         }
 
-        private StartSwitchResponse GetStartSwitchResponse(SwitchesApiResponse ehlResponse)
+        private StartSwitchResponse GetStartSwitchResponse(ApiResponse ehlResponse)
         {
             var switchId = GetSwitchId(ehlResponse);
             _baseRequest.SwitchId = switchId;
@@ -88,14 +88,14 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
             return response;
         }
 
-        private string GetSwitchId(SwitchesApiResponse ehlResponse)
+        private string GetSwitchId(ApiResponse ehlResponse)
         {
             var switchUrl = ehlResponse.Links.First(l => l.Rel.Contains(SwitchRel)).Uri;
             var switchStatus = _switchHelper.GetSwitchesApiGetResponse<SwitchApiResponse>(switchUrl, SwitchRel, _baseRequest);
             return switchStatus != null ? switchStatus.Id : string.Empty;
         }
 
-        private StartSwitchResponse MapToEnergyResponse(SwitchesApiResponse ehlResponse)
+        private StartSwitchResponse MapToEnergyResponse(ApiResponse ehlResponse)
         {
             var response = new StartSwitchResponse
             {
@@ -121,7 +121,7 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
             return response;
         }
 
-        private bool RegionHasBeenSuggested(SwitchesApiResponse registerResponse, out SwitchesApiResponse regionTemplate)
+        private bool RegionHasBeenSuggested(ApiResponse registerResponse, out ApiResponse regionTemplate)
         {
             var regionUrl = registerResponse.Links.First(l => l.Rel.Contains(RegionRel)).Uri;
             regionTemplate = _switchHelper.GetApiDataTemplate(regionUrl, RegionRel);
@@ -129,7 +129,7 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
             return region != null && !region.Equals(UnknownRegionId);
         }
 
-        private SwitchesApiResponse GetRegionConfirmationResponse(string url, SwitchesApiResponse regionTemplate)
+        private ApiResponse GetRegionConfirmationResponse(string url, ApiResponse regionTemplate)
         {
             return _switchHelper.GetSwitchesApiPostResponse(url, regionTemplate, RegionRel, _baseRequest);
         }

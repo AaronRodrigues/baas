@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -10,7 +11,10 @@ using Energy.EHLCommsLib.Contracts.Responses;
 using Energy.EHLCommsLib.Enums;
 using Energy.EHLCommsLib.External.Exceptions;
 using Energy.EHLCommsLib.Interfaces;
+using Energy.EHLCommsLib.Interfaces.Http;
 using Energy.EHLCommsLib.Models;
+using Energy.EHLCommsLib.Models.Http;
+using Newtonsoft.Json;
 using Message = Energy.EHLCommsLib.Models.Message;
 
 namespace Energy.EHLCommsLib.External.Services
@@ -19,20 +23,22 @@ namespace Energy.EHLCommsLib.External.Services
     public class SwitchServiceHelper : ISwitchServiceHelper
     {
         private readonly ISwitchServiceClient _switchServiceClient;
+        private readonly IHttpClient _httpClient;
 
-        public SwitchServiceHelper(ISwitchServiceClient switchServiceClient)
+        public SwitchServiceHelper(ISwitchServiceClient switchServiceClient, IHttpClient httpClient)
         {
             _switchServiceClient = switchServiceClient;
+            _httpClient = httpClient;
         }
 
-        public void ApplyReference(SwitchesApiResponse response, string reference, string value)
+        public void ApplyReference(ApiResponse response, string reference, string value)
         {
             var item = GetEhlItemForName(response, reference);
             if (item != null)
                 item.Data = value;
         }
 
-        public string GetLinkedDataUrl(SwitchesApiResponse response, string rel)
+        public string GetLinkedDataUrl(ApiResponse response, string rel)
         {
             return response.LinkedDataSources
                 .First(l => l.Rel.Equals(rel))
@@ -42,7 +48,7 @@ namespace Energy.EHLCommsLib.External.Services
         public T GetSwitchesApiGetResponse<T>(string url, string relKey, BaseRequest request)
             where T : ApiResponse, new()
         {
-            var response = _switchServiceClient.GetSwitchesApiGetResponse<T>(url, relKey);
+            var response = _switchServiceClient.GetSwitchesApiGetResponse<T>(url);
 
             HandleResponse(response, url, "GET");
 
@@ -76,12 +82,12 @@ namespace Energy.EHLCommsLib.External.Services
             return group.Items.FirstOrDefault(i => i.Name.Equals(name));
         }
 
-        public Group GetEhlGroupForName(SwitchesApiResponse response, string name)
+        public Group GetEhlGroupForName(ApiResponse response, string name)
         {
             return response.DataTemplate.Groups.FirstOrDefault(@group => group.Name.Equals(name));
         }
 
-        public void UpdateItemData(SwitchesApiResponse currentSupplyTemplate, string groupName, string itemName,
+        public void UpdateItemData(ApiResponse currentSupplyTemplate, string groupName, string itemName,
             string value)
         {
             currentSupplyTemplate.DataTemplate.Groups
@@ -112,15 +118,81 @@ namespace Energy.EHLCommsLib.External.Services
             response.Success = false;
         }
 
-        public SwitchesApiResponse GetApiDataTemplate(string url, string rel)
+        public ApiResponse GetApiDataTemplate(string url)
         {
-            var response = _switchServiceClient.GetSwitchesApiGetResponse<SwitchesApiResponse>(url, rel);
+            var response = GetSwitchesApiGetResponse(url);
 
             HandleResponse(response, url, "TEMPLATE GET");
 
             return response;
         }
-       
+
+        private ApiResponse GetSwitchesApiGetResponse(string url)
+        {
+            var response = GetApiResponse(url);
+
+            ApiResponse responseObject;
+
+            try
+            {
+                responseObject = JsonConvert.DeserializeObject<ApiResponse>(response.Data.ToString());
+                responseObject.StatusCode = response.ResponseStatusCode;
+                responseObject.Exception = response.Exception;
+            }
+            catch (Exception)
+            {
+                //Log.Error(string.Format("EHL ERROR - EHL returned invalid JSON from a GET to Url '{0}'. Most likely they returned the HTML of their error page.", apiUrl));
+
+                responseObject = InternalServerError<ApiResponse>();
+            }
+
+            return responseObject;
+        }
+
+        private HttpClientResponse GetApiResponse(string url)
+        {
+            var proxyRequest = new HttpClientRequest
+            {
+                Url = url.Replace("http://", "https://"),
+                ContentType = "application/vnd-fri-domestic-energy+json;version=2.0"
+            };
+            return CallGet(proxyRequest, response => response.BodyAsString(), "application/vnd-fri-domestic-energy+json;version=2.0");
+        }
+
+        private HttpClientResponse CallGet(HttpClientRequest request, Func<IResponse, object> downloadAction, string acceptHeader)
+        {
+            var response = new HttpClientResponse();
+            _httpClient.ContentType = request.ContentType;
+            _httpClient.AuthorizationToken = request.AuthorizationToken;
+            _httpClient.AcceptHeader = acceptHeader;
+
+            var httpResponse = _httpClient.Get(request.Url);
+            response.ResponseStatusCode = httpResponse != null ? httpResponse.StatusCode : (HttpStatusCode?)null;
+            response.Data = downloadAction(httpResponse);
+
+
+            return response;
+        }
+
+        private static T InternalServerError<T>() where T : ApiResponse, new()
+        {
+            return new T
+            {
+                StatusCode = HttpStatusCode.InternalServerError,
+                Exception = new WebException("The remote server returned an error: (500) Internal Server Error."),
+                Errors = new List<Error>
+                {
+                    new Error
+                    {
+                        Message = new Contracts.Common.Message
+                        {
+                            Id = EhlErrorConstants.EhlErrorGeneric,
+                            Text = "Internal server error. Reference:"
+                        }
+                    }
+                }
+            };
+        }
 
         private MessageCode DetermineResponseStatusType(BaseResponse response)
         {
@@ -163,10 +235,7 @@ namespace Energy.EHLCommsLib.External.Services
 
         private string MapEhlToCtmMessageText(MessageCode code, string text)
         {
-            if (code == MessageCode.ChannelIslandPostcodeEntered)
-                return "Unfortunately this service is not available outside of the UK mainland.";
-
-            return text;
+            return code == MessageCode.ChannelIslandPostcodeEntered ? "Unfortunately this service is not available outside of the UK mainland." : text;
         }
 
         private void HandleResponse(ApiResponse response, string url, string action)
@@ -219,43 +288,7 @@ namespace Energy.EHLCommsLib.External.Services
                 }
             }
 
-            LogResponseErrors(response, url, action);
-        }
-
-        private void LogResponseErrors(ApiResponse response, string url, string action)
-        {
-            if (response.Exception == null && (response.Errors == null || !response.Errors.Any()))
-            {
-                return;
-            }
-
-            var builder = new StringBuilder();
-
-            builder.AppendFormat("Issue occurred while making a {0} request to EHL using url {1}.", action, url);
-            builder.AppendLine();
-            //builder.AppendFormat("JourneyId = {0}", _applicationContext.JourneyId);
-            builder.AppendLine();
-            builder.AppendFormat("Status code returned was {0}", response.StatusCode);
-            builder.AppendLine();
-
-            if (response.Errors != null)
-            {
-                foreach (var error in response.Errors)
-                {
-                    builder.AppendFormat("Response includes message '{0}' with Id of '{1}'", error.Message.Text,
-                        error.Message.Id);
-                    builder.AppendLine();
-                }
-            }
-
-            var logLevel = response.IsExpectedError() ? MessageType.Warning : MessageType.Error;
-
-            var message = builder.ToString();
-
-            if (response.Exception != null)
-            {
-                //Log.LogException(logLevel, message, response.Exception);
-            }
+            //LogResponseErrors(response, url, action);
         }
     }
 }

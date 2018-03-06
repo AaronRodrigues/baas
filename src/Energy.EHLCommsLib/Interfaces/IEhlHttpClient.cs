@@ -1,15 +1,13 @@
-﻿using Energy.EHLCommsLib.Contracts.Responses;
+﻿using Energy.EHLCommsLib.Contracts.FutureSupplies;
+using Energy.EHLCommsLib.Contracts.Responses;
 using Energy.EHLCommsLib.Models;
 
 namespace Energy.EHLCommsLib.Interfaces
 {
     public interface IEhlHttpClient
     {
-        SwitchesApiResponse GetApiDataTemplate(string url, string rel);
-
-        //T GetSwitchesApiPostResponse<T>(string url, T responseDataToSend, string relKey, BaseRequest request)
-        //   where T : ApiResponse, new();
-
-        //T GetSwitchesApiGetResponse<T>(string url, string relKey, BaseRequest request) where T : ApiResponse, new();
+        T GetApiResponse<T>(string url, string journeyid) where T : ApiResponse, new();
+        ApiResponse PostSwitchesApiGetResponse(string url, ApiResponse responseDataToSend,
+            string journeyid);
     }
 }

@@ -9,7 +9,7 @@ namespace Energy.EHLCommsLib.Extensions
     public static class GetPricesRequestExtensions
     {
         public static GetPricesRequest PopulateCurrentSupplyWithRequestData(this GetPricesRequest request,
-            SwitchesApiResponse currentSupplyTemplate)
+            ApiResponse currentSupplyTemplate)
         {
             var compareGas = request.CompareType != CompareWhat.Electricity;
             var compareElec = request.CompareType != CompareWhat.Gas;
@@ -39,7 +39,7 @@ namespace Energy.EHLCommsLib.Extensions
         }
 
         public static GetPricesRequest PopulatePreferencesWithRequestData(this GetPricesRequest request,
-            SwitchesApiResponse preferencesTemplate)
+            ApiResponse preferencesTemplate)
         {
             const string filterOptionAll = "105";
             const string paymentMethodAny = "-1";
@@ -53,7 +53,7 @@ namespace Energy.EHLCommsLib.Extensions
         }
 
         public static GetPricesRequest PopulateUsageWithRequestData(this GetPricesRequest request,
-            SwitchesApiResponse usageTemplate)
+            ApiResponse usageTemplate)
         {
             var compareGas = request.CompareType != CompareWhat.Electricity;
             var compareElec = request.CompareType != CompareWhat.Gas;
@@ -107,7 +107,7 @@ namespace Energy.EHLCommsLib.Extensions
             return request;
         }
 
-        private static void PopulateSpendUsageForElectricity(GetPricesRequest request, SwitchesApiResponse usageTemplate)
+        private static void PopulateSpendUsageForElectricity(GetPricesRequest request, ApiResponse usageTemplate)
         {
             var compareElec = request.CompareType != CompareWhat.Gas;
             if (!compareElec) return;
@@ -118,7 +118,7 @@ namespace Energy.EHLCommsLib.Extensions
                 ((int) request.SpendData.ElectricitySpendPeriod).ToString());
         }
 
-        private static void PopulateKWhUsage(GetPricesRequest request, SwitchesApiResponse usageTemplate)
+        private static void PopulateKWhUsage(GetPricesRequest request, ApiResponse usageTemplate)
         {
             if (!request.CalculateGasBasedOnBillSpend)
             {
@@ -135,7 +135,7 @@ namespace Energy.EHLCommsLib.Extensions
                 ((int) request.UsageData.ElectricityUsagePeriod).ToString());
         }
 
-        private static void PopulateSpendUsageForGas(GetPricesRequest request, SwitchesApiResponse usageTemplate)
+        private static void PopulateSpendUsageForGas(GetPricesRequest request, ApiResponse usageTemplate)
         {
             var compareGas = request.CompareType != CompareWhat.Electricity;
             if (compareGas)
@@ -148,7 +148,7 @@ namespace Energy.EHLCommsLib.Extensions
         }
 
         private static void PopulateDetailedUsageForElectricity(GetPricesRequest request,
-            SwitchesApiResponse usageTemplate)
+            ApiResponse usageTemplate)
         {
             UpdateItemData(usageTemplate, "elecUsageType", "usageType", EhlApiConstants.UsageTypeByEstimator);
             UpdateItemData(usageTemplate, "elecDetailedEstimate", "houseType", request.EstimatorData.HouseType);
@@ -166,7 +166,7 @@ namespace Energy.EHLCommsLib.Extensions
             UpdateItemData(usageTemplate, "elecDetailedEstimate", "energyUsage", request.EstimatorData.HouseOccupied);
         }
 
-        private static void PopulateDetailedUsageForGas(GetPricesRequest request, SwitchesApiResponse usageTemplate)
+        private static void PopulateDetailedUsageForGas(GetPricesRequest request, ApiResponse usageTemplate)
         {
             UpdateItemData(usageTemplate, "gasUsageType", "usageType", EhlApiConstants.UsageTypeByEstimator);
             UpdateItemData(usageTemplate, "gasDetailedEstimate", "houseType", request.EstimatorData.HouseType);
@@ -184,7 +184,7 @@ namespace Energy.EHLCommsLib.Extensions
             UpdateItemData(usageTemplate, "gasDetailedEstimate", "energyUsage", request.EstimatorData.HouseOccupied);
         }
 
-        private static void UpdateItemData(SwitchesApiResponse currentSupplyTemplate, string groupName, string itemName,
+        private static void UpdateItemData(ApiResponse currentSupplyTemplate, string groupName, string itemName,
             string value)
         {
             currentSupplyTemplate.DataTemplate.Groups

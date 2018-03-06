@@ -94,7 +94,6 @@
     <Compile Include="Contracts\Responses\CustomerData.cs" />
     <Compile Include="Contracts\Responses\SignupApiResponse.cs" />
     <Compile Include="Contracts\Responses\SwitchApiResponse.cs" />
-    <Compile Include="Contracts\Responses\SwitchesApiResponse.cs" />
     <Compile Include="Contracts\Signup\QuestionGroupStatus.cs" />
     <Compile Include="Contracts\Supplier.cs" />
     <Compile Include="Contracts\SupplierFuelMix.cs" />
@@ -118,6 +117,7 @@
     <Compile Include="Enums\PaymentMethodType.cs" />
     <Compile Include="Enums\PriceFeatureCategory.cs" />
     <Compile Include="Enums\UsagePeriod.cs" />
+    <Compile Include="Extensions\BaseResponseExtensions.cs" />
     <Compile Include="Extensions\ExtensionMethods.cs" />
     <Compile Include="Extensions\GetPricesRequestExtensions.cs" />
     <Compile Include="Extensions\GetPricesResponseExtensions.cs" />

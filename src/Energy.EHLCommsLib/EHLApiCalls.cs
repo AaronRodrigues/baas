@@ -7,7 +7,6 @@ using Energy.EHLCommsLib.Entities;
 using Energy.EHLCommsLib.Extensions;
 using Energy.EHLCommsLib.Http;
 using Energy.EHLCommsLib.Interfaces;
-using Energy.EHLCommsLib.Models;
 using Energy.EHLCommsLib.Models.Prices;
 
 namespace Energy.EHLCommsLib
@@ -15,40 +14,38 @@ namespace Energy.EHLCommsLib
     public class EhlApiCalls
     {
 
-        private readonly ISwitchServiceHelper _switchServiceHelper;
         private readonly IEhlHttpClient _ehlHttpClient;
-        private readonly BaseRequest _baseRequest;
+        private string _journeyId;
 
-        public EhlApiCalls(ISwitchServiceHelper switchServiceHelper, BaseRequest baseRequest)
+        public EhlApiCalls(string journeyId)
         {
-            _switchServiceHelper = switchServiceHelper;
-            _baseRequest = baseRequest;
-            _ehlHttpClient = new EhlHttpClient(new HttpClient());
+           _ehlHttpClient = new EhlHttpClient();
+            _journeyId = journeyId;
         }
 
         public EhlApiResponse GetSupplierEhlApiResponse(GetPricesRequest request, GetPricesResponse response)
         {
-            var currentSwitchesApiResponse = _switchServiceHelper.GetApiDataTemplate(request.CurrentSupplyUrl, EhlApiConstants.CurrentSupplyRel);
+            var currentSwitchesApiResponse = _ehlHttpClient.GetApiResponse<ApiResponse>(request.CurrentSupplyUrl, _journeyId);
             if (!currentSwitchesApiResponse.SuccessfulResponseFromEhl())
                 return ApiCallResponse("CustomerSupplyStage", response, currentSwitchesApiResponse, EhlApiConstants.UsageRel);
             request.PopulateCurrentSupplyWithRequestData(currentSwitchesApiResponse);
-            var currentSwitchesApiPostResponse = _switchServiceHelper.GetSwitchesApiPostResponse(request.CurrentSupplyUrl, currentSwitchesApiResponse, EhlApiConstants.CurrentSupplyRel, _baseRequest);
+            var currentSwitchesApiPostResponse = _ehlHttpClient.PostSwitchesApiGetResponse(request.CurrentSupplyUrl, currentSwitchesApiResponse, _journeyId);
             return ApiCallResponse("CustomerSupplyStage", response, currentSwitchesApiPostResponse, EhlApiConstants.UsageRel);
         }
 
         public EhlApiResponse GetUsageEhlApiResponse(GetPricesRequest request, GetPricesResponse response, string url)
         {
-            var usageSwitchesApiResponse = _switchServiceHelper.GetApiDataTemplate(url, EhlApiConstants.UsageRel);
+            var usageSwitchesApiResponse = _ehlHttpClient.GetApiResponse<ApiResponse>(url, _journeyId);
             request.PopulateUsageWithRequestData(usageSwitchesApiResponse);
-            var usageSwitchesApiPostResponse = _switchServiceHelper.GetSwitchesApiPostResponse(url, usageSwitchesApiResponse, EhlApiConstants.UsageRel, _baseRequest);
+            var usageSwitchesApiPostResponse = _ehlHttpClient.PostSwitchesApiGetResponse(url, usageSwitchesApiResponse, _journeyId);
             return ApiCallResponse("UsageStage", response, usageSwitchesApiPostResponse, EhlApiConstants.PreferenceRel);
         }
 
         public EhlApiResponse GetPreferenceEhlApiResponse(GetPricesRequest request, GetPricesResponse response, string url)
         {
-            var preferencesSwitchesApiResponse = _switchServiceHelper.GetApiDataTemplate(url, EhlApiConstants.PreferenceRel);
+            var preferencesSwitchesApiResponse = _ehlHttpClient.GetApiResponse<ApiResponse>(url, _journeyId);
             request.PopulatePreferencesWithRequestData(preferencesSwitchesApiResponse);
-            var preferencesSwitchesApiPostResponse = _switchServiceHelper.GetSwitchesApiPostResponse(url, preferencesSwitchesApiResponse, EhlApiConstants.PreferenceRel, _baseRequest);
+            var preferencesSwitchesApiPostResponse = _ehlHttpClient.PostSwitchesApiGetResponse(url, preferencesSwitchesApiResponse, _journeyId);
             return ApiCallResponse("PreferencesStage", response, preferencesSwitchesApiPostResponse, EhlApiConstants.FutureSupplyRel);
         }
 
@@ -57,17 +54,17 @@ namespace Energy.EHLCommsLib
             var switchesUrl = request.SwitchUrl;
             var ignoreProRataComparison = request.IgnoreProRataComparison;
             var proRataCalculationApplied = false;
-            var switchStatus = _switchServiceHelper.GetSwitchesApiGetResponse<SwitchApiResponse>(switchesUrl, EhlApiConstants.SwitchRel, _baseRequest);
+            var switchStatus = _ehlHttpClient.GetApiResponse<SwitchApiResponse>(switchesUrl, _journeyId);
             if (switchStatus == null) return proRataCalculationApplied;
             response.CurrentSupplyDetailsUrl = switchStatus.CurrentSupply.Details.Uri;
             if (switchStatus.Links.Count <= 0) return proRataCalculationApplied;
             var proRataUrl = switchStatus.Links.SingleOrDefault(l => l.Rel.Equals(EhlApiConstants.ProRataRel));
             if (string.IsNullOrWhiteSpace(proRataUrl?.Uri)) return proRataCalculationApplied;
-            var proRataTemplate = _switchServiceHelper.GetApiDataTemplate(proRataUrl.Uri, EhlApiConstants.ProRataRel);
+            var proRataTemplate = _ehlHttpClient.GetApiResponse<ApiResponse>(proRataUrl.Uri, _journeyId);
             var proRataValue = ignoreProRataComparison ? "false" : "true";
-            _switchServiceHelper.UpdateItemData(proRataTemplate, "proRataPreference", "preferProRataCalculations",
+            proRataTemplate.UpdateItemData("proRataPreference", "preferProRataCalculations",
                 proRataValue);
-            _switchServiceHelper.GetSwitchesApiPostResponse(proRataUrl.Uri, proRataTemplate, EhlApiConstants.ProRataRel, _baseRequest);
+            _ehlHttpClient.PostSwitchesApiGetResponse(proRataUrl.Uri, proRataTemplate, _journeyId);
             proRataCalculationApplied = !ignoreProRataComparison;
             return proRataCalculationApplied;
         }
@@ -75,18 +72,17 @@ namespace Energy.EHLCommsLib
         public void PopulatePricesResponseWithFutureSuppliesFromEhl(GetPricesRequest request, GetPricesResponse response, Dictionary<string, string> customFeatures, 
             string futureSupplyUrl, bool tariffCustomFeatureEnabled, bool proRataCalculationApplied)
         {
-            var futureSupplySwitchesApiResponse = _switchServiceHelper.GetApiDataTemplate(futureSupplyUrl, EhlApiConstants.FutureSupplyRel);
-            var futureSuppliesUrl = _switchServiceHelper.GetLinkedDataUrl(futureSupplySwitchesApiResponse, EhlApiConstants.FutureSuppliesRel);
-            var futureSuppliesApiPostResponse = _switchServiceHelper.GetSwitchesApiGetResponse<FutureSupplies>(futureSuppliesUrl,
-                    EhlApiConstants.FutureSuppliesRel, _baseRequest);
+            var futureSupplySwitchesApiResponse = _ehlHttpClient.GetApiResponse<ApiResponse>(futureSupplyUrl, _journeyId);
+            var futureSuppliesUrl = futureSupplySwitchesApiResponse.GetLinkedDataUrl(EhlApiConstants.FutureSuppliesRel);
+            var futureSuppliesApiPostResponse = _ehlHttpClient.GetApiResponse<FutureSupplies>(futureSuppliesUrl,_journeyId);
             response.PopulatePricesResponse(request, futureSuppliesApiPostResponse, customFeatures, futureSupplyUrl, tariffCustomFeatureEnabled, proRataCalculationApplied);
         }
 
-        private EhlApiResponse ApiCallResponse(string typeOfRequest, GetPricesResponse response, SwitchesApiResponse switchesApiResponse, string rel = "")
+        private EhlApiResponse ApiCallResponse(string typeOfRequest, GetPricesResponse response, ApiResponse switchesApiResponse, string rel = "")
         {
             if (!switchesApiResponse.SuccessfulResponseFromEhl())
             {
-                _switchServiceHelper.HydrateSwitchResponseWithErrors(response, switchesApiResponse.Errors);
+                response.HydrateSwitchResponseWithErrors(switchesApiResponse.Errors);
             }
             if (switchesApiResponse.Errors == null || !switchesApiResponse.Errors.Any())
                 return new EhlApiResponse

@@ -12,7 +12,7 @@ namespace Energy.EHLCommsLib.Contracts.Responses
 {
     [DataContract]
     [KnownType(typeof (CurrentSupplies))]
-    public abstract class ApiResponse
+    public class ApiResponse
     {
         [DataMember(Name = "links", EmitDefaultValue = false)]
         public List<Link> Links { get; set; }
