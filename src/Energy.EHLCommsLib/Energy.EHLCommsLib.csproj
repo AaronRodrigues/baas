@@ -126,10 +126,12 @@
     <Compile Include="External\Exceptions\InvalidSwitchException.cs" />
     <Compile Include="External\Services\SwitchServiceClient.cs" />
     <Compile Include="External\Services\SwitchServiceHelper.cs" />
+    <Compile Include="Http\EhlHttpClient.cs" />
     <Compile Include="Http\HttpClient.cs" />
     <Compile Include="Interfaces\Http\IHttpClient.cs" />
     <Compile Include="Interfaces\Http\IResponse.cs" />
     <Compile Include="Interfaces\IApplicationContext.cs" />
+    <Compile Include="Interfaces\IEhlHttpClient.cs" />
     <Compile Include="Interfaces\IHttpClientWrapper.cs" />
     <Compile Include="Interfaces\ISwitchServiceClient.cs" />
     <Compile Include="Interfaces\ISwitchServiceHelper.cs" />

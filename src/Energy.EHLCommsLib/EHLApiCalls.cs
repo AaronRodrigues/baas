@@ -5,6 +5,7 @@ using Energy.EHLCommsLib.Contracts.FutureSupplies;
 using Energy.EHLCommsLib.Contracts.Responses;
 using Energy.EHLCommsLib.Entities;
 using Energy.EHLCommsLib.Extensions;
+using Energy.EHLCommsLib.Http;
 using Energy.EHLCommsLib.Interfaces;
 using Energy.EHLCommsLib.Models;
 using Energy.EHLCommsLib.Models.Prices;
@@ -15,12 +16,14 @@ namespace Energy.EHLCommsLib
     {
 
         private readonly ISwitchServiceHelper _switchServiceHelper;
+        private readonly IEhlHttpClient _ehlHttpClient;
         private readonly BaseRequest _baseRequest;
 
         public EhlApiCalls(ISwitchServiceHelper switchServiceHelper, BaseRequest baseRequest)
         {
             _switchServiceHelper = switchServiceHelper;
             _baseRequest = baseRequest;
+            _ehlHttpClient = new EhlHttpClient(new HttpClient());
         }
 
         public EhlApiResponse GetSupplierEhlApiResponse(GetPricesRequest request, GetPricesResponse response)
