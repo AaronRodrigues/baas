@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Net;
 using System.Text;
-using Energy.EHLCommsLib.Interfaces.Http;
+using Energy.EHLCommsLib.Interfaces;
 
 namespace Energy.EHLCommsLib.Models.Http
 {

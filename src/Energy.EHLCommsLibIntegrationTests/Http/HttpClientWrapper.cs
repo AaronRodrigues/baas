@@ -2,7 +2,6 @@
 using System.IO;
 using System.Net;
 using Energy.EHLCommsLib.Interfaces;
-using Energy.EHLCommsLib.Interfaces.Http;
 using Energy.EHLCommsLib.Models.Http;
 
 

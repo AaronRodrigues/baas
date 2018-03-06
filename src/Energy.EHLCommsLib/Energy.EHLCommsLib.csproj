@@ -124,17 +124,9 @@
     <Compile Include="Extensions\SwitchApiContractsExtensions.cs" />
     <Compile Include="Extensions\TariffFeaturesExtensions.cs" />
     <Compile Include="External\Exceptions\InvalidSwitchException.cs" />
-    <Compile Include="External\Services\SwitchServiceClient.cs" />
-    <Compile Include="External\Services\SwitchServiceHelper.cs" />
     <Compile Include="Http\EhlHttpClient.cs" />
-    <Compile Include="Http\HttpClient.cs" />
-    <Compile Include="Interfaces\Http\IHttpClient.cs" />
-    <Compile Include="Interfaces\Http\IResponse.cs" />
-    <Compile Include="Interfaces\IApplicationContext.cs" />
     <Compile Include="Interfaces\IEhlHttpClient.cs" />
-    <Compile Include="Interfaces\IHttpClientWrapper.cs" />
-    <Compile Include="Interfaces\ISwitchServiceClient.cs" />
-    <Compile Include="Interfaces\ISwitchServiceHelper.cs" />
+    <Compile Include="Interfaces\IResponse.cs" />
     <Compile Include="Mappers\PriceResultsMapper.cs" />
     <Compile Include="Models\BaseRequest.cs" />
     <Compile Include="Models\BaseResponse.cs" />
@@ -155,7 +147,9 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Interfaces\Http\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

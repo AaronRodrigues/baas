@@ -7,7 +7,6 @@ using Energy.EHLCommsLib.Contracts.Common;
 using Energy.EHLCommsLib.Contracts.Responses;
 using Energy.EHLCommsLib.External.Exceptions;
 using Energy.EHLCommsLib.Interfaces;
-using Energy.EHLCommsLib.Interfaces.Http;
 using Energy.EHLCommsLib.Models.Http;
 using Newtonsoft.Json;
 using Message = Energy.EHLCommsLib.Contracts.Common.Message;

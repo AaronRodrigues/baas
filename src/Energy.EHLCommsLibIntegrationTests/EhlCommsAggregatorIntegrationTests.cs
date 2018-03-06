@@ -1,11 +1,9 @@
 ﻿using Energy.EHLCommsLib;
 using Energy.EHLCommsLib.Enums;
-using Energy.EHLCommsLib.External.Services;
 using Energy.EHLCommsLib.Http;
 using Energy.EHLCommsLib.Models.Prices;
 using Energy.EHLCommsLibIntegrationTests.Helpers;
 using Energy.EHLCommsLibIntegrationTests.Http;
-using Energy.EHLCommsLibIntegrationTests.Model;
 using Energy.EHLCommsLibIntegrationTests.Services;
 using NUnit.Framework;
 

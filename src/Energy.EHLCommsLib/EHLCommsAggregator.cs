@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Energy.EHLCommsLib.External.Exceptions;
-using Energy.EHLCommsLib.External.Services;
-using Energy.EHLCommsLib.Http;
 using Energy.EHLCommsLib.Interfaces;
 using Energy.EHLCommsLib.Models.Prices;
 

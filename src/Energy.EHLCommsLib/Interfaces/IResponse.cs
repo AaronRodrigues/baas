@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Energy.EHLCommsLib.Interfaces.Http
+namespace Energy.EHLCommsLib.Interfaces
 {
     public interface IResponse
     {
