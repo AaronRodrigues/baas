@@ -22,6 +22,7 @@ namespace Energy.EHLCommsLibIntegrationTests
         public void Setup()
         {
             var ehlHttpClient = new EhlHttpClient();
+            var switchServiceHelper = new SwitchHelper(ehlHttpClient);
 
             _ehlCommsAggregator = new EhlCommsAggregator(ehlHttpClient);
 

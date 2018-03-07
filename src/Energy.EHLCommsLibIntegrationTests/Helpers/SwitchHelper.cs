@@ -36,17 +36,17 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
         public T GetSwitchesApiGetResponse<T>(string url, string relKey, BaseRequest request)
             where T : ApiResponse, new()
         {
-            var response = _ehlHttpClient.GetApiResponse<T>(url, "0");
+            var response = _ehlHttpClient.GetApiResponse<T>(url, "");
 
             HandleResponse(response, url, "GET");
 
             return response;
         }
 
-        public ApiResponse GetSwitchesApiPostResponse<T>(string url, T responseDataToSend, string relKey, BaseRequest request)
-            where T : ApiResponse, new()
+        public ApiResponse GetSwitchesApiPostResponse(string url, ApiResponse responseDataToSend, string relKey, BaseRequest request)
+
         {
-            var response = _ehlHttpClient.PostSwitchesApiGetResponse(url, responseDataToSend, relKey);
+            var response = _ehlHttpClient.PostSwitchesApiGetResponse(url, responseDataToSend, "");
 
             HandleResponse(response, url, "POST");
 
@@ -78,7 +78,7 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
 
         public ApiResponse GetApiDataTemplate(string url, string rel)
         {
-            var response = _ehlHttpClient.GetApiResponse<ApiResponse>(url, "0");
+            var response = _ehlHttpClient.GetApiResponse<ApiResponse>(url,"");
 
             HandleResponse(response, url, "TEMPLATE GET");
 
