@@ -3,7 +3,9 @@ using System.Net;
 using Energy.EHLCommsLib.Interfaces;
 using Energy.EHLCommsLib.Models.Http;
 using System.IO;
+using Energy.EHLCommsLib.Contracts.Responses;
 using Rhino.Mocks;
+using Newtonsoft.Json;
 
 namespace Energy.EHLCommsLibTests.Helpers
 {
@@ -12,39 +14,33 @@ namespace Energy.EHLCommsLibTests.Helpers
 
         public SwitchServicesTestsHelper Mock_ApiGetRequest(IEhlHttpClient ehlHttpClient, string jsonKey, string urlFilter, HttpStatusCode? responseStatusCode = null, WebException exception = null)
         {
-            //httpClientWrapper.Expect(
-            //    c =>
-            //    c.CallGet(Arg<HttpClientRequest>.Matches(r => r.Url.Contains(urlFilter))))
-            //                 .Return(new HttpClientResponse
-            //                 {
-            //                     Data = GetJsonFor(jsonKey),
-            //                     ResponseStatusCode = responseStatusCode,
-            //                     Exception = exception
-            //                 });
+            ehlHttpClient.Expect(
+                c =>
+                    c.GetApiResponse<ApiResponse>(Arg<String>.Matches(r => r.Contains(urlFilter)), Arg<String>.Matches(r => true)))
+                .Return(JsonConvert.DeserializeObject<ApiResponse>(GetJsonFor(jsonKey)));
+
             return this;
         }
 
-        public SwitchServicesTestsHelper Mock_ApiPostRequest(IEhlHttpClient ehlHttpClient, string jsonKey, string urlFilter)
+        public SwitchServicesTestsHelper Mock_PostSwitchesApiGetResponse(IEhlHttpClient ehlHttpClient, string jsonKey, string urlFilter)
         {
-            //httpClientWrapper.Expect(
-            //    c =>
-            //    c.CallPost(Arg<HttpClientRequest>.Matches(r => r.Url.Contains(urlFilter))))
-            //                 .Return(new HttpClientResponse
-            //                 {
-            //                     Data = GetJsonFor(jsonKey)
-            //                 });
+            ehlHttpClient.Expect(
+                c =>
+                    c.PostSwitchesApiGetResponse(Arg<String>.Matches(r => r.Contains(urlFilter)), Arg<ApiResponse>.Matches(r => true), Arg<String>.Matches(r => true)))
+
+                .Return(JsonConvert.DeserializeObject<ApiResponse>(GetJsonFor(jsonKey)));
+
             return this;
         }
 
-        #region Read switch messages from files
-
+        
         public string GetJsonFor(string key)
         {
             string fileName = $@".\SwitchApiMessages\{key}.json";
-            return File.ReadAllText(fileName);
+            var file = File.ReadAllText(fileName);
+            return file;
 
         }
 
-        #endregion
     }
 }

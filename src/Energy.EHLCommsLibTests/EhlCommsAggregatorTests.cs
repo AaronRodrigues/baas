@@ -56,14 +56,14 @@ namespace Energy.EHLCommsLibTests
         {
             _switchHelper
                 .Mock_ApiGetRequest(_iHttpClient, "CurrentSupply_GetResponse", "/current-supply?")
-                .Mock_ApiPostRequest(_iHttpClient, "CurrentSupply_PostResponse", "/current-supply?")
+                .Mock_PostSwitchesApiGetResponse(_iHttpClient, "CurrentSupply_PostResponse", "/current-supply?")
                 .Mock_ApiGetRequest(_iHttpClient, "SwitchStatus_GetResponse", "domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9?")
                 .Mock_ApiGetRequest(_iHttpClient, "ProRata-GetResponse", "/proratapreference?")
-                .Mock_ApiPostRequest(_iHttpClient, "ProRata-PostResponse", "/proratapreference?")
+                .Mock_PostSwitchesApiGetResponse(_iHttpClient, "ProRata-PostResponse", "/proratapreference?")
                 .Mock_ApiGetRequest(_iHttpClient, "Usage-GetResponse", "/usage?")
-                .Mock_ApiPostRequest(_iHttpClient, "Usage-PostResponse", "/usage?")
+                .Mock_PostSwitchesApiGetResponse(_iHttpClient, "Usage-PostResponse", "/usage?")
                 .Mock_ApiGetRequest(_iHttpClient, "Preferences-GetResponse", "/preferences?")
-                .Mock_ApiPostRequest(_iHttpClient, "Preferences-PostResponse", "/preferences?")
+                .Mock_PostSwitchesApiGetResponse(_iHttpClient, "Preferences-PostResponse", "/preferences?")
                 .Mock_ApiGetRequest(_iHttpClient, "FutureSupply-GetResponse", "/future-supply?")
                 .Mock_ApiGetRequest(_iHttpClient, "FutureSupplies-GetResponse", "/future-supplies?");
         }
@@ -138,7 +138,7 @@ namespace Energy.EHLCommsLibTests
         {
             _switchHelper
                 .Mock_ApiGetRequest(_iHttpClient, "CurrentSupply_GetResponse", "/current-supply?")
-                .Mock_ApiPostRequest(_iHttpClient, "CurrentSupply_PostResponse_WithErrors", "/current-supply?");
+                .Mock_PostSwitchesApiGetResponse(_iHttpClient, "CurrentSupply_PostResponse_WithErrors", "/current-supply?");
 
             var request = GetStubPricesRequest();
             request.SpendData.ElectricitySpendAmount = 50;
@@ -260,13 +260,13 @@ namespace Energy.EHLCommsLibTests
         public void Should_ReturnNegativeElecUsageErrorResponse_When_ApiResponseContainsNegativeElecUsage()
         {
             _switchHelper.Mock_ApiGetRequest(_iHttpClient, "CurrentSupply_GetResponse", "/current-supply?")
-                .Mock_ApiPostRequest(_iHttpClient, "CurrentSupply_PostResponse", "/current-supply?")
+                .Mock_PostSwitchesApiGetResponse(_iHttpClient, "CurrentSupply_PostResponse", "/current-supply?")
                 .Mock_ApiGetRequest(_iHttpClient, "SwitchStatus_GetResponse",
                     "domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9?")
                 .Mock_ApiGetRequest(_iHttpClient, "ProRata-GetResponse", "/proratapreference?")
-                .Mock_ApiPostRequest(_iHttpClient, "ProRata-PostResponse", "/proratapreference?")
+                .Mock_PostSwitchesApiGetResponse(_iHttpClient, "ProRata-PostResponse", "/proratapreference?")
                 .Mock_ApiGetRequest(_iHttpClient, "Usage-GetResponse", "/usage?")
-                .Mock_ApiPostRequest(_iHttpClient, "Usage-PostResponse-WithError-NegativeElecUsage", "/usage?");
+                .Mock_PostSwitchesApiGetResponse(_iHttpClient, "Usage-PostResponse-WithError-NegativeElecUsage", "/usage?");
 
             var request = GetStubPricesRequest();
 
@@ -281,13 +281,13 @@ namespace Energy.EHLCommsLibTests
         public void Should_ReturnNegativeElecUsageErrorResponse_When_ApiResponseContainsNegativeGasUsage()
         {
             _switchHelper.Mock_ApiGetRequest(_iHttpClient, "CurrentSupply_GetResponse", "/current-supply?")
-                .Mock_ApiPostRequest(_iHttpClient, "CurrentSupply_PostResponse", "/current-supply?")
+                .Mock_PostSwitchesApiGetResponse(_iHttpClient, "CurrentSupply_PostResponse", "/current-supply?")
                 .Mock_ApiGetRequest(_iHttpClient, "SwitchStatus_GetResponse",
                     "domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9?")
                 .Mock_ApiGetRequest(_iHttpClient, "ProRata-GetResponse", "/proratapreference?")
-                .Mock_ApiPostRequest(_iHttpClient, "ProRata-PostResponse", "/proratapreference?")
+                .Mock_PostSwitchesApiGetResponse(_iHttpClient, "ProRata-PostResponse", "/proratapreference?")
                 .Mock_ApiGetRequest(_iHttpClient, "Usage-GetResponse", "/usage?")
-                .Mock_ApiPostRequest(_iHttpClient, "Usage-PostResponse-WithError-NegativeGasUsage", "/usage?");
+                .Mock_PostSwitchesApiGetResponse(_iHttpClient, "Usage-PostResponse-WithError-NegativeGasUsage", "/usage?");
 
             var request = GetStubPricesRequest();
 
@@ -341,15 +341,15 @@ namespace Energy.EHLCommsLibTests
         {
             _switchHelper
                 .Mock_ApiGetRequest(_iHttpClient, "CurrentSupply_GetResponse", "/current-supply?")
-                .Mock_ApiPostRequest(_iHttpClient, "CurrentSupply_PostResponse", "/current-supply?")
+                .Mock_PostSwitchesApiGetResponse(_iHttpClient, "CurrentSupply_PostResponse", "/current-supply?")
                 .Mock_ApiGetRequest(_iHttpClient, "SwitchStatus_GetResponse_NoProRataUrl",
                     "domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9?")
                 .Mock_ApiGetRequest(_iHttpClient, "ProRata-GetResponse", "/proratapreference?")
-                .Mock_ApiPostRequest(_iHttpClient, "ProRata-PostResponse", "/proratapreference?")
+                .Mock_PostSwitchesApiGetResponse(_iHttpClient, "ProRata-PostResponse", "/proratapreference?")
                 .Mock_ApiGetRequest(_iHttpClient, "Usage-GetResponse", "/usage?")
-                .Mock_ApiPostRequest(_iHttpClient, "Usage-PostResponse", "/usage?")
+                .Mock_PostSwitchesApiGetResponse(_iHttpClient, "Usage-PostResponse", "/usage?")
                 .Mock_ApiGetRequest(_iHttpClient, "Preferences-GetResponse", "/preferences?")
-                .Mock_ApiPostRequest(_iHttpClient, "Preferences-PostResponse", "/preferences?")
+                .Mock_PostSwitchesApiGetResponse(_iHttpClient, "Preferences-PostResponse", "/preferences?")
                 .Mock_ApiGetRequest(_iHttpClient, "FutureSupply-GetResponse", "/future-supply?")
                 .Mock_ApiGetRequest(_iHttpClient, "FutureSupplies-GetResponse", "/future-supplies?");
 

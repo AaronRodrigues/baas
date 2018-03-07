@@ -3,7 +3,6 @@ using Energy.EHLCommsLib.Enums;
 using Energy.EHLCommsLib.Http;
 using Energy.EHLCommsLib.Models.Prices;
 using Energy.EHLCommsLibIntegrationTests.Helpers;
-using Energy.EHLCommsLibIntegrationTests.Http;
 using Energy.EHLCommsLibIntegrationTests.Services;
 using NUnit.Framework;
 
@@ -22,13 +21,8 @@ namespace Energy.EHLCommsLibIntegrationTests
         [SetUp]
         public void Setup()
         {
-            var httpClient = new HttpClient();
-            var httpClientWrapper = new HttpClientWrapper(httpClient);
-            var switchServiceClient = new SwitchServiceClient(httpClientWrapper);
-            var switchServiceHelper = new SwitchHelper(switchServiceClient);
             var ehlHttpClient = new EhlHttpClient();
 
-            _startSwitchHelper = new StartSwitchHelper(switchServiceHelper);
             _ehlCommsAggregator = new EhlCommsAggregator(ehlHttpClient);
 
             var startSwitchResponse = _startSwitchHelper.StartSwitch();

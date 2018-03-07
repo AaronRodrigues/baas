@@ -18,11 +18,11 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
 {
     public class SwitchHelper 
     {
-        private readonly ISwitchServiceClient _switchServiceClient;
+        private readonly IEhlHttpClient _ehlHttpClient;
 
-        public SwitchHelper(ISwitchServiceClient switchServiceClient)
+        public SwitchHelper(IEhlHttpClient ehlHttpClient)
         {
-            _switchServiceClient = switchServiceClient;
+            _ehlHttpClient = ehlHttpClient;
         }
 
         public void ApplyReference(ApiResponse response, string reference, string value)
@@ -36,17 +36,17 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
         public T GetSwitchesApiGetResponse<T>(string url, string relKey, BaseRequest request)
             where T : ApiResponse, new()
         {
-            var response = _switchServiceClient.GetSwitchesApiGetResponse<T>(url);
+            var response = _ehlHttpClient.GetApiResponse<T>(url, "0");
 
             HandleResponse(response, url, "GET");
 
             return response;
         }
 
-        public T GetSwitchesApiPostResponse<T>(string url, T responseDataToSend, string relKey, BaseRequest request)
+        public ApiResponse GetSwitchesApiPostResponse<T>(string url, T responseDataToSend, string relKey, BaseRequest request)
             where T : ApiResponse, new()
         {
-            var response = _switchServiceClient.GetSwitchesApiPostResponse(url, responseDataToSend, relKey);
+            var response = _ehlHttpClient.PostSwitchesApiGetResponse(url, responseDataToSend, relKey);
 
             HandleResponse(response, url, "POST");
 
@@ -78,7 +78,7 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
 
         public ApiResponse GetApiDataTemplate(string url, string rel)
         {
-            var response = _switchServiceClient.GetSwitchesApiGetResponse<ApiResponse>(url);
+            var response = _ehlHttpClient.GetApiResponse<ApiResponse>(url, "0");
 
             HandleResponse(response, url, "TEMPLATE GET");
 
