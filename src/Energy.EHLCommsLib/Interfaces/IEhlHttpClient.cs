@@ -1,12 +1,10 @@
-﻿using Energy.EHLCommsLib.Contracts.FutureSupplies;
-using Energy.EHLCommsLib.Contracts.Responses;
-using Energy.EHLCommsLib.Models;
+﻿using Energy.EHLCommsLib.Contracts.Responses;
 
 namespace Energy.EHLCommsLib.Interfaces
 {
     public interface IEhlHttpClient
     {
-        T GetApiResponse<T>(string url, string journeyid) where T : ApiResponse, new();
-        ApiResponse PostSwitchesApiGetResponse(string url, ApiResponse responseDataToSend, string journeyid);
+        T GetApiResponse<T>(string url) where T : ApiResponse, new();
+        ApiResponse PostApiGetResponse(string url, ApiResponse responseDataToSend);
     }
 }

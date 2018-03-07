@@ -1,20 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 using Energy.EHLCommsLib.Constants;
+using Energy.EHLCommsLib.Contracts;
 using Energy.EHLCommsLib.Contracts.Common;
 using Energy.EHLCommsLib.Contracts.Common.Data;
 using Energy.EHLCommsLib.Contracts.Responses;
-using Energy.EHLCommsLib.Enums;
-using Energy.EHLCommsLib.External.Exceptions;
-using Energy.EHLCommsLib.Models;
-using Message = Energy.EHLCommsLib.Models.Message;
-using Energy.EHLCommsLib.Contracts;
 using Energy.EHLCommsLib.Interfaces;
+using Energy.EHLCommsLib.Models;
 
-namespace Energy.EHLCommsLibIntegrationTests.Services
+namespace Energy.EHLCommsLibIntegrationTests.Helpers
 {
     public class SwitchHelper 
     {
@@ -36,7 +31,7 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
         public T GetSwitchesApiGetResponse<T>(string url, string relKey, BaseRequest request)
             where T : ApiResponse, new()
         {
-            var response = _ehlHttpClient.GetApiResponse<T>(url, "");
+            var response = _ehlHttpClient.GetApiResponse<T>(url);
 
             HandleResponse(response, url, "GET");
 
@@ -46,7 +41,7 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
         public ApiResponse GetSwitchesApiPostResponse(string url, ApiResponse responseDataToSend, string relKey, BaseRequest request)
 
         {
-            var response = _ehlHttpClient.PostSwitchesApiGetResponse(url, responseDataToSend, "");
+            var response = _ehlHttpClient.PostApiGetResponse(url, responseDataToSend);
 
             HandleResponse(response, url, "POST");
 
@@ -78,7 +73,7 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
 
         public ApiResponse GetApiDataTemplate(string url, string rel)
         {
-            var response = _ehlHttpClient.GetApiResponse<ApiResponse>(url,"");
+            var response = _ehlHttpClient.GetApiResponse<ApiResponse>(url);
 
             HandleResponse(response, url, "TEMPLATE GET");
 

@@ -57,7 +57,7 @@ namespace Energy.EHLCommsLibTests
             _switchHelper
                 .Mock_ApiGetRequest(_iHttpClient, "CurrentSupply_GetResponse", "/current-supply?")
                 .Mock_PostSwitchesApiGetResponse(_iHttpClient, "CurrentSupply_PostResponse", "/current-supply?")
-                .Mock_ApiGetRequest(_iHttpClient, "SwitchStatus_GetResponse", "domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9?")
+                .Mock_ApiGetRequest(_iHttpClient, "SwitchStatus_GetResponse", "/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9?")
                 .Mock_ApiGetRequest(_iHttpClient, "ProRata-GetResponse", "/proratapreference?")
                 .Mock_PostSwitchesApiGetResponse(_iHttpClient, "ProRata-PostResponse", "/proratapreference?")
                 .Mock_ApiGetRequest(_iHttpClient, "Usage-GetResponse", "/usage?")
@@ -262,7 +262,7 @@ namespace Energy.EHLCommsLibTests
             _switchHelper.Mock_ApiGetRequest(_iHttpClient, "CurrentSupply_GetResponse", "/current-supply?")
                 .Mock_PostSwitchesApiGetResponse(_iHttpClient, "CurrentSupply_PostResponse", "/current-supply?")
                 .Mock_ApiGetRequest(_iHttpClient, "SwitchStatus_GetResponse",
-                    "domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9?")
+                    "/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9?")
                 .Mock_ApiGetRequest(_iHttpClient, "ProRata-GetResponse", "/proratapreference?")
                 .Mock_PostSwitchesApiGetResponse(_iHttpClient, "ProRata-PostResponse", "/proratapreference?")
                 .Mock_ApiGetRequest(_iHttpClient, "Usage-GetResponse", "/usage?")
@@ -283,7 +283,7 @@ namespace Energy.EHLCommsLibTests
             _switchHelper.Mock_ApiGetRequest(_iHttpClient, "CurrentSupply_GetResponse", "/current-supply?")
                 .Mock_PostSwitchesApiGetResponse(_iHttpClient, "CurrentSupply_PostResponse", "/current-supply?")
                 .Mock_ApiGetRequest(_iHttpClient, "SwitchStatus_GetResponse",
-                    "domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9?")
+                    "/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9?")
                 .Mock_ApiGetRequest(_iHttpClient, "ProRata-GetResponse", "/proratapreference?")
                 .Mock_PostSwitchesApiGetResponse(_iHttpClient, "ProRata-PostResponse", "/proratapreference?")
                 .Mock_ApiGetRequest(_iHttpClient, "Usage-GetResponse", "/usage?")
@@ -343,7 +343,7 @@ namespace Energy.EHLCommsLibTests
                 .Mock_ApiGetRequest(_iHttpClient, "CurrentSupply_GetResponse", "/current-supply?")
                 .Mock_PostSwitchesApiGetResponse(_iHttpClient, "CurrentSupply_PostResponse", "/current-supply?")
                 .Mock_ApiGetRequest(_iHttpClient, "SwitchStatus_GetResponse_NoProRataUrl",
-                    "domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9?")
+                    "/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9?")
                 .Mock_ApiGetRequest(_iHttpClient, "ProRata-GetResponse", "/proratapreference?")
                 .Mock_PostSwitchesApiGetResponse(_iHttpClient, "ProRata-PostResponse", "/proratapreference?")
                 .Mock_ApiGetRequest(_iHttpClient, "Usage-GetResponse", "/usage?")

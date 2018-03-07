@@ -4,6 +4,7 @@ using Energy.EHLCommsLib.Enums;
 using Energy.EHLCommsLib.Extensions;
 
 using Energy.EHLCommsLib.Models;
+using Energy.EHLCommsLibIntegrationTests.Helpers;
 using Energy.EHLCommsLibIntegrationTests.Model;
 
 

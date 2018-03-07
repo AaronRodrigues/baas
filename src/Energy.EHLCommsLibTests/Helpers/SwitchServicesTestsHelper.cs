@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using Energy.EHLCommsLib.Interfaces;
-using Energy.EHLCommsLib.Models.Http;
 using System.IO;
 using Energy.EHLCommsLib.Contracts.Responses;
 using Rhino.Mocks;
@@ -16,7 +15,7 @@ namespace Energy.EHLCommsLibTests.Helpers
         {
             ehlHttpClient.Expect(
                 c =>
-                    c.GetApiResponse<ApiResponse>(Arg<String>.Matches(r => r.Contains(urlFilter)), Arg<String>.Matches(r => true)))
+                    c.GetApiResponse<ApiResponse>(Arg<String>.Matches(r => r.Contains(urlFilter))))
                 .Return(JsonConvert.DeserializeObject<ApiResponse>(GetJsonFor(jsonKey)));
 
             return this;
@@ -26,7 +25,7 @@ namespace Energy.EHLCommsLibTests.Helpers
         {
             ehlHttpClient.Expect(
                 c =>
-                    c.PostSwitchesApiGetResponse(Arg<String>.Matches(r => r.Contains(urlFilter)), Arg<ApiResponse>.Matches(r => true), Arg<String>.Matches(r => true)))
+                    c.PostApiGetResponse(Arg<String>.Matches(r => r.Contains(urlFilter)), Arg<ApiResponse>.Matches(r => true)))
 
                 .Return(JsonConvert.DeserializeObject<ApiResponse>(GetJsonFor(jsonKey)));
 

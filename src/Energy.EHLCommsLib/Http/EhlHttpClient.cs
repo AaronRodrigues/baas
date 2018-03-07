@@ -5,7 +5,6 @@ using System.Text;
 using Energy.EHLCommsLib.Constants;
 using Energy.EHLCommsLib.Contracts.Common;
 using Energy.EHLCommsLib.Contracts.Responses;
-using Energy.EHLCommsLib.External.Exceptions;
 using Energy.EHLCommsLib.Interfaces;
 using Energy.EHLCommsLib.Models.Http;
 using Newtonsoft.Json;
@@ -17,25 +16,22 @@ namespace Energy.EHLCommsLib.Http
     public class EhlHttpClient : IEhlHttpClient
     {
         private const string ContentType = @"application/vnd-fri-domestic-energy+json;version=2.0";
-        public EhlHttpClient()
-        {
-        }
 
-        public T GetApiResponse<T>(string url, string journeyid) where T : ApiResponse, new()
+        public T GetApiResponse<T>(string url) where T : ApiResponse, new()
         {
             var apiResponse = ApiGet(url);
-            return HandleRequest<T>(apiResponse, url, journeyid);
+            return HandleRequest<T>(apiResponse, url);
         }
 
-        public ApiResponse PostSwitchesApiGetResponse(string url, ApiResponse responseDataToSend, string journeyid)
+        public ApiResponse PostApiGetResponse(string url, ApiResponse responseDataToSend)
         {
             var dataToPost = JsonConvert.SerializeObject(responseDataToSend.DataTemplate);
             var apiResponse = ApiPost(url, dataToPost);
-            return HandleRequest<ApiResponse>(apiResponse, url, journeyid);
+            return HandleRequest<ApiResponse>(apiResponse, url);
         }
        
 
-        private T HandleRequest<T>(IResponse apiResponse, string url, string journeyid) where T : ApiResponse, new()
+        private T HandleRequest<T>(IResponse apiResponse, string url) where T : ApiResponse, new()
         {
             T response;
             try
@@ -62,7 +58,7 @@ namespace Energy.EHLCommsLib.Http
                         }
                     }
                 };
-                LogError(url, "TEMPLATE GET", journeyid);
+                //LogError(url, "TEMPLATE GET", journeyid);
             }
             //Add logging
             return response;
@@ -96,17 +92,17 @@ namespace Energy.EHLCommsLib.Http
             return url.Replace("http://", "https://");
         }
 
-        private void LogError(string action, string url, string journeyId)
-        {
-            var logInfo = string.Format("Invalid switch encountered while making a {0} request to EHL using url {1}. JourneyId = {2}", action, url, journeyId);
-            //Log.Info(logInfo);
-            var message = string.Format(
-                "Internal server error received from EHL\nMessage = 'Internal server error. Reference:', JourneyId = '{0}', Action='{1}', Url='{2}'",
-                journeyId,
-                action,
-                url);
-            throw new InvalidSwitchException(message, new WebException("The remote server returned an error: (500) Internal Server Error."));
-        }
+        //private void LogError(string action, string url, string journeyId)
+        //{
+        //    var logInfo = string.Format("Invalid switch encountered while making a {0} request to EHL using url {1}. JourneyId = {2}", action, url, journeyId);
+        //    //Log.Info(logInfo);
+        //    var message = string.Format(
+        //        "Internal server error received from EHL\nMessage = 'Internal server error. Reference:', JourneyId = '{0}', Action='{1}', Url='{2}'",
+        //        journeyId,
+        //        action,
+        //        url);
+        //    throw new InvalidSwitchException(message, new WebException("The remote server returned an error: (500) Internal Server Error."));
+        //}
 
     }
 }
