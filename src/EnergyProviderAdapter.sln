@@ -17,6 +17,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Energy.EHLCommsLibIntegrati
 		{EEF446CB-72A5-4F03-8E27-A50A6E91984D} = {EEF446CB-72A5-4F03-8E27-A50A6E91984D}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{A3425EEF-E572-43BB-83E0-D08A62F06E2C}"
+	ProjectSection(SolutionItems) = preProject
+		..\fake = ..\fake
+		..\fake.bat = ..\fake.bat
+		..\fake.fsx = ..\fake.fsx
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
