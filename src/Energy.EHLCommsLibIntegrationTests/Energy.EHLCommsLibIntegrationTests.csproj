@@ -70,7 +70,6 @@
     <Compile Include="Model\AppFormQuestion\UnknownAppFormQuestion.cs" />
     <Compile Include="Helpers\StartSwitchHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Helpers\SwitchHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Energy.EHLCommsLib\Energy.EHLCommsLib.csproj">

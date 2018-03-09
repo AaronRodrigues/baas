@@ -22,16 +22,11 @@ namespace Energy.EHLCommsLibIntegrationTests
         public void Setup()
         {
             var ehlHttpClient = new EhlHttpClient();
-            var switchHelper = new SwitchHelper(ehlHttpClient);
-
             _ehlCommsAggregator = new EhlCommsAggregator(ehlHttpClient);
-            _startSwitchHelper = new StartSwitchHelper(switchHelper);
+            _startSwitchHelper = new StartSwitchHelper(ehlHttpClient);
             var startSwitchResponse = _startSwitchHelper.StartSwitch();
 
-
             pricesRequest = EntityHelper.GenerateValidPricesRequest(startSwitchResponse);
-
-
         }
 
         [Test]
