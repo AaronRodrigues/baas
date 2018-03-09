@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Energy.EHLCommsLib.External.Exceptions
+namespace Energy.EHLCommsLib.Exceptions
 {
     public class InvalidSwitchException : Exception
     {

@@ -121,13 +121,13 @@
     <Compile Include="Enums\PaymentMethodType.cs" />
     <Compile Include="Enums\PriceFeatureCategory.cs" />
     <Compile Include="Enums\UsagePeriod.cs" />
+    <Compile Include="Exceptions\InvalidSwitchException.cs" />
     <Compile Include="Extensions\BaseResponseExtensions.cs" />
     <Compile Include="Extensions\ExtensionMethods.cs" />
     <Compile Include="Extensions\GetPricesRequestExtensions.cs" />
     <Compile Include="Extensions\GetPricesResponseExtensions.cs" />
     <Compile Include="Extensions\SwitchApiContractsExtensions.cs" />
     <Compile Include="Extensions\TariffFeaturesExtensions.cs" />
-    <Compile Include="External\Exceptions\InvalidSwitchException.cs" />
     <Compile Include="Http\EhlHttpClient.cs" />
     <Compile Include="Interfaces\IEhlHttpClient.cs" />
     <Compile Include="Interfaces\IResponse.cs" />

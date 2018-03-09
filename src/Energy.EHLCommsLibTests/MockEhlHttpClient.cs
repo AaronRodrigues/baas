@@ -5,7 +5,7 @@ using Energy.EHLCommsLib.Contracts.Responses;
 using Energy.EHLCommsLib.Interfaces;
 using Newtonsoft.Json;
 using System.IO;
-using Energy.EHLCommsLib.External.Exceptions;
+using Energy.EHLCommsLib.Exceptions;
 
 namespace Energy.EHLCommsLibTests
 {

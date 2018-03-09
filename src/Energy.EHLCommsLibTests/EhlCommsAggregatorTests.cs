@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net;
 using Energy.EHLCommsLib;
 using Energy.EHLCommsLib.Enums;
-using Energy.EHLCommsLib.External.Exceptions;
+using Energy.EHLCommsLib.Exceptions;
 using Energy.EHLCommsLib.Models.Prices;
 using NUnit.Framework;
 

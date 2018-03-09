@@ -16,7 +16,7 @@ namespace Energy.EHLCommsLibIntegrationTests
 
         private StartSwitchHelper _startSwitchHelper;
         private EhlCommsAggregator _ehlCommsAggregator;
-        private GetPricesRequest pricesRequest;
+        private GetPricesRequest _pricesRequest;
 
         [SetUp]
         public void Setup()
@@ -26,15 +26,15 @@ namespace Energy.EHLCommsLibIntegrationTests
             _startSwitchHelper = new StartSwitchHelper(ehlHttpClient);
             var startSwitchResponse = _startSwitchHelper.StartSwitch();
 
-            pricesRequest = EntityHelper.GenerateValidPricesRequest(startSwitchResponse);
+            _pricesRequest = EntityHelper.GenerateValidPricesRequest(startSwitchResponse);
         }
 
         [Test]
         public void Should_ReturnPrices_For_KwhUsageWithoutEconomy7()
         {
-            pricesRequest.EnergyJourneyType = EnergyJourneyType.HaveMyBill;
+            _pricesRequest.EnergyJourneyType = EnergyJourneyType.HaveMyBill;
 
-            var resultsResponse = _ehlCommsAggregator.GetPrices(pricesRequest, null);
+            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest, null);
 
             Assert.AreEqual(true, resultsResponse.Success);
             Assert.AreNotEqual(0, resultsResponse.Results);
@@ -43,11 +43,11 @@ namespace Energy.EHLCommsLibIntegrationTests
         [Test]
         public void Should_ReturnPrices_For_KwhUsageWithEconomy7()
         {
-            pricesRequest.EnergyJourneyType = EnergyJourneyType.HaveMyBill;
-            pricesRequest.PercentageNightUsage = 0.65m;
-            pricesRequest.ElectricityEco7 = true;
+            _pricesRequest.EnergyJourneyType = EnergyJourneyType.HaveMyBill;
+            _pricesRequest.PercentageNightUsage = 0.65m;
+            _pricesRequest.ElectricityEco7 = true;
 
-            var resultsResponse = _ehlCommsAggregator.GetPrices(pricesRequest, null);
+            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest, null);
 
             Assert.AreEqual(true, resultsResponse.Success);
             Assert.AreNotEqual(0, resultsResponse.Results);
@@ -56,9 +56,9 @@ namespace Energy.EHLCommsLibIntegrationTests
         [Test]
         public void Should_ReturnPrices_For_SpendUsageOnDontHaveMyBillJourney()
         {
-            pricesRequest.EnergyJourneyType = EnergyJourneyType.DontHaveMyBill;
+            _pricesRequest.EnergyJourneyType = EnergyJourneyType.DontHaveMyBill;
 
-            var resultsResponse = _ehlCommsAggregator.GetPrices(pricesRequest, null);
+            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest, null);
 
             Assert.AreEqual(true, resultsResponse.Success);
             Assert.AreNotEqual(0, resultsResponse.Results);
@@ -67,11 +67,11 @@ namespace Energy.EHLCommsLibIntegrationTests
         [Test]
         public void Should_ReturnPrices_For_EstimatorUsageOnDontHaveMyBillJourney()
         {
-            pricesRequest.EnergyJourneyType = EnergyJourneyType.DontHaveMyBill;
-            pricesRequest.UseDetailedEstimatorForElectricity = true;
-            pricesRequest.UseDetailedEstimatorForGas = true;
+            _pricesRequest.EnergyJourneyType = EnergyJourneyType.DontHaveMyBill;
+            _pricesRequest.UseDetailedEstimatorForElectricity = true;
+            _pricesRequest.UseDetailedEstimatorForGas = true;
 
-            var resultsResponse = _ehlCommsAggregator.GetPrices(pricesRequest, null);
+            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest, null);
 
             Assert.AreEqual(true, resultsResponse.Success);
             Assert.AreNotEqual(0, resultsResponse.Results);
@@ -97,13 +97,13 @@ namespace Energy.EHLCommsLibIntegrationTests
         [Test]
         public void Should_ReturnPrices_For_GasOnlyEstimatorUsageOnDontHaveMyBillJourney()
         {
-            pricesRequest.EnergyJourneyType = EnergyJourneyType.DontHaveMyBill;
-            pricesRequest.UseDetailedEstimatorForElectricity = false;
-            pricesRequest.UseDetailedEstimatorForGas = true;
-            pricesRequest.SpendData.ElectricitySpendAmount = 150;
-            pricesRequest.SpendData.ElectricitySpendPeriod = UsagePeriod.Monthly;
+            _pricesRequest.EnergyJourneyType = EnergyJourneyType.DontHaveMyBill;
+            _pricesRequest.UseDetailedEstimatorForElectricity = false;
+            _pricesRequest.UseDetailedEstimatorForGas = true;
+            _pricesRequest.SpendData.ElectricitySpendAmount = 150;
+            _pricesRequest.SpendData.ElectricitySpendPeriod = UsagePeriod.Monthly;
 
-            var resultsResponse = _ehlCommsAggregator.GetPrices(pricesRequest, null);
+            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest, null);
 
             Assert.AreEqual(true, resultsResponse.Success);
             Assert.AreNotEqual(0, resultsResponse.Results);
