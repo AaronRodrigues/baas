@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EhlCommsAggregatorTests.cs" />
+    <Compile Include="MockEhlHttpClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\SwitchServicesTestsHelper.cs" />
   </ItemGroup>
@@ -71,13 +72,13 @@
     <None Include="SwitchApiMessages\CurrentSupply-GetResponse-WithError-InternalServerError.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="SwitchApiMessages\CurrentSupply_GetResponse.json">
+    <None Include="SwitchApiMessages\CurrentSupply-GetResponse.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="SwitchApiMessages\CurrentSupply_PostResponse.json">
+    <None Include="SwitchApiMessages\CurrentSupply-PostResponse.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="SwitchApiMessages\CurrentSupply_PostResponse_WithErrors.json">
+    <None Include="SwitchApiMessages\CurrentSupply-PostResponse-WithErrors.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="SwitchApiMessages\FutureSupplies-GetResponse.json">
@@ -98,10 +99,10 @@
     <None Include="SwitchApiMessages\ProRata-PostResponse.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="SwitchApiMessages\SwitchStatus_GetResponse.json">
+    <None Include="SwitchApiMessages\SwitchStatus-GetResponse.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="SwitchApiMessages\SwitchStatus_GetResponse_NoProRataUrl.json">
+    <None Include="SwitchApiMessages\SwitchStatus-GetResponse-NoProRataUrl.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="SwitchApiMessages\Usage-GetResponse.json">
