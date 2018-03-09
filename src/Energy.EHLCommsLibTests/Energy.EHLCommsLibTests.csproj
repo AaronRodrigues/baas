@@ -55,8 +55,8 @@
   <ItemGroup>
     <Compile Include="EhlCommsAggregatorTests.cs" />
     <Compile Include="MockEhlHttpClient.cs" />
+    <Compile Include="MockEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Helpers\SwitchServicesTestsHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Energy.EHLCommsLib\Energy.EHLCommsLib.csproj">

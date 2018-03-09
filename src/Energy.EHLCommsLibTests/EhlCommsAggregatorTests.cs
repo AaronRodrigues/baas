@@ -6,11 +6,8 @@ using System.Net;
 using Energy.EHLCommsLib;
 using Energy.EHLCommsLib.Enums;
 using Energy.EHLCommsLib.External.Exceptions;
-using Energy.EHLCommsLib.Interfaces;
 using Energy.EHLCommsLib.Models.Prices;
-using Energy.EHLCommsLibTests.Helpers;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace Energy.EHLCommsLibTests
 {

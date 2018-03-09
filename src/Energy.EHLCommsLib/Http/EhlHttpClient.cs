@@ -5,6 +5,7 @@ using System.Text;
 using Energy.EHLCommsLib.Constants;
 using Energy.EHLCommsLib.Contracts.Common;
 using Energy.EHLCommsLib.Contracts.Responses;
+using Energy.EHLCommsLib.External.Exceptions;
 using Energy.EHLCommsLib.Interfaces;
 using Energy.EHLCommsLib.Models.Http;
 using Newtonsoft.Json;
@@ -20,18 +21,18 @@ namespace Energy.EHLCommsLib.Http
         public T GetApiResponse<T>(string url) where T : ApiResponse, new()
         {
             var apiResponse = ApiGet(url);
-            return HandleRequest<T>(apiResponse, url);
+            return HandleRequest<T>(apiResponse, url, "GET");
         }
 
         public ApiResponse PostApiGetResponse(string url, ApiResponse responseDataToSend)
         {
             var dataToPost = JsonConvert.SerializeObject(responseDataToSend.DataTemplate);
             var apiResponse = ApiPost(url, dataToPost);
-            return HandleRequest<ApiResponse>(apiResponse, url);
+            return HandleRequest<ApiResponse>(apiResponse, url, "POST");
         }
        
 
-        private T HandleRequest<T>(IResponse apiResponse, string url) where T : ApiResponse, new()
+        private T HandleRequest<T>(IResponse apiResponse, string url, string action) where T : ApiResponse, new()
         {
             T response;
             try
@@ -42,23 +43,11 @@ namespace Energy.EHLCommsLib.Http
             }
             catch (Exception)
             {
-                response = new T
-                {
-                    StatusCode = HttpStatusCode.InternalServerError,
-                    Exception = new WebException("The remote server returned an error: (500) Internal Server Error."),
-                    Errors = new List<Error>
-                    {
-                        new Error
-                        {
-                            Message = new Message
-                            {
-                                Id = EhlErrorConstants.EhlErrorGeneric,
-                                Text = "Internal server error. Reference:"
-                            }
-                        }
-                    }
-                };
-                //LogError(url, "TEMPLATE GET", journeyid);
+                var message = string.Format(
+                "Internal server error received from EHL\nMessage = 'Internal server error. Reference:', Action='{0}', Url='{1}'",
+                action,
+                url);
+                throw new InvalidSwitchException(message, new WebException("The remote server returned an error: (500) Internal Server Error."));
             }
             //Add logging
             return response;
@@ -91,18 +80,6 @@ namespace Energy.EHLCommsLib.Http
         {
             return url.Replace("http://", "https://");
         }
-
-        //private void LogError(string action, string url, string journeyId)
-        //{
-        //    var logInfo = string.Format("Invalid switch encountered while making a {0} request to EHL using url {1}. JourneyId = {2}", action, url, journeyId);
-        //    //Log.Info(logInfo);
-        //    var message = string.Format(
-        //        "Internal server error received from EHL\nMessage = 'Internal server error. Reference:', JourneyId = '{0}', Action='{1}', Url='{2}'",
-        //        journeyId,
-        //        action,
-        //        url);
-        //    throw new InvalidSwitchException(message, new WebException("The remote server returned an error: (500) Internal Server Error."));
-        //}
 
     }
 }

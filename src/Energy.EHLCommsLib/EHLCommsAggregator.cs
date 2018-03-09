@@ -25,7 +25,7 @@ namespace Energy.EHLCommsLib
             {
                 var pricesRetrievedSuccess = ApplyDataFromEhlToPricesResponse(request, response, customFeatures, tariffCustomFeatureEnabled);
             }
-            catch (InvalidSwitchException)
+            catch (InvalidSwitchException ex)
             {
                 //Log.Info(string.Format("Invalid switch for JourneyId = {0}, SwitchId = {1}, SwitchUrl = {2}", request.JourneyId, request.SwitchId, request.SwitchUrl));
                 throw;

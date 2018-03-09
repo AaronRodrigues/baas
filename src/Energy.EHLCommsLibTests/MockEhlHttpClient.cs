@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Energy.EHLCommsLib.Contracts.Responses;
@@ -10,34 +9,18 @@ using Energy.EHLCommsLib.External.Exceptions;
 
 namespace Energy.EHLCommsLibTests
 {
-    class MockEntry
+   public class MockEhlHttpClient : IEhlHttpClient
     {
-        public MockEntry(string fileName, HttpStatusCode responseStatusCode, WebException exception)
-        {
-            this.fileName = fileName;
-            this.responseStatusCode = responseStatusCode;
-            this.exception = exception;
-        }
-
-        public string fileName { get; set; }
-        public HttpStatusCode responseStatusCode { get; set; }
-        public WebException exception { get; set; }
-    }
-
-    class MockEhlHttpClient : IEhlHttpClient
-    {
-
-        private Dictionary<string, MockEntry> mockMap_get = new Dictionary<string, MockEntry>();
-        private Dictionary<string, MockEntry> mockMap_post = new Dictionary<string, MockEntry>();
-
+        private Dictionary<string, MockEntry> _mockMapGet = new Dictionary<string, MockEntry>();
+        private Dictionary<string, MockEntry> _mockMapPost = new Dictionary<string, MockEntry>();
 
         public T GetApiResponse<T>(string url) where T : ApiResponse, new()
         {
-            var entry = GetEntryFor(mockMap_get, url);
-            var json = GetJsonFor(entry.fileName);
+            var entry = GetEntryFor(_mockMapGet, url);
+            var json = GetJsonFor(entry.FileName);
             var result = JsonConvert.DeserializeObject<T>(json);
-            result.StatusCode = entry.responseStatusCode;
-            result.Exception = entry.exception;
+            result.StatusCode = entry.ResponseStatusCode;
+            result.Exception = entry.Exception;
 
             if (result.Exception != null)
             {
@@ -49,21 +32,21 @@ namespace Energy.EHLCommsLibTests
 
         public ApiResponse PostApiGetResponse(string url, ApiResponse responseDataToSend)
         {
-            var entry = GetEntryFor(mockMap_post, url);
-            var json = GetJsonFor(entry.fileName);
+            var entry = GetEntryFor(_mockMapPost, url);
+            var json = GetJsonFor(entry.FileName);
             var result = JsonConvert.DeserializeObject<ApiResponse>(json);
             return result;
         }
 
         public MockEhlHttpClient Mock_GetApiResponse(string fileName, string urlFilter, HttpStatusCode responseStatusCode = HttpStatusCode.OK, WebException exception = null)
         {
-            mockMap_get[urlFilter] = new MockEntry (fileName, responseStatusCode, exception);
+            _mockMapGet[urlFilter] = new MockEntry (fileName, responseStatusCode, exception);
             return this;
         }
 
         public MockEhlHttpClient Mock_PostSwitchesApiGetResponse(string fileName, string urlFilter)
         {
-            mockMap_post[urlFilter] = new MockEntry(fileName, HttpStatusCode.OK, null);
+            _mockMapPost[urlFilter] = new MockEntry(fileName, HttpStatusCode.OK, null);
             return this;
         }
 
