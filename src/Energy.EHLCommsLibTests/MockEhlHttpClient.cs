@@ -6,6 +6,7 @@ using Energy.EHLCommsLib.Contracts.Responses;
 using Energy.EHLCommsLib.Interfaces;
 using Newtonsoft.Json;
 using System.IO;
+using Energy.EHLCommsLib.External.Exceptions;
 
 namespace Energy.EHLCommsLibTests
 {
@@ -37,6 +38,11 @@ namespace Energy.EHLCommsLibTests
             var result = JsonConvert.DeserializeObject<T>(json);
             result.StatusCode = entry.responseStatusCode;
             result.Exception = entry.exception;
+
+            if (result.Exception != null)
+            {
+                throw new InvalidSwitchException("", result.Exception);
+            }
 
             return result;
         }
