@@ -48,8 +48,7 @@ namespace Energy.EHLCommsLib
         private bool ApplyDataFromEhlToPricesResponse(GetPricesRequest request, GetPricesResponse response, Dictionary<string, string> customFeatures,
             bool tariffCustomFeatureEnabled)
         {
-            var journeyId = "";
-            var ehlApiCalls = new EhlApiCalls(_ehlHttpClient, journeyId);
+            var ehlApiCalls = new EhlApiCalls(_ehlHttpClient, request.JourneyId.ToString());
             //Log.Info(string.Format("GetPrices started for JourneyId = {0}, SwitchId = {1}, SwitchUrl = {2}", request.JourneyId, request.SwitchId, request.SwitchUrl));
             var supplyStageResult = ehlApiCalls.GetSupplierEhlApiResponse(request, response);
             if (!supplyStageResult.ApiCallWasSuccessful)

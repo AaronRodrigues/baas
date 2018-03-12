@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Text;
-using Energy.EHLCommsLib.Constants;
-using Energy.EHLCommsLib.Contracts.Common;
 using Energy.EHLCommsLib.Contracts.Responses;
 using Energy.EHLCommsLib.Exceptions;
 using Energy.EHLCommsLib.Interfaces;
 using Energy.EHLCommsLib.Models.Http;
 using Newtonsoft.Json;
-using Message = Energy.EHLCommsLib.Contracts.Common.Message;
 
 namespace Energy.EHLCommsLib.Http
 {
