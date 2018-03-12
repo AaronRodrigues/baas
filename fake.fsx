@@ -110,6 +110,31 @@ Target "prepush" (fun _ ->
    trace "========================================================="
 )
 
+Target "Deploy" (fun _ ->
+  let env = environVarOrFail "DEPLOY_ENV"
+
+  let script = sprintf "/c powershell -ExecutionPolicy Unrestricted ./deploy.ps1 -env %s" env
+
+  let p = new System.Diagnostics.Process();              
+  p.StartInfo.FileName <- "cmd.exe";
+  p.StartInfo.Arguments <- (script)
+  p.StartInfo.RedirectStandardError <- true
+  p.StartInfo.RedirectStandardOutput <- true
+  p.StartInfo.UseShellExecute <- false
+  p.Start() |> ignore
+
+  let err = p.StandardError.ReadToEnd() 
+
+  if err.Length <> 0 then 
+    printfn "%A" (err)
+    failwith "deploy failed"
+  else  
+    printfn "Processing..."
+    printfn "%A" (p.StandardOutput.ReadToEnd())
+    printfn "Finished"
+)
+
+
 "Clean"
    ==> "RestoreNuGetPackages"
    ==> "GenerateAssemblyInfo"
