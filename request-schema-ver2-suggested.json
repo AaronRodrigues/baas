@@ -1,0 +1,147 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "x-typeName": "EnergyRisk",
+  "additionalProperties": false,
+  "properties": {
+
+    "JourneyId": {
+      "type": [ "null", "string" ]
+    },
+
+    "Postcode": {
+      "type": ["null", "string"]
+    },
+    "SwitchId": {
+      "type": ["null", "string"]
+    },
+    "EnergyJourneyType": {
+      "type": ["null", "integer"]
+    },
+
+
+    "Bill": {
+      "type": "object",
+      "x-typeName": "Bill",
+      "additionalProperties": false,
+      "properties": {
+        "ElectricityUsage": {
+          "type": ["null", "integer"]
+        },
+        "ElectricityUsagePeriod": {
+          "type": ["null", "integer"]
+        },
+        "ElectricitySpend": {
+          "type": ["null", "number"]
+        },
+        "ElectricitySpendPeriod": {
+          "type": ["null", "number"]
+        },
+        "GasUsage": {
+          "type": ["null", "integer"]
+        },
+        "GasUsagePeriod": {
+          "type": ["null", "integer"]
+        },
+        "GasSpend": {
+          "type": ["null", "number"]
+        },
+        "GasSpendPeriod": {
+          "type": ["null", "integer"]
+        }
+      }
+    },
+    "NoBill": {
+      "type": "object",
+      "x-typeName": "NoBill",
+      "additionalProperties": false,
+      "properties": {
+
+        "ElectricitySpend": {
+          "type": ["null", "number"]
+        },
+        "ElectricitySpendPeriod": {
+          "type": ["null", "number"]
+        },
+        "GasSpend": {
+          "type": ["null", "number"]
+        },
+        "GasSpendPeriod": {
+          "type": ["null", "integer"]
+        },
+        "ElectricitySpendUnknown": {
+          "type": ["null", "boolean"]
+        },
+        "GasSpendUnknown": {
+          "type": ["null", "boolean"]
+        },
+
+        "NumberOfBedrooms": {
+          "type": ["null", "string"]
+        },
+        "NumberOfOccupants": {
+          "type": ["null", "integer"]
+        },
+        "MainHeatingSource": {
+          "type": ["null", "string"]
+        },
+        "HeatingUsage": {
+          "type": ["null", "string"]
+        },
+        "HouseInsulation": {
+          "type": ["null", "string"]
+        },
+        "MainCookingSource": {
+          "type": ["null", "string"]
+        },
+        "HouseOccupied": {
+          "type": ["null", "boolean"]
+        },
+        "HouseType": {
+          "type": ["null", "string"]
+        }
+      }
+    },
+    "CurrentSupplyUrl": {
+      "type": ["null", "string"],
+      "format": "uri"
+    },
+    "SwitchUrl": {
+      "type": ["null", "string"],
+      "format": "uri"
+    },
+    "PrePayment": {
+      "type": ["null", "string"]
+    },
+    "CompareType": {
+      "type": ["null", "integer"]
+    },
+    "GasSupplierId": {
+      "type": ["null", "integer"]
+    },
+    "GasTariffId": {
+      "type": ["null", "integer"]
+    },
+    "GasPaymentMethodId": {
+      "type": ["null", "integer"]
+    },
+    "ElectricitySupplierId": {
+      "type": ["null", "integer"]
+    },
+    "ElectricityTariffId": {
+      "type": ["null", "integer"]
+    },
+    "ElectricityPaymentMethodId": {
+      "type": ["null", "integer"]
+    },
+    "Economy7": {
+      "type": ["null", "boolean"]
+    },
+    "Economy7NightUsage": {
+      "type": ["null", "number"]
+    },
+    "IgnoreProRataComparison": {
+      "type": ["null", "boolean"]
+    }
+  }
+}

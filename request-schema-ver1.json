@@ -1,0 +1,268 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "x-typeName": "EnergyRisk",
+  "additionalProperties": false,
+  "properties": {
+    "Bill": {
+      "type": "object",
+      "x-typeName": "Bill",
+      "additionalProperties": false,
+      "properties": {
+        "SameSupplier": {
+          "type": ["null", "boolean"]
+        },
+        "ElectricityTariffAdditionalInfo": {
+          "type": ["null", "string"]
+        },
+        "ElectricityBillType": {
+          "type": ["null", "string"]
+        },
+        "ElectricityBillUsage": {
+          "type": ["null", "integer"]
+        },
+        "ElectricityBillDate": {
+          "type": ["null", "string"],
+          "format": "date"
+        },
+        "ElectricitySpend": {
+          "type": ["null", "number"]
+        },
+        "GasTariffAdditionalInfo": {
+          "type": ["null", "string"]
+        },
+        "GasDefaultTariffId": {
+          "type": ["null", "string"]
+        },
+        "GasDefaultTariffName": {
+          "type": ["null", "string"]
+        },
+        "GasDefaultTariffAdditionalInfo": {
+          "type": ["null", "string"]
+        },
+        "GasBillType": {
+          "type": ["null", "string"]
+        },
+        "GasUsage": {
+          "type": ["null", "integer"]
+        },
+        "GasBillDate": {
+          "type": ["null", "string"],
+          "format": "date"
+        },
+        "GasSpend": {
+          "type": ["null", "number"]
+        },
+        "MainHeatingSource": {
+          "type": ["null", "string"]
+        },
+        "DualFuelSupplierId": {
+          "type": ["null", "string"]
+        },
+        "DualFuelSupplierName": {
+          "type": ["null", "string"]
+        },
+        "DualFuelSupplierClassName": {
+          "type": ["null", "string"]
+        },
+        "BillJourneyCurrentStage": {
+          "type": ["null", "integer"]
+        },
+        "BillJourneyCompletedStage": {
+          "type": ["null", "integer"]
+        },
+        "ElectricityAnnualUsage": {
+          "type": ["null", "integer"]
+        },
+        "GasAnnualUsage": {
+          "type": ["null", "integer"]
+        }
+      }
+    },
+    "NoBill": {
+      "type": "object",
+      "x-typeName": "NoBill",
+      "additionalProperties": false,
+      "properties": {
+        "ElectricityCurrentSpend": {
+          "type": ["null", "number"]
+        },
+        "ElectricitySpendPeriod": {
+          "type": ["null", "string"]
+        },
+        "ElectricitySpendUnknown": {
+          "type": ["null", "boolean"]
+        },
+        "ElectricitySupplierUnknown": {
+          "type": ["null", "boolean"]
+        },
+        "GasCurrentSpend": {
+          "type": ["null", "number"]
+        },
+        "GasSpendPeriod": {
+          "type": ["null", "string"]
+        },
+        "GasSpendUnknown": {
+          "type": ["null", "boolean"]
+        },
+        "GasSupplierUnkown": {
+          "type": ["null", "boolean"]
+        },
+        "HouseSize": {
+          "type": ["null", "string"]
+        },
+        "NumberOfOccupants": {
+          "type": ["null", "integer"]
+        },
+        "MainHeatingSource": {
+          "type": ["null", "string"]
+        },
+        "HeatingUsage": {
+          "type": ["null", "string"]
+        },
+        "HouseInsulation": {
+          "type": ["null", "string"]
+        },
+        "MainCookingSource": {
+          "type": ["null", "string"]
+        },
+        "HouseOccupied": {
+          "type": ["null", "boolean"]
+        }
+      }
+    },
+    "EnergyJourneyType": {
+      "type": ["null", "string"]
+    },
+    "Postcode": {
+      "type": ["null", "string"]
+    },
+    "CompareWhat": {
+      "type": ["null", "string"]
+    },
+    "ElectricitySupplierId": {
+      "type": ["null", "string"]
+    },
+    "ElectricitySupplierName": {
+      "type": ["null", "string"]
+    },
+    "ElectricitySupplierClassName": {
+      "type": ["null", "string"]
+    },
+    "ElectricityTariffId": {
+      "type": ["null", "string"]
+    },
+    "ElectricityTariffName": {
+      "type": ["null", "string"]
+    },
+    "ElectricityPaymentMethodId": {
+      "type": ["null", "string"]
+    },
+    "ElectricityPaymentMethodName": {
+      "type": ["null", "string"]
+    },
+    "GasSupplierId": {
+      "type": ["null", "string"]
+    },
+    "GasSupplierName": {
+      "type": ["null", "string"]
+    },
+    "GasSupplierClassName": {
+      "type": ["null", "string"]
+    },
+    "GasTariffId": {
+      "type": ["null", "string"]
+    },
+    "GasTariffName": {
+      "type": ["null", "string"]
+    },
+    "GasPaymentMethodId": {
+      "type": ["null", "string"]
+    },
+    "GasPaymentMethodName": {
+      "type": ["null", "string"]
+    },
+    "DefaultElectricitySupplierId": {
+      "type": ["null", "string"]
+    },
+    "DefaultGasSupplierId": {
+      "type": ["null", "string"]
+    },
+    "PrePayment": {
+      "type": ["null", "boolean"]
+    },
+    "Economy7": {
+      "type": ["null", "boolean"]
+    },
+    "Economy7DayUsage": {
+      "type": ["null", "integer"]
+    },
+    "Economy7NightUsage": {
+      "type": ["null", "integer"]
+    },
+    "SwitchId": {
+      "type": ["null", "string"]
+    },
+    "SwitchUrl": {
+      "type": ["null", "string"],
+      "format": "uri"
+    },
+    "SuppliersKey": {
+      "type": ["null", "string"],
+      "format": "uri"
+    },
+    "CurrentSupplyUrl": {
+      "type": ["null", "string"],
+      "format": "uri"
+    },
+    "CurrentSupplyDetailsUrl": {
+      "type": ["null", "string"],
+      "format": "uri"
+    },
+    "FutureSupplyUrl": {
+      "type": ["null", "string"],
+      "format": "uri"
+    },
+    "AnnualEstimatedBill": {
+      "type": ["null", "number"]
+    },
+    "EstimatedUsage": {
+      "type": ["null", "integer"]
+    },
+    "Email": {
+      "type": ["null", "string"],
+      "format": "email"
+    },
+    "MarketingAllowed": {
+      "type": ["null", "boolean"]
+    },
+    "TermsAndConditionsAccepted": {
+      "type": ["null", "boolean"]
+    },
+    "ResultKey": {
+      "type": ["null", "string"]
+    },
+    "ResultsUrl": {
+      "type": ["null", "string"],
+      "format": "uri"
+    },
+    "PriceResults": {
+      "type": ["null", "array"]
+    },
+    "PopularTariffs": {
+      "type": ["null", "array"]
+    },
+    "PreSelectionTariff": {
+      "type": ["null", "string"]
+    },
+    "PreSelectionPaymentType": {
+      "type": ["null", "string"]
+    },
+    "IsNoBillJourney": {
+      "type": ["null", "boolean"]
+    },
+    "JourneyType": {
+      "type": ["null", "integer"]
+    }
+  }
+}
