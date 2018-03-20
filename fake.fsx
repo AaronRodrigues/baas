@@ -49,10 +49,11 @@ Target "GenerateAssemblyInfo" (fun _ ->
 
 let runTests testAssemblySearchPath =
    let args = (!! testAssemblySearchPath) |> String.concat " "
+   let pathWithQuotes = ["\""; args; "\""] |> String.concat ""
    let result =
       ExecProcess (fun info ->
          info.FileName <- "./tools/NUnit.Console/nunit3-console.exe"
-         info.Arguments <- String.concat " " [args; "/framework=net-4.5"; "--trace=off"; "--out=" + testOutputFilePath]
+         info.Arguments <- String.concat " " [pathWithQuotes; "/framework=net-4.5"; "--trace=off"; "--out=" + testOutputFilePath]
       )(System.TimeSpan.FromMinutes 4.0)
 
    trace "========================================================="
