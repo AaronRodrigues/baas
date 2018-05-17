@@ -36,8 +36,7 @@ namespace Energy.EHLCommsLibIntegrationTests
 
             var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest, null);
 
-            Assert.AreEqual(true, resultsResponse.Success);
-            Assert.AreNotEqual(0, resultsResponse.Results);
+            Assert.IsNotEmpty(resultsResponse);
         }
 
         [Test]
@@ -49,8 +48,7 @@ namespace Energy.EHLCommsLibIntegrationTests
 
             var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest, null);
 
-            Assert.AreEqual(true, resultsResponse.Success);
-            Assert.AreNotEqual(0, resultsResponse.Results);
+            Assert.IsNotEmpty(resultsResponse);
         }
 
         [Test]
@@ -60,8 +58,7 @@ namespace Energy.EHLCommsLibIntegrationTests
 
             var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest, null);
 
-            Assert.AreEqual(true, resultsResponse.Success);
-            Assert.AreNotEqual(0, resultsResponse.Results);
+            Assert.IsNotEmpty(resultsResponse);
         }
 
         [Test]
@@ -73,8 +70,7 @@ namespace Energy.EHLCommsLibIntegrationTests
 
             var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest, null);
 
-            Assert.AreEqual(true, resultsResponse.Success);
-            Assert.AreNotEqual(0, resultsResponse.Results);
+            Assert.IsNotEmpty(resultsResponse);
         }
 
         [Test]
@@ -90,8 +86,7 @@ namespace Energy.EHLCommsLibIntegrationTests
 
             var resultsResponse = _ehlCommsAggregator.GetPrices(pricesRequest, null);
 
-            Assert.AreEqual(true, resultsResponse.Success);
-            Assert.AreNotEqual(0, resultsResponse.Results);
+            Assert.IsNotEmpty(resultsResponse);
         }
 
         [Test]
@@ -105,8 +100,7 @@ namespace Energy.EHLCommsLibIntegrationTests
 
             var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest, null);
 
-            Assert.AreEqual(true, resultsResponse.Success);
-            Assert.AreNotEqual(0, resultsResponse.Results);
+            Assert.IsNotEmpty(resultsResponse);
         }
     }
 }
