@@ -125,7 +125,6 @@
     <Compile Include="Extensions\BaseResponseExtensions.cs" />
     <Compile Include="Extensions\ExtensionMethods.cs" />
     <Compile Include="Extensions\GetPricesRequestExtensions.cs" />
-    <Compile Include="Extensions\GetPricesResponseExtensions.cs" />
     <Compile Include="Extensions\SwitchApiContractsExtensions.cs" />
     <Compile Include="Extensions\TariffFeaturesExtensions.cs" />
     <Compile Include="Http\EhlHttpClient.cs" />
@@ -141,7 +140,6 @@
     <Compile Include="Models\Http\Token.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\Prices\GetPricesRequest.cs" />
-    <Compile Include="Models\Prices\GetPricesResponse.cs" />
     <Compile Include="Models\Prices\PriceFeature.cs" />
     <Compile Include="Models\Prices\PriceResult.cs" />
     <Compile Include="Models\SpendData.cs" />

@@ -8,7 +8,6 @@ namespace Energy.EHLCommsLib
 {
     //TO DO : Logging
     //TO DO : Add this value to config AppSettings.Feature.TariffCustomFeatureEnabled or get from MVC
-    //TO DO : Add journeyId
     public class EhlCommsAggregator
     {
         private readonly IEhlHttpClient _ehlHttpClient;
@@ -17,13 +16,12 @@ namespace Energy.EHLCommsLib
         {
             _ehlHttpClient = ehlHttpClient;
         }
-        public GetPricesResponse GetPrices(GetPricesRequest request, Dictionary<string, string> customFeatures,
+        public List<PriceResult> GetPrices(GetPricesRequest request, Dictionary<string, string> customFeatures,
             bool tariffCustomFeatureEnabled = false)
         {
-            var response = new GetPricesResponse();
             try
             {
-                var pricesRetrievedSuccess = ApplyDataFromEhlToPricesResponse(request, response, customFeatures, tariffCustomFeatureEnabled);
+                return ApplyDataFromEhlToPricesResponse(request, customFeatures, tariffCustomFeatureEnabled);
             }
             catch (InvalidSwitchException ex)
             {
@@ -41,38 +39,38 @@ namespace Energy.EHLCommsLib
                 //    ? string.Format("GetPrices failed for JourneyId = {0}, SwitchId = {1}, SwitchUrl = {2}", request.JourneyId, request.SwitchId, request.SwitchUrl)
                 //    : string.Format("GetPrices finished successfully for JourneyId = {0}, SwitchId = {1}, SwitchUrl = {2}", request.JourneyId, request.SwitchId, request.SwitchUrl));
             }
-
-            return response;
         }
-        //TO DO add journey id
-        private bool ApplyDataFromEhlToPricesResponse(GetPricesRequest request, GetPricesResponse response, Dictionary<string, string> customFeatures,
+        
+        private List<PriceResult> ApplyDataFromEhlToPricesResponse(GetPricesRequest request,
+            Dictionary<string, string> customFeatures,
             bool tariffCustomFeatureEnabled)
         {
             var ehlApiCalls = new EhlApiCalls(_ehlHttpClient, request.JourneyId.ToString());
             //Log.Info(string.Format("GetPrices started for JourneyId = {0}, SwitchId = {1}, SwitchUrl = {2}", request.JourneyId, request.SwitchId, request.SwitchUrl));
-            var supplyStageResult = ehlApiCalls.GetSupplierEhlApiResponse(request, response);
+            var supplyStageResult = ehlApiCalls.GetSupplierEhlApiResponse(request);
             if (!supplyStageResult.ApiCallWasSuccessful)
             {
-                response.ErrorStage = supplyStageResult.ApiStage;
-                response.ErrorString = supplyStageResult.ConcatenatedErrorString;
-                return false;
+                //response.ErrorStage = supplyStageResult.ApiStage;
+                //response.ErrorString = supplyStageResult.ConcatenatedErrorString;
+                return null;
             }
-            var usageStageResult = ehlApiCalls.GetUsageEhlApiResponse(request, response, supplyStageResult.NextUrl);
+            var usageStageResult = ehlApiCalls.GetUsageEhlApiResponse(request, supplyStageResult.NextUrl);
             if (!usageStageResult.ApiCallWasSuccessful)
             {
-                response.ErrorStage = usageStageResult.ApiStage;
-                response.ErrorString = usageStageResult.ConcatenatedErrorString;
-                return false;
+                //response.ErrorStage = usageStageResult.ApiStage;
+                //response.ErrorString = usageStageResult.ConcatenatedErrorString;
+                return null;
             }
-            var proRataCalculationApplied = ehlApiCalls.UpdateCurrentSwitchStatus(request, response);
-            var preferencesStageresult = ehlApiCalls.GetPreferenceEhlApiResponse(request, response, usageStageResult.NextUrl);
-            if (!preferencesStageresult.ApiCallWasSuccessful)
-            {
-                response.ErrorStage = preferencesStageresult.ApiStage;
-                response.ErrorString = preferencesStageresult.ConcatenatedErrorString;
-            }
-            ehlApiCalls.PopulatePricesResponseWithFutureSuppliesFromEhl(request, response, customFeatures, preferencesStageresult.NextUrl, tariffCustomFeatureEnabled, proRataCalculationApplied);
-            return true;
+            var proRataCalculationApplied = ehlApiCalls.UpdateCurrentSwitchStatus(request);
+            var preferencesStageresult = ehlApiCalls.GetPreferenceEhlApiResponse(request, usageStageResult.NextUrl);
+            if (preferencesStageresult.ApiCallWasSuccessful)
+                return ehlApiCalls.PopulatePricesResponseWithFutureSuppliesFromEhl(request, customFeatures,
+                    preferencesStageresult.NextUrl, tariffCustomFeatureEnabled, proRataCalculationApplied);
+            //response.ErrorStage = preferencesStageresult.ApiStage;
+            //response.ErrorString = preferencesStageresult.ConcatenatedErrorString;
+            return ehlApiCalls.PopulatePricesResponseWithFutureSuppliesFromEhl(request, customFeatures,
+                preferencesStageresult.NextUrl, tariffCustomFeatureEnabled, proRataCalculationApplied);
+
         }
     }
 }

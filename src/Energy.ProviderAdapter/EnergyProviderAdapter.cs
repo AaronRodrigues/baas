@@ -1,27 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using CTM.Quoting.Provider;
+using Energy.EHLCommsLib;
+using Energy.EHLCommsLib.Http;
+using Energy.ProviderAdapter.Models;
 
 namespace Energy.ProviderAdapter
 {
-    //TO DO: Add data for quoting integration
+    //TO DO: Logging
+    //TO DO: Update EnergyEnquery with required fields
+    //To DO; Error handling
     public class EnergyProviderAdapter : IProviderAdapter<EnergyEnquiry, EnergyQuote>
     {
         private readonly string providerName;
         private readonly string brandCodePrefix;
+        private EhlCommsAggregator _ehlCommsAggregator;
 
         public EnergyProviderAdapter(string providerName, string brandCodePrefix)
         {
             this.providerName = providerName;
             this.brandCodePrefix = brandCodePrefix;
+            var ehlHttpClient = new EhlHttpClient();
+            _ehlCommsAggregator = new EhlCommsAggregator(ehlHttpClient);
         }
 
         public Task<QuoteResult<EnergyQuote>> GetQuotes(MakeProviderEnquiry<EnergyEnquiry> providerEnquiry)
         {
             return Task.FromResult(
-                new QuoteResult<EnergyQuote>
+            new QuoteResult<EnergyQuote>
                 {
+
                     NonQuotes = new List<NonQuote>
                     {
                         new NonQuote
@@ -30,25 +38,24 @@ namespace Energy.ProviderAdapter
                             Reason = Reason.Error,
                             Note = $"Error from {providerName}, enquiryId: {providerEnquiry.Enquiry.Id}"
                         }
+
                     },
-                    Quotes = new List<EnergyQuote>
+                //Quotes = _ehlCommsAggregator.GetPrices(providerEnquiry.ToEhlPriceRequest(),null).Select(el => el.ToEnergyQuote(brandCodePrefix)).ToList()
+                Quotes = new List<EnergyQuote>
                     {
                         new EnergyQuote
                         {
                             Brand = brandCodePrefix + "1",
-                            Quote = 12.35m,
-                            EnquiryId = providerEnquiry.Enquiry.Id,
-                            Note = $"Quote 1 of 2 from {providerName}"
+                            Id = providerEnquiry.Enquiry.Id
                         },
                         new EnergyQuote
                         {
                             Brand = brandCodePrefix + "2",
-                            Quote = 34.99m,
-                            EnquiryId = providerEnquiry.Enquiry.Id,
-                            Note = $"Quote 2 of 2 from {providerName}"
+                            Id = providerEnquiry.Enquiry.Id
                         }
                     }
-                });
+
+            });
         }
     }
 }
