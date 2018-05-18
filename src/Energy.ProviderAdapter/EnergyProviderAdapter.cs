@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Threading.Tasks;
 using CTM.Quoting.Provider;
 using Energy.EHLCommsLib;
@@ -9,7 +10,8 @@ namespace Energy.ProviderAdapter
 {
     //TO DO: Logging
     //TO DO: Update EnergyEnquery with required fields
-    //To DO; Error handling
+    //TO DO; Error handling
+    //TO DO: Create http client for adaptor 
     public class EnergyProviderAdapter : IProviderAdapter<EnergyEnquiry, EnergyQuote>
     {
         private readonly string providerName;
@@ -36,7 +38,7 @@ namespace Energy.ProviderAdapter
                         {
                             Brand = brandCodePrefix + "3",
                             Reason = Reason.Error,
-                            Note = $"Error from {providerName}, enquiryId: {providerEnquiry.Enquiry.Id}"
+                            Note = $"Error from {providerName}, enquiryId: {providerEnquiry.Enquiry.JourneyId}"
                         }
 
                     },
@@ -46,12 +48,12 @@ namespace Energy.ProviderAdapter
                         new EnergyQuote
                         {
                             Brand = brandCodePrefix + "1",
-                            Id = providerEnquiry.Enquiry.Id
+                            Id = providerEnquiry.Enquiry.JourneyId.ToString()
                         },
                         new EnergyQuote
                         {
                             Brand = brandCodePrefix + "2",
-                            Id = providerEnquiry.Enquiry.Id
+                            Id = providerEnquiry.Enquiry.JourneyId.ToString()
                         }
                     }
 

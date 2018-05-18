@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Energy.EHLCommsLib.Enums;
 
 namespace Energy.EHLCommsLib.Models.Prices
@@ -6,11 +7,19 @@ namespace Energy.EHLCommsLib.Models.Prices
 
     public class GetPricesRequest : BaseRequest
     {
+        public GetPricesRequest()
+        {
+            UsageData = new UsageData();
+            SpendData = new SpendData();
+            EstimatorData = new EstimatorData();
+            CustomFeatures = new Dictionary<string, string>();
+        }
+
         public bool UseDetailedEstimatorForElectricity { get; set; }
         public bool UseDetailedEstimatorForGas { get; set; }
-        public UsageData UsageData { get; } = new UsageData();
-        public SpendData SpendData { get; } = new SpendData();
-        public EstimatorData EstimatorData { get; } = new EstimatorData();
+        public UsageData UsageData { get; } 
+        public SpendData SpendData { get; set; }
+        public EstimatorData EstimatorData { get; } 
         public bool CalculateElecBasedOnBillSpend => SpendData.ElectricitySpendAmount > 0;
         public bool CalculateGasBasedOnBillSpend => SpendData.GasSpendAmount > 0;
         public bool IgnoreProRataComparison { get; set; }
@@ -27,5 +36,7 @@ namespace Energy.EHLCommsLib.Models.Prices
         public bool ElectricityEco7 { get; set; }
         public decimal PercentageNightUsage { get; set; }
         public Guid JourneyId { get; set; }
+        public Dictionary<string, string> CustomFeatures { get; set; }
+        public bool TariffCustomFeatureEnabled { get; set; }
     }
 }

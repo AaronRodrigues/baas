@@ -69,13 +69,13 @@ namespace Energy.EHLCommsLib
             return proRataCalculationApplied;
         }
 
-        public List<PriceResult> PopulatePricesResponseWithFutureSuppliesFromEhl(GetPricesRequest request, Dictionary<string, string> customFeatures, 
-            string futureSupplyUrl, bool tariffCustomFeatureEnabled, bool proRataCalculationApplied)
+        public List<PriceResult> PopulatePricesResponseWithFutureSuppliesFromEhl(GetPricesRequest request,  
+            string futureSupplyUrl, bool proRataCalculationApplied)
         {
             var futureSupplySwitchesApiResponse = _ehlHttpClient.GetApiResponse<ApiResponse>(futureSupplyUrl);
             var futureSuppliesUrl = futureSupplySwitchesApiResponse.GetLinkedDataUrl(EhlApiConstants.FutureSuppliesRel);
             var futureSuppliesApiPostResponse = _ehlHttpClient.GetApiResponse<FutureSupplies>(futureSuppliesUrl);
-            return futureSuppliesApiPostResponse.MapToPriceResults(request, customFeatures, tariffCustomFeatureEnabled);
+            return futureSuppliesApiPostResponse.MapToPriceResults(request);
         }
 
         //To DO : Process Ehl errors ??

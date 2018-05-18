@@ -10,8 +10,7 @@ namespace Energy.EHLCommsLib.Mappers
 {
     public static class PriceResultsMapper
     {
-        public static List<PriceResult> MapToPriceResults(this FutureSupplies ehlResults, GetPricesRequest request,
-            Dictionary<string, string> customFeatures, bool tariffCustomFeatureEnabled)
+        public static List<PriceResult> MapToPriceResults(this FutureSupplies ehlResults, GetPricesRequest request)
         {
             var mappedResults = new List<PriceResult>();
 
@@ -70,10 +69,10 @@ namespace Energy.EHLCommsLib.Mappers
                 priceResult.KeyFeatures = supply.SupplyDetails.KeyFeatures.ToPriceFeatures();
 
                 // Set CTM custom feature text
-                if (tariffCustomFeatureEnabled)
+                if (request.TariffCustomFeatureEnabled)
                 {
                     priceResult.CustomFeatureText =
-                        SetCustomFeatureText(priceResult.SupplierName + priceResult.TariffName, customFeatures);
+                        SetCustomFeatureText(priceResult.SupplierName + priceResult.TariffName, request.CustomFeatures);
                     priceResult.HasTariffCustomFeature = priceResult.CustomFeatureText != null;
                 }
 

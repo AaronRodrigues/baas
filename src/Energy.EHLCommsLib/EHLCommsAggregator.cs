@@ -16,12 +16,11 @@ namespace Energy.EHLCommsLib
         {
             _ehlHttpClient = ehlHttpClient;
         }
-        public List<PriceResult> GetPrices(GetPricesRequest request, Dictionary<string, string> customFeatures,
-            bool tariffCustomFeatureEnabled = false)
+        public List<PriceResult> GetPrices(GetPricesRequest request)
         {
             try
             {
-                return ApplyDataFromEhlToPricesResponse(request, customFeatures, tariffCustomFeatureEnabled);
+                return ApplyDataFromEhlToPricesResponse(request);
             }
             catch (InvalidSwitchException ex)
             {
@@ -41,9 +40,7 @@ namespace Energy.EHLCommsLib
             }
         }
         
-        private List<PriceResult> ApplyDataFromEhlToPricesResponse(GetPricesRequest request,
-            Dictionary<string, string> customFeatures,
-            bool tariffCustomFeatureEnabled)
+        private List<PriceResult> ApplyDataFromEhlToPricesResponse(GetPricesRequest request)
         {
             var ehlApiCalls = new EhlApiCalls(_ehlHttpClient, request.JourneyId.ToString());
             //Log.Info(string.Format("GetPrices started for JourneyId = {0}, SwitchId = {1}, SwitchUrl = {2}", request.JourneyId, request.SwitchId, request.SwitchUrl));
@@ -64,12 +61,12 @@ namespace Energy.EHLCommsLib
             var proRataCalculationApplied = ehlApiCalls.UpdateCurrentSwitchStatus(request);
             var preferencesStageresult = ehlApiCalls.GetPreferenceEhlApiResponse(request, usageStageResult.NextUrl);
             if (preferencesStageresult.ApiCallWasSuccessful)
-                return ehlApiCalls.PopulatePricesResponseWithFutureSuppliesFromEhl(request, customFeatures,
-                    preferencesStageresult.NextUrl, tariffCustomFeatureEnabled, proRataCalculationApplied);
+                return ehlApiCalls.PopulatePricesResponseWithFutureSuppliesFromEhl(request,
+                    preferencesStageresult.NextUrl, proRataCalculationApplied);
             //response.ErrorStage = preferencesStageresult.ApiStage;
             //response.ErrorString = preferencesStageresult.ConcatenatedErrorString;
-            return ehlApiCalls.PopulatePricesResponseWithFutureSuppliesFromEhl(request, customFeatures,
-                preferencesStageresult.NextUrl, tariffCustomFeatureEnabled, proRataCalculationApplied);
+            return ehlApiCalls.PopulatePricesResponseWithFutureSuppliesFromEhl(request,
+                preferencesStageresult.NextUrl, proRataCalculationApplied);
 
         }
     }

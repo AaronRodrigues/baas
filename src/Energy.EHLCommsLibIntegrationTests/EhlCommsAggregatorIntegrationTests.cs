@@ -34,7 +34,7 @@ namespace Energy.EHLCommsLibIntegrationTests
         {
             _pricesRequest.EnergyJourneyType = EnergyJourneyType.HaveMyBill;
 
-            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest, null);
+            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest);
 
             Assert.IsNotEmpty(resultsResponse);
         }
@@ -46,7 +46,7 @@ namespace Energy.EHLCommsLibIntegrationTests
             _pricesRequest.PercentageNightUsage = 0.65m;
             _pricesRequest.ElectricityEco7 = true;
 
-            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest, null);
+            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest);
 
             Assert.IsNotEmpty(resultsResponse);
         }
@@ -56,7 +56,7 @@ namespace Energy.EHLCommsLibIntegrationTests
         {
             _pricesRequest.EnergyJourneyType = EnergyJourneyType.DontHaveMyBill;
 
-            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest, null);
+            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest);
 
             Assert.IsNotEmpty(resultsResponse);
         }
@@ -68,7 +68,7 @@ namespace Energy.EHLCommsLibIntegrationTests
             _pricesRequest.UseDetailedEstimatorForElectricity = true;
             _pricesRequest.UseDetailedEstimatorForGas = true;
 
-            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest, null);
+            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest);
 
             Assert.IsNotEmpty(resultsResponse);
         }
@@ -84,7 +84,7 @@ namespace Energy.EHLCommsLibIntegrationTests
             pricesRequest.SpendData.GasSpendAmount = 150;
             pricesRequest.SpendData.GasSpendPeriod = UsagePeriod.Monthly;
 
-            var resultsResponse = _ehlCommsAggregator.GetPrices(pricesRequest, null);
+            var resultsResponse = _ehlCommsAggregator.GetPrices(pricesRequest);
 
             Assert.IsNotEmpty(resultsResponse);
         }
@@ -98,7 +98,7 @@ namespace Energy.EHLCommsLibIntegrationTests
             _pricesRequest.SpendData.ElectricitySpendAmount = 150;
             _pricesRequest.SpendData.ElectricitySpendPeriod = UsagePeriod.Monthly;
 
-            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest, null);
+            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest);
 
             Assert.IsNotEmpty(resultsResponse);
         }
