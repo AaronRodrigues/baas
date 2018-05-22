@@ -97,15 +97,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModelConverters\EhlModelsConverterHelper.cs" />
+    <Compile Include="Models\BillDetails.cs" />
     <Compile Include="Models\EnergyEnquiry.cs" />
+    <Compile Include="ModelConverters\EhlModelsConverterHelper.cs" />
     <Compile Include="EnergyProviderAdapter.cs" />
     <Compile Include="EnergyProviderAdapterModule.cs" />
     <Compile Include="Models\EnergyQuote.cs" />
-    <Compile Include="Models\EstimatorData.cs" />
     <Compile Include="Models\PriceFeature.cs" />
-    <Compile Include="Models\SpendData.cs" />
-    <Compile Include="Models\UsageData.cs" />
+    <Compile Include="Models\NoBillDetails.cs" />
+    <Compile Include="Models\RequestEstimatorData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Provider.cs" />
   </ItemGroup>

@@ -1,5 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using CTM.Quoting.Provider;
+using Energy.EHLCommsLib.Enums;
+using Energy.EHLCommsLib.Models;
 using Energy.EHLCommsLib.Models.Prices;
 using Energy.ProviderAdapter.Models;
 
@@ -75,60 +78,74 @@ namespace Energy.ProviderAdapter.ModelConverters
 
         public static GetPricesRequest ToEhlPriceRequest(this MakeProviderEnquiry<EnergyEnquiry> energyEnquiry)
         {
-            var getPriceRequest = new GetPricesRequest()
+
+            var enquiry = energyEnquiry.Enquiry;
+
+            GetPricesRequest request = new GetPricesRequest()
             {
-                JourneyId = energyEnquiry.Enquiry.JourneyId,
-                CurrentSupplyUrl = energyEnquiry.Enquiry.CurrentSupplyUrl,
-                UseDetailedEstimatorForElectricity = energyEnquiry.Enquiry.UseDetailedEstimatorForElectricity,
-                UseDetailedEstimatorForGas = energyEnquiry.Enquiry.UseDetailedEstimatorForGas,
-                IgnoreProRataComparison = energyEnquiry.Enquiry.IgnoreProRataComparison,
-                SwitchUrl = energyEnquiry.Enquiry.SwitchUrl,
-                PrePayment = energyEnquiry.Enquiry.PrePayment,
-                CompareType = energyEnquiry.Enquiry.CompareType,
-                GasSupplierId = energyEnquiry.Enquiry.GasSupplierId,
-                GasTariffId = energyEnquiry.Enquiry.GasTariffId,
-                GasPaymentMethodId = energyEnquiry.Enquiry.GasPaymentMethodId,
-                ElectricitySupplierId = energyEnquiry.Enquiry.ElectricitySupplierId,
-                ElectricityTariffId = energyEnquiry.Enquiry.ElectricityTariffId,
-                ElectricityPaymentMethodId = energyEnquiry.Enquiry.ElectricityPaymentMethodId,
-                ElectricityEco7 = energyEnquiry.Enquiry.ElectricityEco7,
-                PercentageNightUsage = energyEnquiry.Enquiry.PercentageNightUsage,
-                TariffCustomFeatureEnabled = energyEnquiry.Enquiry.TariffCustomFeatureEnabled,
-                CustomFeatures = energyEnquiry.Enquiry.CustomFeatures
+                EnergyJourneyType = enquiry.EnergyJourneyType,
+                JourneyId = enquiry.JourneyId,
+                Postcode = enquiry.Postcode,
+                SwitchId = enquiry.SwitchId,
 
+                CurrentSupplyUrl = enquiry.CurrentSupplyUrl,
+                SwitchUrl = enquiry.SwitchUrl,
+                PrePayment = enquiry.PrePayment,
+                CompareType = enquiry.CompareType,
+
+                GasSupplierId = enquiry.GasSupplierId,
+                GasTariffId = enquiry.GasTariffId,
+                GasPaymentMethodId = enquiry.GasPaymentMethodId,
+                ElectricitySupplierId = enquiry.ElectricitySupplierId,
+                ElectricityTariffId = enquiry.ElectricityTariffId,
+                ElectricityPaymentMethodId = enquiry.ElectricityPaymentMethodId,
+                ElectricityEco7 = enquiry.Economy7,
+                PercentageNightUsage = enquiry.Economy7NightUsage,
+                IgnoreProRataComparison = enquiry.IgnoreProRataComparison
             };
-            getPriceRequest.UsageData.FromEnquiry(energyEnquiry.Enquiry.UsageData);
-            getPriceRequest.SpendData.FromEnquiry(energyEnquiry.Enquiry.SpendData);
-            getPriceRequest.EstimatorData.FromEnquiry(energyEnquiry.Enquiry.EstimatorData);
-            return getPriceRequest;
+
+            if (enquiry.CompareType == CompareWhat.Gas) request.UseDetailedEstimatorForElectricity = false;
+            else request.UseDetailedEstimatorForElectricity = enquiry.NoBill != null && enquiry.NoBill.ElectricitySpendUnknown;
+
+            if (enquiry.CompareType == CompareWhat.Electricity) request.UseDetailedEstimatorForGas = false;
+            else request.UseDetailedEstimatorForGas = enquiry.NoBill != null && enquiry.NoBill.GasSpendUnknown;
+
+
+            if (enquiry.EnergyJourneyType == EnergyJourneyType.HaveMyBill && enquiry.Bill != null)
+            {
+
+                request.UsageData.GasKwh = enquiry.Bill.GasUsage;
+                request.UsageData.GasUsagePeriod = enquiry.Bill.GasUsagePeriod;
+                request.UsageData.ElectricityKwh = enquiry.Bill.ElectricityUsage;
+                request.UsageData.ElectricityUsagePeriod = enquiry.Bill.ElectricityUsagePeriod;
+
+                request.SpendData.GasSpendAmount = enquiry.Bill.GasSpend;
+                request.SpendData.GasSpendPeriod = enquiry.Bill.GasSpendPeriod;
+                request.SpendData.ElectricitySpendAmount = enquiry.Bill.ElectricitySpend;
+                request.SpendData.ElectricitySpendPeriod = enquiry.Bill.ElectricitySpendPeriod;
+
+            }
+
+            if (enquiry.EnergyJourneyType == EnergyJourneyType.DontHaveMyBill && enquiry.NoBill != null)
+            {
+
+                request.SpendData.GasSpendAmount = enquiry.NoBill.GasSpend;
+                request.SpendData.GasSpendPeriod = enquiry.NoBill.GasSpendPeriod;
+                request.SpendData.ElectricitySpendAmount = enquiry.NoBill.ElectricitySpend;
+                request.SpendData.ElectricitySpendPeriod = enquiry.NoBill.ElectricitySpendPeriod;
+
+                request.EstimatorData.NumberOfBedrooms = enquiry.NoBill.NumberOfBedrooms.ToString();
+                request.EstimatorData.NumberOfOccupants = enquiry.NoBill.NumberOfOccupants.ToString();
+                request.EstimatorData.MainHeatingSource = enquiry.NoBill.MainHeatingSource;
+                request.EstimatorData.HeatingUsage = enquiry.NoBill.HeatingUsage;
+                request.EstimatorData.HouseInsulation = enquiry.NoBill.HouseInsulation;
+                request.EstimatorData.MainCookingSource = enquiry.NoBill.MainCookingSource;
+                request.EstimatorData.HouseOccupied = enquiry.NoBill.HouseOccupied.ToString();
+                request.EstimatorData.HouseType = enquiry.NoBill.HouseType;
+            }
+
+            return request;
         }
 
-        private static void FromEnquiry(this EHLCommsLib.Models.UsageData usageData, UsageData enquiryUsageData)
-        {
-            usageData.ElectricityKwh = enquiryUsageData.ElectricityKwh;
-            usageData.GasKwh = enquiryUsageData.GasKwh;
-            usageData.GasUsagePeriod = enquiryUsageData.GasUsagePeriod;
-            usageData.ElectricityUsagePeriod = enquiryUsageData.ElectricityUsagePeriod;
-        }
-
-        private static void FromEnquiry(this EHLCommsLib.Models.SpendData spendData, SpendData enquerySpendData)
-        {
-            spendData.GasSpendAmount = enquerySpendData.GasSpendAmount;
-            spendData.GasSpendPeriod = enquerySpendData.GasSpendPeriod;
-            spendData.ElectricitySpendAmount = enquerySpendData.ElectricitySpendAmount;
-            spendData.ElectricitySpendPeriod = enquerySpendData.ElectricitySpendPeriod;
-        }
-
-        private static void FromEnquiry(this EHLCommsLib.Models.EstimatorData spendData, EstimatorData enquerySpendData)
-        {
-            spendData.NumberOfBedrooms = enquerySpendData.NumberOfBedrooms;
-            spendData.NumberOfOccupants = enquerySpendData.NumberOfOccupants;
-            spendData.MainHeatingSource = enquerySpendData.MainHeatingSource;
-            spendData.HeatingUsage = enquerySpendData.HeatingUsage;
-            spendData.HouseInsulation = enquerySpendData.HouseInsulation;
-            spendData.MainCookingSource = enquerySpendData.MainCookingSource;
-            spendData.HouseOccupied = enquerySpendData.HouseOccupied;
-            spendData.HouseType = enquerySpendData.HouseType;
-        }
     }
 }

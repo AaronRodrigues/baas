@@ -1,32 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
 using Energy.EHLCommsLib.Enums;
-using Energy.EHLCommsLib.Models;
 
-namespace Energy.ProviderAdapter.Models
+namespace Energy.ProviderAdapter
 {
     public class EnergyEnquiry
     {
-        public Guid JourneyId { get; set; }
-        public bool UseDetailedEstimatorForElectricity { get; set; }
-        public bool UseDetailedEstimatorForGas { get; set; }
-        public UsageData UsageData { get; } = new UsageData();
-        public SpendData SpendData { get; } = new SpendData();
-        public EstimatorData EstimatorData { get; } = new EstimatorData();
-        public bool IgnoreProRataComparison { get; set; }
+
+        public BillDetails Bill { get; set; }
+        public NoBillDetails NoBill { get; set; }
+
+        public string Id { get; set; }
+        public string CustomerId { get; set; }
+        public Guid JourneyId { get; set; }//
+        public string Postcode { get; set; }//
+        public string SwitchId { get; set; }//
+        public EnergyJourneyType EnergyJourneyType { get; set; }//
         public string CurrentSupplyUrl { get; set; }
-        public string SwitchUrl { get; set; }
-        public string PrePayment { get; set; }
-        public CompareWhat CompareType { get; set; }
-        public int GasSupplierId { get; set; }
-        public int GasTariffId { get; set; }
-        public int GasPaymentMethodId { get; set; }
-        public int ElectricitySupplierId { get; set; }
-        public int ElectricityTariffId { get; set; }
-        public int ElectricityPaymentMethodId { get; set; }
-        public bool ElectricityEco7 { get; set; }
-        public decimal PercentageNightUsage { get; set; }
-        public bool TariffCustomFeatureEnabled { get; set; }
-        public Dictionary<string,string> CustomFeatures { get; set; }
+        public string SwitchUrl { get; set; }//
+        public string PrePayment { get; set; }//
+        public CompareWhat CompareType { get; set; }//
+        public int GasSupplierId { get; set; }//
+        public int GasTariffId { get; set; }//
+        public int GasPaymentMethodId { get; set; }//
+        public int ElectricitySupplierId { get; set; }//
+        public int ElectricityTariffId { get; set; }//
+        public int ElectricityPaymentMethodId { get; set; }//
+        public bool Economy7 { get; set; }//
+        public int Economy7NightUsage { get; set; }//
+        public bool IgnoreProRataComparison { get; set; }//
     }
 }
