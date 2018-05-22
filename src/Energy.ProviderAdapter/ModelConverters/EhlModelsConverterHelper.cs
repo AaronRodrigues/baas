@@ -1,14 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using CTM.Quoting.Provider;
 using Energy.EHLCommsLib.Enums;
-using Energy.EHLCommsLib.Models;
 using Energy.EHLCommsLib.Models.Prices;
 using Energy.ProviderAdapter.Models;
 
 //To DO: Move models and enums to separate library
-
-
 namespace Energy.ProviderAdapter.ModelConverters
 {
     public static class EhlModelsConverterHelper

@@ -1,6 +1,6 @@
 using Energy.EHLCommsLib.Enums;
 
-namespace Energy.ProviderAdapter
+namespace Energy.ProviderAdapter.Models
 {
     public class BillDetails {
         public int ElectricityUsage { get; set; }
