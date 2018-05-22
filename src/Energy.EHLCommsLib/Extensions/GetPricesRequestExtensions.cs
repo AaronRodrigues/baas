@@ -192,5 +192,24 @@ namespace Energy.EHLCommsLib.Extensions
                 .Items.First(i => i.Name.Equals(itemName))
                 .Data = value;
         }
+
+        private static void UpdateItemData(ApiResponse currentSupplyTemplate, string groupName, string itemName,
+            int value)
+        {
+            currentSupplyTemplate.DataTemplate.Groups
+                .First(g => g.Name.Equals(groupName))
+                .Items.First(i => i.Name.Equals(itemName))
+                .Data = value;
+        }
+
+        private static void UpdateItemData(ApiResponse currentSupplyTemplate, string groupName, string itemName,
+            bool value)
+        {
+            currentSupplyTemplate.DataTemplate.Groups
+                .First(g => g.Name.Equals(groupName))
+                .Items.First(i => i.Name.Equals(itemName))
+                .Data = value;
+        }
+
     }
 }

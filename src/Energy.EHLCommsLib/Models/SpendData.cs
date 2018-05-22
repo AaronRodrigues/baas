@@ -1,6 +1,6 @@
 ﻿using Energy.EHLCommsLib.Enums;
 
-namespace Energy.EHLCommsLib.Models
+namespace Energy.ProviderAdapter.Models
 {
     public class SpendData
     {

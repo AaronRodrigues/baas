@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 using CTM.Quoting.Provider;
 using Energy.EHLCommsLib;
 using Energy.EHLCommsLib.Http;
+using Energy.ProviderAdapter.ModelConverters;
 using Energy.ProviderAdapter.Models;
 
 namespace Energy.ProviderAdapter
@@ -29,34 +31,8 @@ namespace Energy.ProviderAdapter
         public Task<QuoteResult<EnergyQuote>> GetQuotes(MakeProviderEnquiry<EnergyEnquiry> providerEnquiry)
         {
             return Task.FromResult(
-            new QuoteResult<EnergyQuote>
-                {
-
-                    NonQuotes = new List<NonQuote>
-                    {
-                        new NonQuote
-                        {
-                            Brand = brandCodePrefix + "3",
-                            Reason = Reason.Error,
-                            Note = $"Error from {providerName}, enquiryId: {providerEnquiry.Enquiry.JourneyId}"
-                        }
-
-                    },
-                //Quotes = _ehlCommsAggregator.GetPrices(providerEnquiry.ToEhlPriceRequest(),null).Select(el => el.ToEnergyQuote(brandCodePrefix)).ToList()
-                Quotes = new List<EnergyQuote>
-                    {
-                        new EnergyQuote
-                        {
-                            Brand = brandCodePrefix + "1",
-                            Id = providerEnquiry.Enquiry.JourneyId.ToString()
-                        },
-                        new EnergyQuote
-                        {
-                            Brand = brandCodePrefix + "2",
-                            Id = providerEnquiry.Enquiry.JourneyId.ToString()
-                        }
-                    }
-
+            new QuoteResult<EnergyQuote>{
+                Quotes = _ehlCommsAggregator.GetPrices(providerEnquiry.ToEhlPriceRequest()).Select(el => el.ToEnergyQuote(brandCodePrefix)).ToList()
             });
         }
     }

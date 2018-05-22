@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Energy.EHLCommsLib.Enums;
+using Energy.ProviderAdapter.Models;
 
 namespace Energy.EHLCommsLib.Models.Prices
 {
@@ -23,10 +24,13 @@ namespace Energy.EHLCommsLib.Models.Prices
         public bool CalculateElecBasedOnBillSpend => SpendData.ElectricitySpendAmount > 0;
         public bool CalculateGasBasedOnBillSpend => SpendData.GasSpendAmount > 0;
         public bool IgnoreProRataComparison { get; set; }
+
         public string CurrentSupplyUrl { get; set; }
         public string SwitchUrl { get; set; }
+
         public string PrePayment { get; set; }
         public CompareWhat CompareType { get; set; }
+
         public int GasSupplierId { get; set; }
         public int GasTariffId { get; set; }
         public int GasPaymentMethodId { get; set; }
@@ -35,6 +39,7 @@ namespace Energy.EHLCommsLib.Models.Prices
         public int ElectricityPaymentMethodId { get; set; }
         public bool ElectricityEco7 { get; set; }
         public decimal PercentageNightUsage { get; set; }
+
         public Guid JourneyId { get; set; }
         public Dictionary<string, string> CustomFeatures { get; set; }
         public bool TariffCustomFeatureEnabled { get; set; }
