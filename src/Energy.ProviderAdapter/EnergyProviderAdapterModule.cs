@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using CTM.Quoting.Provider;
+using Energy.EHLCommsLib.Interfaces;
 
 namespace Energy.ProviderAdapter
 {

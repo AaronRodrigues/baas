@@ -128,6 +128,7 @@
     <Compile Include="Extensions\SwitchApiContractsExtensions.cs" />
     <Compile Include="Extensions\TariffFeaturesExtensions.cs" />
     <Compile Include="Http\EhlHttpClient.cs" />
+    <Compile Include="Interfaces\IEhlCommsAggregator.cs" />
     <Compile Include="Interfaces\IEhlHttpClient.cs" />
     <Compile Include="Interfaces\IResponse.cs" />
     <Compile Include="Mappers\PriceResultsMapper.cs" />

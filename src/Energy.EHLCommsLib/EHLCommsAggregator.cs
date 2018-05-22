@@ -8,7 +8,7 @@ namespace Energy.EHLCommsLib
 {
     //TO DO : Logging
     //TO DO : Add this value to config AppSettings.Feature.TariffCustomFeatureEnabled or get from MVC
-    public class EhlCommsAggregator
+    public class EhlCommsAggregator : IEhlCommsAggregator
     {
         private readonly IEhlHttpClient _ehlHttpClient;
 

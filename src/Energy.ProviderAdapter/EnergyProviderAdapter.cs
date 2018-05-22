@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 using CTM.Quoting.Provider;
-using Energy.EHLCommsLib;
-using Energy.EHLCommsLib.Http;
+using Energy.EHLCommsLib.Interfaces;
+using Energy.ProviderAdapter.ModelConverters;
 using Energy.ProviderAdapter.Models;
 
 namespace Energy.ProviderAdapter
@@ -16,23 +16,22 @@ namespace Energy.ProviderAdapter
     {
         private readonly string providerName;
         private readonly string brandCodePrefix;
-        private EhlCommsAggregator _ehlCommsAggregator;
+        private IEhlCommsAggregator _ehlCommsAggregator;
 
-        public EnergyProviderAdapter(string providerName, string brandCodePrefix)
+        public EnergyProviderAdapter(string providerName, string brandCodePrefix, IEhlCommsAggregator ehlCommsAggregator)
         {
             this.providerName = providerName;
             this.brandCodePrefix = brandCodePrefix;
-            var ehlHttpClient = new EhlHttpClient();
-            _ehlCommsAggregator = new EhlCommsAggregator(ehlHttpClient);
+            this._ehlCommsAggregator = ehlCommsAggregator;
         }
 
         public Task<QuoteResult<EnergyQuote>> GetQuotes(MakeProviderEnquiry<EnergyEnquiry> providerEnquiry)
         {
             return Task.FromResult(
             new QuoteResult<EnergyQuote>
-                {
+            {
 
-                    NonQuotes = new List<NonQuote>
+                NonQuotes = new List<NonQuote>
                     {
                         new NonQuote
                         {
@@ -42,20 +41,7 @@ namespace Energy.ProviderAdapter
                         }
 
                     },
-                //Quotes = _ehlCommsAggregator.GetPrices(providerEnquiry.ToEhlPriceRequest(),null).Select(el => el.ToEnergyQuote(brandCodePrefix)).ToList()
-                Quotes = new List<EnergyQuote>
-                    {
-                        new EnergyQuote
-                        {
-                            Brand = brandCodePrefix + "1",
-                            Id = providerEnquiry.Enquiry.JourneyId.ToString()
-                        },
-                        new EnergyQuote
-                        {
-                            Brand = brandCodePrefix + "2",
-                            Id = providerEnquiry.Enquiry.JourneyId.ToString()
-                        }
-                    }
+                Quotes = _ehlCommsAggregator.GetPrices(providerEnquiry.ToEhlPriceRequest()).Select(el => el.ToEnergyQuote(brandCodePrefix)).ToList()
 
             });
         }
