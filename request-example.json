@@ -3,47 +3,52 @@
   "risk": {
 
     "Bill": {
-      "ElectricityUsage": 0,
-      "ElectricityUsagePeriod": 0,
-      "ElectricitySpend": 0,
-      "ElectricitySpendPeriod": 0,
-      "GasUsage": 0,
-      "GasUsagePeriod": 0,
-      "GasSpend": 0,
-      "GasSpendPeriod": 0  },
+      "ElectricityUsagePeriod": 3,
+      "ElectricitySpendPeriod": 3,
+      "GasUsagePeriod": 3,
+      "GasSpendPeriod": 3,
+
+      "ElectricityUsage": "1234",
+      "ElectricitySpend": "",
+      "GasUsage": "1234",
+      "GasSpend": ""
+    },
     "NoBill": {
       "ElectricitySpend": 0,
-      "ElectricitySpendPeriod": 0,
       "GasSpend": 0,
-      "GasSpendPeriod": 0,
       "ElectricitySpendUnknown": false,
       "GasSpendUnknown": false,
       "NumberOfBedrooms": 0,
-      "NumberOfOccupants": 0,
+      "HouseType": "",
+
+      "ElectricitySpendPeriod": "2",
+      "GasSpendPeriod": "2",
+      "NumberOfOccupants": "",
       "MainHeatingSource": "",
       "HeatingUsage": "",
       "HouseInsulation": "",
       "MainCookingSource": "",
-      "HouseOccupied": false,
-      "HouseType": ""
+      "HouseOccupied": ""
+
     },
     "JourneyId": "11111111-1111-1111-1111-111111111111",
-    "Postcode": "jghj",
-    "SwitchId": "",
-    "EnergyJourneyType": 0,
-    "CurrentSupplyUrl": "http://blabla.com",
-    "SwitchUrl": "http://blabla.com",
-    "PrePayment": "",
     "CompareType": 2,
-    "GasSupplierId": 0,
-    "GasTariffId": 0,
-    "GasPaymentMethodId": 0,
-    "ElectricitySupplierId": 0,
-    "ElectricityTariffId": 0,
     "ElectricityPaymentMethodId": 0,
-    "Economy7": false,
-    "Economy7NightUsage": 0,
-    "IgnoreProRataComparison": true
+    "IgnoreProRataComparison": true,
+    "EnergyJourneyType": "HaveMyBill",
+    "Postcode": "pe13dw",
+    "ElectricitySupplierId": "59",
+    "ElectricityTariffId": "301",
+    "GasSupplierId": "59",
+    "GasTariffId": "301",
+    "GasPaymentMethodId": "1",
+    "PrePayment": "false",
+    "Economy7": "false",
+    "Economy7NightUsage": "",
+    "SwitchId": "3a27c35a-987e-43fe-81e1-a8e400a877d0",
+    "SwitchUrl": "https://rest.staging.energyhelpline.com/domestic/energy/switches/3a27c35a-987e-43fe-81e1-a8e400a877d0?t=e8E4E5jN0RriaGShxTBPjNpd5w8pdYi1qEXh8leMd_zuYnyX4PgEdg",
+    "CurrentSupplyUrl": "https://rest.staging.energyhelpline.com/domestic/energy/switches/3a27c35a-987e-43fe-81e1-a8e400a877d0/current-supply?b=2jmj7l5rSw0yVb_vlWAYkK_YBwkpdYi1qEXh8leMd_zuYnyX4PgEdg"
+
   },
 
   "metadata": {
