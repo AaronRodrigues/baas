@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using CTM.Quoting.Provider;
 using Energy.EHLCommsLib.Enums;
 using Energy.EHLCommsLib.Models.Prices;
@@ -81,7 +82,7 @@ namespace Energy.ProviderAdapter.ModelConverters
             GetPricesRequest request = new GetPricesRequest()
             {
                 EnergyJourneyType = risk.EnergyJourneyType,
-                JourneyId = risk.JourneyId,
+                JourneyId = Guid.Parse(risk.JourneyId),
                 Postcode = risk.Postcode,
                 SwitchId = risk.SwitchId,
 
