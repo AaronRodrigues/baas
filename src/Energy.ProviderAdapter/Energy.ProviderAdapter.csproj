@@ -103,6 +103,7 @@
     <Compile Include="EnergyProviderAdapter.cs" />
     <Compile Include="EnergyProviderAdapterModule.cs" />
     <Compile Include="Models\EnergyQuote.cs" />
+    <Compile Include="Models\EnergyRisk.cs" />
     <Compile Include="Models\PriceFeature.cs" />
     <Compile Include="Models\NoBillDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

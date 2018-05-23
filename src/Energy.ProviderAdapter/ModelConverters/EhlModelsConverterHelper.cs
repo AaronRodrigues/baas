@@ -76,68 +76,69 @@ namespace Energy.ProviderAdapter.ModelConverters
         {
 
             var enquiry = energyEnquiry.Enquiry;
+            var risk = enquiry.Risk;
 
             GetPricesRequest request = new GetPricesRequest()
             {
-                EnergyJourneyType = enquiry.EnergyJourneyType,
-                JourneyId = enquiry.JourneyId,
-                Postcode = enquiry.Postcode,
-                SwitchId = enquiry.SwitchId,
+                EnergyJourneyType = risk.EnergyJourneyType,
+                JourneyId = risk.JourneyId,
+                Postcode = risk.Postcode,
+                SwitchId = risk.SwitchId,
 
-                CurrentSupplyUrl = enquiry.CurrentSupplyUrl,
-                SwitchUrl = enquiry.SwitchUrl,
-                PrePayment = enquiry.PrePayment,
-                CompareType = enquiry.CompareType,
+                CurrentSupplyUrl = risk.CurrentSupplyUrl,
+                SwitchUrl = risk.SwitchUrl,
+                PrePayment = risk.PrePayment,
+                CompareType = risk.CompareType,
 
-                GasSupplierId = enquiry.GasSupplierId,
-                GasTariffId = enquiry.GasTariffId,
-                GasPaymentMethodId = enquiry.GasPaymentMethodId,
-                ElectricitySupplierId = enquiry.ElectricitySupplierId,
-                ElectricityTariffId = enquiry.ElectricityTariffId,
-                ElectricityPaymentMethodId = enquiry.ElectricityPaymentMethodId,
-                ElectricityEco7 = enquiry.Economy7,
-                PercentageNightUsage = enquiry.Economy7NightUsage,
-                IgnoreProRataComparison = enquiry.IgnoreProRataComparison
+                GasSupplierId = risk.GasSupplierId,
+                GasTariffId = risk.GasTariffId,
+                GasPaymentMethodId = risk.GasPaymentMethodId,
+                ElectricitySupplierId = risk.ElectricitySupplierId,
+                ElectricityTariffId = risk.ElectricityTariffId,
+                ElectricityPaymentMethodId = risk.ElectricityPaymentMethodId,
+                ElectricityEco7 = risk.Economy7,
+                PercentageNightUsage = risk.Economy7NightUsage,
+                IgnoreProRataComparison = risk.IgnoreProRataComparison
             };
 
-            if (enquiry.CompareType == CompareWhat.Gas) request.UseDetailedEstimatorForElectricity = false;
-            else request.UseDetailedEstimatorForElectricity = enquiry.NoBill != null && enquiry.NoBill.ElectricitySpendUnknown;
+            if (risk.CompareType == CompareWhat.Gas) request.UseDetailedEstimatorForElectricity = false;
+            else request.UseDetailedEstimatorForElectricity = risk.NoBill != null && risk.NoBill.ElectricitySpendUnknown;
 
-            if (enquiry.CompareType == CompareWhat.Electricity) request.UseDetailedEstimatorForGas = false;
-            else request.UseDetailedEstimatorForGas = enquiry.NoBill != null && enquiry.NoBill.GasSpendUnknown;
+            if (risk.CompareType == CompareWhat.Electricity) request.UseDetailedEstimatorForGas = false;
+            else request.UseDetailedEstimatorForGas = risk.NoBill != null && risk.NoBill.GasSpendUnknown;
 
 
-            if (enquiry.EnergyJourneyType == EnergyJourneyType.HaveMyBill && enquiry.Bill != null)
+            if (risk.EnergyJourneyType == EnergyJourneyType.HaveMyBill && risk.Bill != null)
             {
 
-                request.UsageData.GasKwh = enquiry.Bill.GasUsage;
-                request.UsageData.GasUsagePeriod = enquiry.Bill.GasUsagePeriod;
-                request.UsageData.ElectricityKwh = enquiry.Bill.ElectricityUsage;
-                request.UsageData.ElectricityUsagePeriod = enquiry.Bill.ElectricityUsagePeriod;
+                request.UsageData.GasKwh = risk.Bill.GasUsage;
+                request.UsageData.GasUsagePeriod = risk.Bill.GasUsagePeriod;
+                request.UsageData.ElectricityKwh = risk.Bill.ElectricityUsage;
+                request.UsageData.ElectricityUsagePeriod = risk.Bill.ElectricityUsagePeriod;
 
-                request.SpendData.GasSpendAmount = enquiry.Bill.GasSpend;
-                request.SpendData.GasSpendPeriod = enquiry.Bill.GasSpendPeriod;
-                request.SpendData.ElectricitySpendAmount = enquiry.Bill.ElectricitySpend;
-                request.SpendData.ElectricitySpendPeriod = enquiry.Bill.ElectricitySpendPeriod;
+                request.SpendData.GasSpendAmount = risk.Bill.GasSpend;
+                request.SpendData.GasSpendPeriod = risk.Bill.GasSpendPeriod;
+                request.SpendData.ElectricitySpendAmount = risk.Bill.ElectricitySpend;
+                request.SpendData.ElectricitySpendPeriod = risk.Bill.ElectricitySpendPeriod;
 
             }
 
-            if (enquiry.EnergyJourneyType == EnergyJourneyType.DontHaveMyBill && enquiry.NoBill != null)
+            if (risk.EnergyJourneyType == EnergyJourneyType.DontHaveMyBill && risk.NoBill != null)
             {
 
-                request.SpendData.GasSpendAmount = enquiry.NoBill.GasSpend;
-                request.SpendData.GasSpendPeriod = enquiry.NoBill.GasSpendPeriod;
-                request.SpendData.ElectricitySpendAmount = enquiry.NoBill.ElectricitySpend;
-                request.SpendData.ElectricitySpendPeriod = enquiry.NoBill.ElectricitySpendPeriod;
+                request.SpendData.GasSpendAmount = risk.NoBill.GasSpend;
+                request.SpendData.GasSpendPeriod = risk.NoBill.GasSpendPeriod;
+                request.SpendData.ElectricitySpendAmount = risk.NoBill.ElectricitySpend;
+                request.SpendData.ElectricitySpendPeriod = risk.NoBill.ElectricitySpendPeriod;
 
-                request.EstimatorData.NumberOfBedrooms = enquiry.NoBill.NumberOfBedrooms.ToString();
-                request.EstimatorData.NumberOfOccupants = enquiry.NoBill.NumberOfOccupants.ToString();
-                request.EstimatorData.MainHeatingSource = enquiry.NoBill.MainHeatingSource;
-                request.EstimatorData.HeatingUsage = enquiry.NoBill.HeatingUsage;
-                request.EstimatorData.HouseInsulation = enquiry.NoBill.HouseInsulation;
-                request.EstimatorData.MainCookingSource = enquiry.NoBill.MainCookingSource;
-                request.EstimatorData.HouseOccupied = enquiry.NoBill.HouseOccupied.ToString();
-                request.EstimatorData.HouseType = enquiry.NoBill.HouseType;
+                request.EstimatorData.NumberOfBedrooms = risk.NoBill.NumberOfBedrooms.ToString();
+                request.EstimatorData.NumberOfOccupants = risk.NoBill.NumberOfOccupants.ToString();
+                request.EstimatorData.MainHeatingSource = risk.NoBill.MainHeatingSource;
+                request.EstimatorData.HeatingUsage = risk.NoBill.HeatingUsage;
+                request.EstimatorData.HouseInsulation = risk.NoBill.HouseInsulation;
+                request.EstimatorData.MainCookingSource = risk.NoBill.MainCookingSource;
+                request.EstimatorData.HouseOccupied = risk.NoBill.HouseOccupied.ToString();
+                request.EstimatorData.HouseType = risk.NoBill.HouseType;
             }
 
             return request;

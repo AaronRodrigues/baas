@@ -37,7 +37,7 @@ namespace Energy.ProviderAdapter
                         {
                             Brand = brandCodePrefix + "3",
                             Reason = Reason.Error,
-                            Note = $"Error from {providerName}, enquiryId: {providerEnquiry.Enquiry.JourneyId}"
+                            Note = $"Error from {providerName}, enquiryId: {providerEnquiry.Enquiry.Risk.JourneyId}"
                         }
 
                     },
