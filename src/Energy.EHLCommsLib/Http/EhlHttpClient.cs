@@ -12,6 +12,11 @@ namespace Energy.EHLCommsLib.Http
     //TO DO : Add logging for exceptions and ehl errors
     public class EhlHttpClient : IEhlHttpClient
     {
+        public EhlHttpClient()
+        {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+        }
+
         private const string ContentType = @"application/vnd-fri-domestic-energy+json;version=2.0";
 
         public T GetApiResponse<T>(string url) where T : ApiResponse, new()
