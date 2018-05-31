@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CTM.Quoting.Provider;
 using Energy.EHLCommsLib.Enums;
@@ -6,15 +7,16 @@ using Energy.EHLCommsLib.Models.Prices;
 using Energy.ProviderAdapter.Models;
 
 //To DO: Move models and enums to separate library
+//To DO: Change BrandCode logic
+
 namespace Energy.ProviderAdapter.ModelConverters
 {
     public static class EhlModelsConverterHelper
     {
-        public static EnergyQuote ToEnergyQuote(this PriceResult priceResult, string brandCode)
+        public static EnergyQuote ToEnergyQuote(this PriceResult priceResult)
         {
             return new EnergyQuote
             {
-                Brand = brandCode,
                 KeyFeatures = priceResult.KeyFeatures.Select(
                     x =>
                         new Models.PriceFeature
@@ -143,6 +145,15 @@ namespace Energy.ProviderAdapter.ModelConverters
             }
 
             return request;
+        }
+
+        public static List<EnergyQuote> AddFakeBrandCode(this List<EnergyQuote> quoteList, string brandCode)
+        {
+            for (var i = 0; i < quoteList.Count; i++)
+            {
+                quoteList[i].Brand = brandCode + i;
+            }
+            return quoteList;
         }
 
     }
