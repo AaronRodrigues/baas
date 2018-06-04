@@ -8,6 +8,7 @@ using Energy.ProviderAdapter.Models;
 
 namespace Energy.ProviderAdapter
 {
+    //To DO: Change BrandCode logic
     //TO DO: Logging
     //TO DO: Update EnergyEnquery with required fields
     //TO DO; Error handling
@@ -41,7 +42,7 @@ namespace Energy.ProviderAdapter
                         }
 
                     },
-                Quotes = _ehlCommsAggregator.GetPrices(providerEnquiry.ToEhlPriceRequest()).Select(el => el.ToEnergyQuote(brandCodePrefix)).ToList()
+                Quotes = _ehlCommsAggregator.GetPrices(providerEnquiry.ToEhlPriceRequest()).Select(el => el.ToEnergyQuote()).ToList().AddFakeBrandCode(brandCodePrefix)
 
             });
         }
