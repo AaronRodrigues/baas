@@ -8,10 +8,10 @@
       "GasUsagePeriod": 3,
       "GasSpendPeriod": 3,
 
-      "ElectricityUsage": "1234",
-      "ElectricitySpend": "",
-      "GasUsage": "1234",
-      "GasSpend": ""
+      "ElectricityUsage": 1234,
+      "ElectricitySpend": 0,
+      "GasUsage": 1234,
+      "GasSpend": 0
     },
     "NoBill": {
       "ElectricitySpend": 0,
@@ -21,30 +21,29 @@
       "NumberOfBedrooms": 0,
       "HouseType": "",
 
-      "ElectricitySpendPeriod": "2",
-      "GasSpendPeriod": "2",
-      "NumberOfOccupants": "",
+      "ElectricitySpendPeriod": 2,
+      "GasSpendPeriod": 2,
+      "NumberOfOccupants": 0,
       "MainHeatingSource": "",
       "HeatingUsage": "",
       "HouseInsulation": "",
       "MainCookingSource": "",
-      "HouseOccupied": ""
-
+      "HouseOccupied": false
     },
     "JourneyId": "11111111-1111-1111-1111-111111111111",
     "CompareType": 2,
     "ElectricityPaymentMethodId": 0,
     "IgnoreProRataComparison": true,
-    "EnergyJourneyType": "HaveMyBill",
+    "EnergyJourneyType": 1,
     "Postcode": "pe13dw",
-    "ElectricitySupplierId": "59",
-    "ElectricityTariffId": "301",
-    "GasSupplierId": "59",
-    "GasTariffId": "301",
-    "GasPaymentMethodId": "1",
+    "ElectricitySupplierId": 59,
+    "ElectricityTariffId": 301,
+    "GasSupplierId": 59,
+    "GasTariffId": 301,
+    "GasPaymentMethodId": 1,
     "PrePayment": "false",
-    "Economy7": "false",
-    "Economy7NightUsage": "",
+    "Economy7": false,
+    "Economy7NightUsage": 0,
     "SwitchId": "3a27c35a-987e-43fe-81e1-a8e400a877d0",
     "SwitchUrl": "https://rest.staging.energyhelpline.com/domestic/energy/switches/3a27c35a-987e-43fe-81e1-a8e400a877d0?t=e8E4E5jN0RriaGShxTBPjNpd5w8pdYi1qEXh8leMd_zuYnyX4PgEdg",
     "CurrentSupplyUrl": "https://rest.staging.energyhelpline.com/domestic/energy/switches/3a27c35a-987e-43fe-81e1-a8e400a877d0/current-supply?b=2jmj7l5rSw0yVb_vlWAYkK_YBwkpdYi1qEXh8leMd_zuYnyX4PgEdg"
