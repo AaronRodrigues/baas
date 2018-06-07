@@ -10,15 +10,22 @@ const files = _.map(flist, fname => JSON.parse(JSON.parse(fs.readFileSync(path.r
 _.each(flist, (json, index) => fs.writeFileSync(path.resolve(path.join(args.f, `${flist[index]}.parsed`)), JSON.stringify(files[index], null, 2)));
 
 const mvcRq = files[0],
-    adapterRq = JSON.parse(fs.readFileSync(path.resolve(path.join(args.f, 'adapter-request.template.json'))));
+    adapterRq = JSON.parse(fs.readFileSync(path.resolve('adapter-request.template.json')));
 
 (function assign(map, prefix){
+    const defaultOf = { "string": "", "int": 0, "boolean": false };
     _.each(map, (dest, src) => {
-        if(!_.isString(dest)) assign(dest, (prefix ? prefix + '.' : '') + src);
+        if(!_.isString(dest) && !_.isArray(dest)) assign(dest, (prefix ? prefix + '.' : '') + src);
         else {
+            let valType = 'int';
+            if( _.isArray(dest) ){
+                valType = dest[1];
+                dest = dest[0];
+            }
             const destList = dest.split(',');
             _.each(destList, dest => {
-                _.set(adapterRq, 'risk.' + dest, _.get(mvcRq, (prefix ? prefix + '.' : '') + src));
+                const val = _.get(mvcRq, (prefix ? prefix + '.' : '') + src);
+                _.set(adapterRq, 'risk.' + dest, val || defaultOf[valType] );
             });
         }
     });
@@ -41,12 +48,12 @@ const mvcRq = files[0],
     "EstimatorData": {
         "NumberOfBedrooms": "NoBill.NumberOfBedrooms",
         "NumberOfOccupants": "NoBill.NumberOfOccupants",
-        "MainHeatingSource": "NoBill.MainHeatingSource",
-        "HeatingUsage": "NoBill.HeatingUsage",
-        "HouseInsulation": "NoBill.HouseInsulation",
-        "MainCookingSource": "NoBill.MainCookingSource",
-        "HouseOccupied": "NoBill.HouseOccupied",
-        "HouseType": "NoBill.HouseType"
+        "MainHeatingSource":["NoBill.MainHeatingSource", "string" ],
+        "HeatingUsage":[ "NoBill.HeatingUsage", "string" ],
+        "HouseInsulation":[ "NoBill.HouseInsulation", "string" ],
+        "MainCookingSource": ["NoBill.MainCookingSource", "string" ],
+        "HouseOccupied": ["NoBill.HouseOccupied", "boolean" ],
+        "HouseType": ["NoBill.HouseType", "string" ]
     },
     "GasSupplierId": "GasSupplierId",
     "GasTariffId": "GasTariffId",
@@ -54,9 +61,9 @@ const mvcRq = files[0],
     "ElectricitySupplierId": "ElectricitySupplierId",
     "ElectricityTariffId": "ElectricityTariffId",
     "ElectricityPaymentMethodId": "ElectricityPaymentMethodId",
-    "ElectricityEco7": "Economy7",
+    "ElectricityEco7": [ "Economy7", "boolean" ],
     "Eco7NightUsageValue": "Economy7NightUsage",
-    "IgnoreProRataComparison": "IgnoreProRataComparison",
+    "IgnoreProRataComparison": [ "IgnoreProRataComparison", "boolean" ],
     "Postcode": "Postcode",
     "SwitchId": "SwitchId",
     "EnergyJourneyType": "EnergyJourneyType"

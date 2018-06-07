@@ -6,9 +6,9 @@
       "ElectricitySpendPeriod": 3,
       "GasUsagePeriod": 3,
       "GasSpendPeriod": 3,
-      "ElectricityUsage": 0,
+      "ElectricityUsage": 1234,
       "ElectricitySpend": 0,
-      "GasUsage": 0,
+      "GasUsage": 1234,
       "GasSpend": 0
     },
     "NoBill": {
@@ -32,18 +32,18 @@
     "ElectricityPaymentMethodId": 0,
     "IgnoreProRataComparison": true,
     "EnergyJourneyType": 1,
-    "Postcode": "",
-    "ElectricitySupplierId": 0,
-    "ElectricityTariffId": 0,
-    "GasSupplierId": 0,
-    "GasTariffId": 0,
+    "Postcode": "pe13dw",
+    "ElectricitySupplierId": 59,
+    "ElectricityTariffId": 301,
+    "GasSupplierId": 59,
+    "GasTariffId": 301,
     "GasPaymentMethodId": 1,
     "PrePayment": "false",
     "Economy7": false,
     "Economy7NightUsage": 0,
-    "SwitchId": "",
-    "SwitchUrl": "",
-    "CurrentSupplyUrl": "E"
+    "SwitchId": "3a27c35a-987e-43fe-81e1-a8e400a877d0",
+    "SwitchUrl": "https://rest.staging.energyhelpline.com/domestic/energy/switches/3a27c35a-987e-43fe-81e1-a8e400a877d0/current-supply?b=2jmj7l5rSw0yVb_vlWAYkK_YBwkpdYi1qEXh8leMd_zuYnyX4PgEdg",
+    "CurrentSupplyUrl": "https://rest.staging.energyhelpline.com/domestic/energy/switches/3a27c35a-987e-43fe-81e1-a8e400a877d0/current-supply?b=2jmj7l5rSw0yVb_vlWAYkK_YBwkpdYi1qEXh8leMd_zuYnyX4PgEdg"
   },
   "metadata": {
     "reason": "New",
