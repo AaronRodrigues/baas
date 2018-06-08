@@ -1,0 +1,124 @@
+{
+  "features": [],
+  "risk": {
+    "Bill": {
+      "ElectricityUsagePeriod": 0,
+      "ElectricitySpendPeriod": 0,
+      "GasUsagePeriod": 0,
+      "GasSpendPeriod": 0,
+      "ElectricityUsage": 0,
+      "ElectricitySpend": 0,
+      "GasUsage": 0,
+      "GasSpend": 0
+    },
+    "NoBill": {
+      "ElectricitySpend": 0,
+      "GasSpend": 0,
+      "ElectricitySpendUnknown": false,
+      "GasSpendUnknown": false,
+      "NumberOfBedrooms": 0,
+      "HouseType": "",
+      "ElectricitySpendPeriod": 0,
+      "GasSpendPeriod": 0,
+      "NumberOfOccupants": 0,
+      "MainHeatingSource": "",
+      "HeatingUsage": "",
+      "HouseInsulation": "",
+      "MainCookingSource": "",
+      "HouseOccupied": false
+    },
+    "JourneyId": "11111111-1111-1111-1111-111111111111",
+    "CompareType": 0,
+    "ElectricityPaymentMethodId": 0,
+    "IgnoreProRataComparison": false,
+    "EnergyJourneyType": 2,
+    "Postcode": "EC1A 1AA",
+    "ElectricitySupplierId": 57,
+    "ElectricityTariffId": 0,
+    "GasSupplierId": 83,
+    "GasTariffId": 0,
+    "GasPaymentMethodId": 1,
+    "PrePayment": "false",
+    "Economy7": false,
+    "Economy7NightUsage": 0,
+    "SwitchId": "710ffc86-9f65-44db-9cfd-a8f900cecb67",
+    "SwitchUrl": "https://rest.staging.energyhelpline.com/domestic/energy/switches/710ffc86-9f65-44db-9cfd-a8f900cecb67?t=e8E4E5jN0RriaGShxTBPjNpd5w8pdYi1qEXh8leMd_zuYnyX4PgEdg",
+    "CurrentSupplyUrl": "https://rest.staging.energyhelpline.com/domestic/energy/switches/710ffc86-9f65-44db-9cfd-a8f900cecb67/current-supply?b=2jmj7l5rSw0yVb_vlWAYkK_YBwkpdYi1qEXh8leMd_zuYnyX4PgEdg"
+  },
+  "metadata": {
+    "reason": "New",
+    "visitorId": "194b04e6-75ff-4a4a-844c-491c7c6c0002",
+    "sessionId": "194b04e6-75ff-4a4a-844c-491c7c6c0002",
+    "clientIp": "127.0.0.1",
+    "emailAddress": "test@test.com",
+    "outbounding": true,
+    "communicationsPreferences": {
+      "email": true,
+      "post": true
+    },
+    "product": "Energy",
+    "version": "2.0",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36",
+    "termsAndConditionsAccepted": false,
+    "prepopulated": [],
+    "defaulted": [
+      {
+        "key": "Metadata.Reason",
+        "value": "New"
+      },
+      {
+        "key": "Metadata.outbounding",
+        "value": "True"
+      },
+      {
+        "key": "Metadata.visitorId",
+        "value": ""
+      },
+      {
+        "key": "Metadata.sessionId",
+        "value": ""
+      },
+      {
+        "key": "Metadata.clientIp",
+        "value": "::1"
+      },
+      {
+        "key": "Metadata.userAgent",
+        "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"
+      },
+      {
+        "key": "Metadata.ctmUserAgent",
+        "value": ""
+      },
+      {
+        "key": "Metadata.termsAndConditionsAccepted",
+        "value": "False"
+      },
+      {
+        "key": "Metadata.communicationsPreferences.email",
+        "value": "True"
+      },
+      {
+        "key": "Metadata.communicationsPreferences.post",
+        "value": "True"
+      },
+      {
+        "key": "Metadata.communicationsPreferences.sms",
+        "value": "False"
+      },
+      {
+        "key": "Metadata.communicationsPreferences.telephone",
+        "value": "False"
+      },
+      {
+        "key": "Metadata.product",
+        "value": "energy"
+      },
+      {
+        "key": "Metadata.version",
+        "value": "2.0"
+      }
+    ],
+    "autoModified": []
+  }
+}
