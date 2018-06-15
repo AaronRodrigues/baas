@@ -1,9 +1,6 @@
 #r @"./tools/FAKE/tools/FakeLib.dll"
 open Fake
 open Fake.AssemblyInfoFile
-open Fake.EnvironmentHelper
-open Fake.StringHelper
-open System
 open System.IO
 // open System.Management.Automation
 
@@ -12,8 +9,8 @@ let slnFilePath = "./src/EnergyProviderAdapter.sln"
 let version = (ReadLine "./VERSION") + "." + (environVarOrDefault "GO_PIPELINE_COUNTER" "0")
 let testOutputFilePath = Path.Combine(buildDir, "testoutput.log")
 
-
-
+let mode = getBuildParamOrDefault "mode" "Release"
+printfn "Mode is: %s" mode
 
 Target "Clean" (fun _ ->
    CleanDir buildDir
@@ -66,12 +63,12 @@ let runTests testAssemblySearchPath =
 
 Target "RunUnitTests" (fun _ ->
    trace "Running Unit Tests..."
-   let outputPath = currentDirectory @@ buildDir @@ "Release" @@ "/*LibTests*.dll"
+   let outputPath = currentDirectory @@ buildDir @@ mode @@ "/*LibTests*.dll"
    runTests outputPath
 )
 
 let compileSingleProviderAdapter providerName brandCodePrefix =
-   let outputPath = currentDirectory @@ buildDir @@ "Release" 
+   let outputPath = currentDirectory @@ buildDir @@ mode 
       
    let compileOptions defaults =
       { 
@@ -79,6 +76,7 @@ let compileSingleProviderAdapter providerName brandCodePrefix =
             Verbosity = Some MSBuildVerbosity.Minimal
             Targets = ["Build"]
             RestorePackagesFlag = true
+            NodeReuse = false
             Properties =
             [
                "OutputPath", outputPath
@@ -109,6 +107,52 @@ Target "prepush" (fun _ ->
    trace "========================================================="
    trace "Finished running all tests successfully. OK TO PUSH"
    trace "========================================================="
+)
+
+Target "AnalyseTestCoverage" (fun _ ->
+
+    let nunitArgs = [
+                        //buildDir @@ mode @@ "Energy.ProviderAdapterTests.dll" mode;  // TODO: add this back in once there is at least one test in this project
+                        buildDir @@ mode @@ "Energy.EHLCommsLibTests.dll"
+
+                        "--trace=Off";
+                        "--output=./nunit-output.log"
+                    ] |> String.concat " "
+    let allArgs = [ 
+                    "-register:path64"; 
+                    "-output:\"opencover.xml\"";
+                    "-returntargetcode:1";
+                    "-hideskipped:All";
+                    "-skipautoprops";
+                    
+                    // Workaround for issue where opencover tries to cover some dependencies
+                    "-filter:\"+[*]* -[*Tests]* -[Moq*]* -[nunit.framework*]*\""; 
+
+                    "-target:\"./tools/NUnit.Console/nunit3-console.exe\"";
+                    sprintf "-targetargs:\"%s\"" nunitArgs
+                  ]
+    let result = 
+        ExecProcess (fun info ->
+            info.FileName <- "./Tools/OpenCover/tools/OpenCover.Console.exe"
+            info.Arguments <- allArgs |> String.concat " "
+        )(System.TimeSpan.FromMinutes 7.0)
+
+    if result <> 0 then failwith "Test coverage via OpenCover failed or timed-out"
+)
+
+Target "CreateTestCoverageReport" (fun _ ->
+    let args = [
+                    "-reports:./opencover.xml";
+                    "-verbosity:Warning";
+                    "-targetdir:./coverage-report";
+               ]
+    let result = 
+        ExecProcess (fun info ->
+            info.FileName <- "./Tools/ReportGenerator/tools/ReportGenerator.exe"
+            info.Arguments <- args |> String.concat " "
+        )(System.TimeSpan.FromMinutes 7.0)
+
+    if result <> 0 then failwith "Test coverage via OpenCover failed or timed-out"
 )
 
 Target "Deploy" (fun _ ->
@@ -143,5 +187,7 @@ Target "Deploy" (fun _ ->
    ==> "RunUnitTests"
    ==> "prepush"
    ==> "Package"
+
+"Compile" ==> "AnalyseTestCoverage" ==> "CreateTestCoverageReport"
 
 RunTargetOrDefault "Package"

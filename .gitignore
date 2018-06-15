@@ -7,6 +7,13 @@
 .fake/
 build/
 
+# SonarQube
+.sonarqube/
+
+# Test coverage
+opencover.xml
+coverage-report/
+
 # User-specific files
 *.suo
 *.user
