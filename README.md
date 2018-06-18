@@ -11,4 +11,16 @@ Adapter for EHL calls
 * Visual Studio 2015 or higher
 * JetBrains Resharper 2016
 
-# Energy Provider Journey
+# Getting Started
+
+After cloning, `cd` into the root of the repo and run `fake.bat`  
+This will compile the solution and run the tests.
+
+# Test Coverage
+
+To generate an HTML test report:
+```
+fake.bat mode=Debug target=CreateTestCoverageReport
+```  
+
+The report will be output to the `coverate-report` directory.
