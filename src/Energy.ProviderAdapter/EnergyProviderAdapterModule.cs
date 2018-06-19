@@ -22,11 +22,12 @@ namespace Energy.ProviderAdapter
                     m => m
                         .For(am => am.ProviderName, providerName)
                         .For(am => am.SupportedProduct, Product.Parse("Energy/2.0")))
-                .WithMetadata("messaging:component.queueName", string.Format("quoting:Energy:{0}:2.0", providerName))
+                .WithMetadata("messaging:component.queueName", $"quoting:Energy:{providerName}:2.0")
                 .WithParameter("providerName", providerName)
                 .WithParameter("brandCodePrefix", brandCodePrefix);
-            builder.RegisterType<EhlHttpClient>().As<IEhlHttpClient>();
+            builder.RegisterType<EhlHttpClient>().As<IEhlHttpClient>().SingleInstance();
             builder.RegisterType<EhlCommsAggregator>().As<IEhlCommsAggregator>();
+            builder.RegisterType<EhlApiCalls>().As<IEhlApiCalls>();
         }
     }
 }

@@ -5,6 +5,7 @@ using Energy.EHLCommsLib.Contracts.Responses;
 using Energy.EHLCommsLib.Interfaces;
 using Newtonsoft.Json;
 using System.IO;
+using System.Reflection;
 using Energy.EHLCommsLib.Exceptions;
 
 namespace Energy.EHLCommsLibTests
@@ -14,7 +15,7 @@ namespace Energy.EHLCommsLibTests
         private Dictionary<string, MockEntry> _mockMapGet = new Dictionary<string, MockEntry>();
         private Dictionary<string, MockEntry> _mockMapPost = new Dictionary<string, MockEntry>();
 
-        public T GetApiResponse<T>(string url) where T : ApiResponse, new()
+        public T GetApiResponse<T>(string url, string environment) where T : ApiResponse
         {
             var entry = GetEntryFor(_mockMapGet, url);
             var json = GetJsonFor(entry.FileName);
@@ -30,7 +31,7 @@ namespace Energy.EHLCommsLibTests
             return result;
         }
 
-        public ApiResponse PostApiGetResponse(string url, ApiResponse responseDataToSend)
+        public ApiResponse PostApiGetResponse(string url, ApiResponse responseDataToSend, string environment)
         {
             var entry = GetEntryFor(_mockMapPost, url);
             var json = GetJsonFor(entry.FileName);
@@ -59,8 +60,9 @@ namespace Energy.EHLCommsLibTests
 
         public string GetJsonFor(string fileName)
         {
-
-            string filePath = $@".\SwitchApiMessages\{fileName}.json";
+            var basePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string filePath = Path.Combine(basePath, "SwitchApiMessages",$"{fileName}.json");
+            
             var file = File.ReadAllText(filePath);
             return file;
 

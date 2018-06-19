@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
+using CTM.Quoting.Provider;
 using Energy.EHLCommsLib.Contracts.Responses;
-using Energy.EHLCommsLib.Exceptions;
 using Energy.EHLCommsLib.Interfaces;
-using Energy.EHLCommsLib.Models.Http;
 using Newtonsoft.Json;
 
 namespace Energy.EHLCommsLib.Http
@@ -12,75 +13,92 @@ namespace Energy.EHLCommsLib.Http
     //TO DO : Add logging for exceptions and ehl errors
     public class EhlHttpClient : IEhlHttpClient
     {
-        public EhlHttpClient()
+        private const string ContentType = @"application/vnd-fri-domestic-energy+json;version=2.0";
+
+        private readonly IPersistAttachments _attachmentPersister;
+        private readonly HttpClient _httpClient;
+
+        public EhlHttpClient(
+            HttpMessageHandler messageHandler, 
+            IPersistAttachments attachmentPersister)
         {
+            _attachmentPersister = attachmentPersister;
+            
+            _httpClient = new HttpClient(messageHandler)
+            {
+                Timeout = TimeSpan.FromSeconds(45)
+            };
+
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
         }
 
-        private const string ContentType = @"application/vnd-fri-domestic-energy+json;version=2.0";
-
-        public T GetApiResponse<T>(string url) where T : ApiResponse, new()
+        public T GetApiResponse<T>(string url, string environment) where T : ApiResponse
         {
-            var apiResponse = ApiGet(url);
-            return HandleRequest<T>(apiResponse, url, "GET");
+            var request = HttpRequestMessage(HttpMethod.Get, url);
+            var response = _httpClient.SendAsync(request).Result;
+            var responseBody = response.Content.ReadAsStringAsync().Result;
+            
+            SaveAttachment(environment, url, responseBody, "Get - Response");
+
+            response.EnsureSuccessStatusCode();
+
+            return JsonConvert.DeserializeObject<T>(responseBody);
         }
 
-        public ApiResponse PostApiGetResponse(string url, ApiResponse responseDataToSend)
+        public ApiResponse PostApiGetResponse(string url, ApiResponse responseDataToSend, string environment)
         {
-            var dataToPost = JsonConvert.SerializeObject(responseDataToSend.DataTemplate);
-            var apiResponse = ApiPost(url, dataToPost);
-            return HandleRequest<ApiResponse>(apiResponse, url, "POST");
-        }
-       
+            var requestBody = RequestBody(responseDataToSend);
 
-        private T HandleRequest<T>(IResponse apiResponse, string url, string action) where T : ApiResponse, new()
+            SaveAttachment(environment, url, requestBody, "Post-Request");
+
+            var httpRequestMessage = HttpRequestMessage(HttpMethod.Post, url);
+            httpRequestMessage.Content = new StringContent(requestBody, Encoding.UTF8);
+            httpRequestMessage.Content.Headers.ContentType = MediaTypeHeaderValue.Parse(ContentType);
+
+            var response = _httpClient.SendAsync(httpRequestMessage).Result;
+            var responseBody = response.Content.ReadAsStringAsync().Result;
+
+            SaveAttachment(environment, url, responseBody, "Post-Reponse");
+
+            response.EnsureSuccessStatusCode();
+
+            return JsonConvert.DeserializeObject<ApiResponse>(responseBody);
+        }
+
+        private static string RequestBody(ApiResponse responseDataToSend)
         {
-            T response;
-            try
+            var settings = new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore};
+            return JsonConvert.SerializeObject(responseDataToSend, Formatting.None, settings);
+        }
+
+        private void SaveAttachment(string environment, string url, string content, string description)
+        {
+            if (!IsProduction(environment))
             {
-                response = JsonConvert.DeserializeObject<T>(apiResponse.BodyAsString());
-                response.StatusCode = apiResponse.StatusCode;
-                response.Exception = response.Exception;
+                _attachmentPersister?.Save(Attachment(url, content, description));
             }
-            catch (Exception)
+        }
+
+        private static bool IsProduction(string environment) 
+        {
+            return environment.Equals("prod", StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        private static Attachment Attachment(string url, string responseBody, string method)
+        {
+            return new Attachment
             {
-                var message = string.Format(
-                "Internal server error received from EHL\nMessage = 'Internal server error. Reference:', Action='{0}', Url='{1}'",
-                action,
-                url);
-                throw new InvalidSwitchException(message, new WebException("The remote server returned an error: (500) Internal Server Error."));
-            }
-            //Add logging
-            return response;
+                Content = responseBody,
+                Description = $"{method} - {url} - Body",
+                MediaType = "application/json"
+            };
         }
 
-        private IResponse ApiPost(string url, string data)
+        public HttpRequestMessage HttpRequestMessage(HttpMethod httpMethod, string url)
         {
-            var request = (HttpWebRequest)WebRequest.Create(replaceProtocol(url));
-            request.Method = "POST";
-            request.ContentType = ContentType;
-            request.Accept = ContentType;
-            using (var stream = request.GetRequestStream())
-            {
-                var requestBody = Encoding.ASCII.GetBytes(data);
-                stream.Write(requestBody, 0, requestBody.Length);
-            }
-
-            return new HttpResponse((HttpWebResponse)request.GetResponse());
+            var result = new HttpRequestMessage(httpMethod, url);
+            result.Headers.Add("Accept", ContentType);
+            return result;
         }
-
-        private IResponse ApiGet(string url)
-        {
-            var request = (HttpWebRequest)WebRequest.Create(replaceProtocol(url));
-            request.ContentType = ContentType;
-            request.Accept = ContentType;
-            return new HttpResponse((HttpWebResponse)request.GetResponse());
-        }
-
-        private string replaceProtocol(string url)
-        {
-            return url.Replace("http://", "https://");
-        }
-
     }
 }

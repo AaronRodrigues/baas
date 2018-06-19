@@ -5,6 +5,6 @@ namespace Energy.EHLCommsLib.Interfaces
 {
     public interface IEhlCommsAggregator
     {
-        List<PriceResult> GetPrices(GetPricesRequest request);
+        List<PriceResult> GetPrices(GetPricesRequest request, string environment);
     }
 }

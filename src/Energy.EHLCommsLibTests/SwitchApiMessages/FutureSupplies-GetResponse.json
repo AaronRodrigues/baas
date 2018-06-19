@@ -19,7 +19,7 @@
   "currentSupply": {
     "details": {
       "rel": "/rels/domestic/current-supply-details /rels/domestic/tariff-details",
-      "uri": "/domestic/energy/supplies/tariffSelectionG446490_E530862?t=RH5JU8M64vCC+6/MJ4AbKy2gz40"
+      "uri": "http://rest-predeploy.energyhelpline.com/domestic/energy/supplies/tariffSelectionG446490_E530862?t=RH5JU8M64vCC+6/MJ4AbKy2gz40"
     },
     "electricity": {
       "economy7": false,
@@ -201,7 +201,7 @@
             ],
             "details": {
               "rel": "/rels/domestic/tariff-details",
-              "uri": "/domestic/energy/supplies/tariffSelectionG487012?t=RH5JU8M64vCC+6/MJ4AbKy2gz40"
+              "uri": "http://rest-predeploy.energyhelpline.com/domestic/energy/supplies/tariffSelectionG487012?t=RH5JU8M64vCC+6/MJ4AbKy2gz40"
             },
             "gasTariff": {
               "id": "487012"

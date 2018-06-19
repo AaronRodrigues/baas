@@ -1,2 +1,2 @@
 #!/bin/bash
-./tools/FAKE/tools/fake.exe "$@"
+./tools/FAKE.4.61.2/tools/fake.exe "$@"

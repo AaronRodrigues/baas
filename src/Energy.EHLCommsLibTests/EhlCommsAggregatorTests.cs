@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using Energy.EHLCommsLib;
@@ -16,30 +15,17 @@ namespace Energy.EHLCommsLibTests
     public class EhlCommsAggregatorTests
     {
         private const string TestPostcode = "pe26ys";
+        private const string Environment = "test";
 
         private EhlCommsAggregator EhlCommsAggregator { get; set; }
         private MockEhlHttpClient _iHttpClient;
-
-
-        [OneTimeSetUp]
-        public void RunBeforeAnyTests()
-        {
-            var dir = Path.GetDirectoryName(typeof(EhlCommsAggregatorTests).Assembly.Location);
-            if (dir != null)
-            {
-                Environment.CurrentDirectory = dir;
-                Directory.SetCurrentDirectory(dir);
-            }
-            else
-                throw new Exception("Path.GetDirectoryName(typeof(EhlCommsAggregatorTests).Assembly.Location) returned null");
-        }
 
         [SetUp]
         public void SetUp()
         {
 
             _iHttpClient = new MockEhlHttpClient();
-            EhlCommsAggregator = new EhlCommsAggregator(_iHttpClient);
+            EhlCommsAggregator = new EhlCommsAggregator(new EHLCommsLib.EhlApiCalls(_iHttpClient));
         }
 
         [TearDown]
@@ -104,7 +90,7 @@ namespace Energy.EHLCommsLibTests
             request.EstimatorData.NumberOfBedrooms = "5";
             request.EstimatorData.NumberOfOccupants = "2";
 
-            var response = EhlCommsAggregator.GetPrices(request);
+            var response = EhlCommsAggregator.GetPrices(request, Environment);
 
             Assert.IsNotEmpty(response);
         }
@@ -120,7 +106,7 @@ namespace Energy.EHLCommsLibTests
             request.SpendData.GasSpendAmount = 50;
             request.SpendData.GasSpendPeriod = UsagePeriod.Monthly;
 
-            var response = EhlCommsAggregator.GetPrices(request);
+            var response = EhlCommsAggregator.GetPrices(request, Environment);
 
             Assert.IsNotEmpty(response);
         }
@@ -150,7 +136,7 @@ namespace Energy.EHLCommsLibTests
             request.UsageData.ElectricityKwh = 1000;
             request.UsageData.ElectricityUsagePeriod = UsagePeriod.Monthly;
 
-            var response = EhlCommsAggregator.GetPrices(request);
+            var response = EhlCommsAggregator.GetPrices(request, Environment);
 
             Assert.IsNotEmpty(response);
         }
@@ -168,7 +154,7 @@ namespace Energy.EHLCommsLibTests
             request.SpendData.GasSpendAmount = 50;
             request.SpendData.GasSpendPeriod = UsagePeriod.Monthly;
 
-            var response = EhlCommsAggregator.GetPrices(request);
+            var response = EhlCommsAggregator.GetPrices(request, Environment);
 
             Assert.IsNotEmpty(response);
         }
@@ -198,7 +184,7 @@ namespace Energy.EHLCommsLibTests
             request.CustomFeatures = customFeatures;
             request.TariffCustomFeatureEnabled = true;
 
-            var response = EhlCommsAggregator.GetPrices(request);
+            var response = EhlCommsAggregator.GetPrices(request, Environment);
 
             Assert.IsNotEmpty(response);
             Assert.IsTrue(
@@ -218,7 +204,7 @@ namespace Energy.EHLCommsLibTests
 
             var request = GetStubPricesRequest();
 
-            var response = EhlCommsAggregator.GetPrices(request);
+            var response = EhlCommsAggregator.GetPrices(request, Environment);
 
             Assert.IsNotNull(response);
             //Assert.IsTrue(response.Messages.Count > 0);
@@ -235,7 +221,7 @@ namespace Energy.EHLCommsLibTests
 
             var request = GetStubPricesRequest();
 
-            Assert.Throws<InvalidSwitchException>(() => EhlCommsAggregator.GetPrices(request));
+            Assert.Throws<InvalidSwitchException>(() => EhlCommsAggregator.GetPrices(request, Environment));
 
         }
 
@@ -255,7 +241,7 @@ namespace Energy.EHLCommsLibTests
 
             var request = GetStubPricesRequest();
 
-            var response = EhlCommsAggregator.GetPrices(request);
+            var response = EhlCommsAggregator.GetPrices(request, Environment);
 
             Assert.IsNotNull(response);
             //Assert.IsTrue(response.Messages.Count > 0);
@@ -277,7 +263,7 @@ namespace Energy.EHLCommsLibTests
 
             var request = GetStubPricesRequest();
 
-            var response = EhlCommsAggregator.GetPrices(request);
+            var response = EhlCommsAggregator.GetPrices(request, Environment);
 
             Assert.IsNotNull(response);
             //Assert.IsTrue(response.Messages.Count > 0);
@@ -298,7 +284,7 @@ namespace Energy.EHLCommsLibTests
             request.SpendData.GasSpendAmount = 50;
             request.SpendData.GasSpendPeriod = UsagePeriod.Monthly;
 
-            var response = EhlCommsAggregator.GetPrices(request);
+            var response = EhlCommsAggregator.GetPrices(request, Environment);
 
             Assert.IsNotEmpty(response);
         }
@@ -316,7 +302,7 @@ namespace Energy.EHLCommsLibTests
             request.UsageData.ElectricityKwh = 1000;
             request.UsageData.ElectricityUsagePeriod = UsagePeriod.Monthly;
 
-            var response = EhlCommsAggregator.GetPrices(request);
+            var response = EhlCommsAggregator.GetPrices(request, Environment);
 
             //Assert.IsNotNull(response);
             //Assert.That(response.ProRataCalculationApplied, Is.True);
@@ -337,7 +323,7 @@ namespace Energy.EHLCommsLibTests
             request.UsageData.ElectricityKwh = 1000;
             request.UsageData.ElectricityUsagePeriod = UsagePeriod.Monthly;
             request.IgnoreProRataComparison = true;
-            var response = EhlCommsAggregator.GetPrices(request);
+            var response = EhlCommsAggregator.GetPrices(request, Environment);
 
             //Assert.IsNotNull(response);
             //Assert.That(response.ProRataCalculationApplied, Is.False);
@@ -368,7 +354,7 @@ namespace Energy.EHLCommsLibTests
             request.UsageData.ElectricityKwh = 1000;
             request.UsageData.ElectricityUsagePeriod = UsagePeriod.Monthly;
 
-            var response = EhlCommsAggregator.GetPrices(request);
+            var response = EhlCommsAggregator.GetPrices(request, Environment);
 
             //Assert.IsNotNull(response);
             //Assert.That(response.ProRataCalculationApplied, Is.False);

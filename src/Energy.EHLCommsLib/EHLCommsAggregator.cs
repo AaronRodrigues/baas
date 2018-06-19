@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Energy.EHLCommsLib.Entities;
 using Energy.EHLCommsLib.Exceptions;
 using Energy.EHLCommsLib.Interfaces;
 using Energy.EHLCommsLib.Models.Prices;
@@ -10,17 +11,18 @@ namespace Energy.EHLCommsLib
     //TO DO : Add this value to config AppSettings.Feature.TariffCustomFeatureEnabled or get from MVC
     public class EhlCommsAggregator : IEhlCommsAggregator
     {
-        private readonly IEhlHttpClient _ehlHttpClient;
+        private readonly IEhlApiCalls _ehlApiCalls;
 
-        public EhlCommsAggregator(IEhlHttpClient ehlHttpClient)
+        public EhlCommsAggregator(IEhlApiCalls ehlApiCalls)
         {
-            _ehlHttpClient = ehlHttpClient;
-        }
-        public List<PriceResult> GetPrices(GetPricesRequest request)
+            _ehlApiCalls = ehlApiCalls;
+       }
+
+        public List<PriceResult> GetPrices(GetPricesRequest request, string environment)
         {
             try
             {
-                return ApplyDataFromEhlToPricesResponse(request);
+                return ApplyDataFromEhlToPricesResponse(request, environment);
             }
             catch (InvalidSwitchException ex)
             {
@@ -40,34 +42,45 @@ namespace Energy.EHLCommsLib
             }
         }
         
-        private List<PriceResult> ApplyDataFromEhlToPricesResponse(GetPricesRequest request)
+        private List<PriceResult> ApplyDataFromEhlToPricesResponse(GetPricesRequest request, string environment)
         {
-            var ehlApiCalls = new EhlApiCalls(_ehlHttpClient, request.JourneyId.ToString());
             //Log.Info(string.Format("GetPrices started for JourneyId = {0}, SwitchId = {1}, SwitchUrl = {2}", request.JourneyId, request.SwitchId, request.SwitchUrl));
-            var supplyStageResult = ehlApiCalls.GetSupplierEhlApiResponse(request);
-            if (!supplyStageResult.ApiCallWasSuccessful)
-            {
-                //response.ErrorStage = supplyStageResult.ApiStage;
-                //response.ErrorString = supplyStageResult.ConcatenatedErrorString;
-                return null;
-            }
-            var usageStageResult = ehlApiCalls.GetUsageEhlApiResponse(request, supplyStageResult.NextUrl);
+            if (SupplyStageUrl(request, environment, out var supplyStageResult)) return null;
+            if (UsageStageResult(request, environment, supplyStageResult, out var usageStageResult)) return null;
+
+            var proRataCalculationApplied = _ehlApiCalls.UpdateCurrentSwitchStatus(request, environment);
+            var preferencesStageresult = _ehlApiCalls.GetPreferenceEhlApiResponse(request, usageStageResult.NextUrl, environment);
+            
+            return _ehlApiCalls.PopulatePricesResponseWithFutureSuppliesFromEhl(request,
+                preferencesStageresult.NextUrl, proRataCalculationApplied, environment);
+
+        }
+
+        private bool UsageStageResult(GetPricesRequest request, string environment, EhlApiResponse supplyStageResult,
+            out EhlApiResponse usageStageResult)
+        {
+            usageStageResult = _ehlApiCalls.GetUsageEhlApiResponse(request, supplyStageResult.NextUrl, environment);
             if (!usageStageResult.ApiCallWasSuccessful)
             {
                 //response.ErrorStage = usageStageResult.ApiStage;
                 //response.ErrorString = usageStageResult.ConcatenatedErrorString;
-                return null;
+                return true;
             }
-            var proRataCalculationApplied = ehlApiCalls.UpdateCurrentSwitchStatus(request);
-            var preferencesStageresult = ehlApiCalls.GetPreferenceEhlApiResponse(request, usageStageResult.NextUrl);
-            if (preferencesStageresult.ApiCallWasSuccessful)
-                return ehlApiCalls.PopulatePricesResponseWithFutureSuppliesFromEhl(request,
-                    preferencesStageresult.NextUrl, proRataCalculationApplied);
-            //response.ErrorStage = preferencesStageresult.ApiStage;
-            //response.ErrorString = preferencesStageresult.ConcatenatedErrorString;
-            return ehlApiCalls.PopulatePricesResponseWithFutureSuppliesFromEhl(request,
-                preferencesStageresult.NextUrl, proRataCalculationApplied);
 
+            return false;
+        }
+
+        private bool SupplyStageUrl(GetPricesRequest request, string environment, out EhlApiResponse supplyStageResult)
+        {
+            supplyStageResult = _ehlApiCalls.GetSupplierEhlApiResponse(request, environment);
+            if (!supplyStageResult.ApiCallWasSuccessful)
+            {
+                //response.ErrorStage = supplyStageResult.ApiStage;
+                //response.ErrorString = supplyStageResult.ConcatenatedErrorString;
+                return true;
+            }
+
+            return false;
         }
     }
 }

@@ -1,9 +1,13 @@
-﻿using Energy.EHLCommsLib;
+﻿using System.Net;
+using System.Net.Http;
+using CTM.Quoting.Provider;
+using Energy.EHLCommsLib;
 using Energy.EHLCommsLib.Enums;
 using Energy.EHLCommsLib.Http;
 using Energy.EHLCommsLib.Models.Prices;
 using Energy.EHLCommsLibIntegrationTests.Helpers;
 using Energy.EHLCommsLibIntegrationTests.Services;
+using Moq;
 using NUnit.Framework;
 
 namespace Energy.EHLCommsLibIntegrationTests
@@ -21,11 +25,13 @@ namespace Energy.EHLCommsLibIntegrationTests
         [SetUp]
         public void Setup()
         {
-            var ehlHttpClient = new EhlHttpClient();
-            _ehlCommsAggregator = new EhlCommsAggregator(ehlHttpClient);
-            _startSwitchHelper = new StartSwitchHelper(ehlHttpClient);
-            var startSwitchResponse = _startSwitchHelper.StartSwitch();
+            var attachments = Mock.Of<IPersistAttachments>();
+            var ehlHttpClient = new EhlHttpClient(messageHandler: new WebRequestHandler(), attachmentPersister: attachments);
 
+            _ehlCommsAggregator = new EhlCommsAggregator(new EhlApiCalls(ehlHttpClient));
+            _startSwitchHelper = new StartSwitchHelper(ehlHttpClient);
+
+            var startSwitchResponse = _startSwitchHelper.StartSwitch();
             _pricesRequest = EntityHelper.GenerateValidPricesRequest(startSwitchResponse);
         }
 
@@ -34,7 +40,7 @@ namespace Energy.EHLCommsLibIntegrationTests
         {
             _pricesRequest.EnergyJourneyType = EnergyJourneyType.HaveMyBill;
 
-            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest);
+            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest, "");
 
             Assert.IsNotEmpty(resultsResponse);
         }
@@ -46,7 +52,7 @@ namespace Energy.EHLCommsLibIntegrationTests
             _pricesRequest.PercentageNightUsage = 0.65m;
             _pricesRequest.ElectricityEco7 = true;
 
-            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest);
+            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest, "");
 
             Assert.IsNotEmpty(resultsResponse);
         }
@@ -56,7 +62,7 @@ namespace Energy.EHLCommsLibIntegrationTests
         {
             _pricesRequest.EnergyJourneyType = EnergyJourneyType.DontHaveMyBill;
 
-            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest);
+            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest, "");
 
             Assert.IsNotEmpty(resultsResponse);
         }
@@ -68,7 +74,7 @@ namespace Energy.EHLCommsLibIntegrationTests
             _pricesRequest.UseDetailedEstimatorForElectricity = true;
             _pricesRequest.UseDetailedEstimatorForGas = true;
 
-            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest);
+            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest, "");
 
             Assert.IsNotEmpty(resultsResponse);
         }
@@ -84,7 +90,7 @@ namespace Energy.EHLCommsLibIntegrationTests
             pricesRequest.SpendData.GasSpendAmount = 150;
             pricesRequest.SpendData.GasSpendPeriod = UsagePeriod.Monthly;
 
-            var resultsResponse = _ehlCommsAggregator.GetPrices(pricesRequest);
+            var resultsResponse = _ehlCommsAggregator.GetPrices(pricesRequest, "");
 
             Assert.IsNotEmpty(resultsResponse);
         }
@@ -98,7 +104,7 @@ namespace Energy.EHLCommsLibIntegrationTests
             _pricesRequest.SpendData.ElectricitySpendAmount = 150;
             _pricesRequest.SpendData.ElectricitySpendPeriod = UsagePeriod.Monthly;
 
-            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest);
+            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest, "");
 
             Assert.IsNotEmpty(resultsResponse);
         }

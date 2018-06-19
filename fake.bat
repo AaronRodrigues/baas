@@ -1,3 +1,3 @@
 @echo off
-tools\FAKE\tools\Fake.exe %*
+tools\FAKE.4.61.2\tools\Fake.exe %*
 exit /b %errorlevel%

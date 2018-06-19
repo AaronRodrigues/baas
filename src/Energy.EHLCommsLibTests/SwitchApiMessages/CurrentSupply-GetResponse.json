@@ -88,19 +88,19 @@
         "validateAs": "/validate/energySupply"
     },
     "linked-data": [
-        {
-            "rel": "/rels/domestic/current-supplies",
-            "uri": "/domestic/energy/current-supplies/1?t=RH5JU8M64vCC+6/MJ4AbKy2gz40"
-        }
+      {
+        "rel": "/rels/domestic/current-supplies",
+        "uri": "http://rest-predeploy.energyhelpline.com/domestic/energy/current-supplies/1?t=RH5JU8M64vCC+6/MJ4AbKy2gz40"
+      }
     ],
     "links": [
-        {
-            "rel": "/rels/domestic/switch",
-            "uri": "/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9?b=1+SxdN9QwjA1nP8RoesecNN8ctw"
-        },
-        {
-            "rel": "/rels/domestic/current-supply /rels/self",
-            "uri": "/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9/current-supply?b=1+SxdN9QwjA1nP8RoesecNN8ctw"
-        }
+      {
+        "rel": "/rels/domestic/switch",
+        "uri": "http://rest-predeploy.energyhelpline.com/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9?b=1+SxdN9QwjA1nP8RoesecNN8ctw"
+      },
+      {
+        "rel": "/rels/domestic/current-supply /rels/self",
+        "uri": "http://rest-predeploy.energyhelpline.com/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9/current-supply?b=1+SxdN9QwjA1nP8RoesecNN8ctw"
+      }
     ]
 }

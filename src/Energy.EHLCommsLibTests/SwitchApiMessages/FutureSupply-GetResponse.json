@@ -15,60 +15,60 @@
         ]
     },
     "linked-data": [
-        {
-            "queries": [
-                {
-                    "name": "comparisonType",
-                    "parameters": [
-                        {
-                            "acceptableValues": [
-                                {
-                                    "id": "1",
-                                    "name": "single gas"
-                                },
-                                {
-                                    "id": "2",
-                                    "name": "single electricity"
-                                },
-                                {
-                                    "id": "3",
-                                    "name": "dual gas and electricity"
-                                }
-                            ],
-                            "data": "3",
-                            "name": "comparisonType",
-                            "type": "oneOf"
-                        }
-                    ]
-                },
-                {
-                    "name": "pageResults",
-                    "parameters": [
-                        {
-                            "data": "",
-                            "name": "pageResultsFrom",
-                            "type": "int"
-                        },
-                        {
-                            "data": "",
-                            "name": "pageSize",
-                            "type": "int"
-                        }
-                    ]
-                }
-            ],
-            "rel": "/rels/domestic/future-supplies",
-            "uri": "/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9/future-supplies?t=RH5JU8M64vCC+6/MJ4AbKy2gz40"
-        }
+      {
+        "queries": [
+          {
+            "name": "comparisonType",
+            "parameters": [
+              {
+                "acceptableValues": [
+                  {
+                    "id": "1",
+                    "name": "single gas"
+                  },
+                  {
+                    "id": "2",
+                    "name": "single electricity"
+                  },
+                  {
+                    "id": "3",
+                    "name": "dual gas and electricity"
+                  }
+                ],
+                "data": "3",
+                "name": "comparisonType",
+                "type": "oneOf"
+              }
+            ]
+          },
+          {
+            "name": "pageResults",
+            "parameters": [
+              {
+                "data": "",
+                "name": "pageResultsFrom",
+                "type": "int"
+              },
+              {
+                "data": "",
+                "name": "pageSize",
+                "type": "int"
+              }
+            ]
+          }
+        ],
+        "rel": "/rels/domestic/future-supplies",
+        "uri": "http://rest-predeploy.energyhelpline.com/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9/future-supplies?t=RH5JU8M64vCC+6/MJ4AbKy2gz40"
+      }
     ],
     "links": [
-        {
-            "rel": "/rels/domestic/switch",
-            "uri": "/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9?b=1+SxdN9QwjA1nP8RoesecNN8ctw"
-        },
-        {
-            "rel": "/rels/domestic/future-supply /rels/self",
-            "uri": "/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9/future-supply?b=1+SxdN9QwjA1nP8RoesecNN8ctw"
-        }
+      {
+        "rel": "/rels/domestic/switch",
+        "uri": "http://rest-predeploy.energyhelpline.com/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9?b=1+SxdN9QwjA1nP8RoesecNN8ctw"
+      },
+      {
+        "rel": "/rels/domestic/future-supply /rels/self",
+        "uri": "http://rest-predeploy.energyhelpline.com/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9/future-supply?b=1+SxdN9QwjA1nP8RoesecNN8ctw"
+      }
     ]
 }
