@@ -83,8 +83,8 @@ Target "PrePush" (fun _ ->
 Target "AnalyseTestCoverage" (fun _ ->
 
     let nunitArgs = [
-                        //buildDir @@ mode @@ "Energy.ProviderAdapterTests.dll" mode;  // TODO: add this back in once there is at least one test in this project
-                        (sprintf "./src/Energy.EHLCommsLibTests/bin/%s/Energy.EHLCommsLibTests.dll" mode)
+                        (sprintf "./src/Energy.EHLCommsLibTests/bin/%s/Energy.EHLCommsLibTests.dll" mode) 
+                        (sprintf "./src/Energy.ProviderAdapterTests/bin/%s/Energy.ProviderAdapterTests.dll" mode) 
 
                         "--trace=Off";
                         "--output=./nunit-output.log"
