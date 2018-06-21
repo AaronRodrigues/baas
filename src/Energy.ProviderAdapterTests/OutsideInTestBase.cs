@@ -17,12 +17,33 @@ namespace Energy.ProviderAdapterTests
 {
     public abstract class OutsideInTestBase
     {
-        private readonly ContainerBuilder _containerBuilder = new ContainerBuilder();
         private IContainer _container;
         private EnergyEnquiry _energyEnquiry;
 
+        private readonly ContainerBuilder _containerBuilder = new ContainerBuilder();
+
+        private static readonly Dictionary<string, string> StubbedResponseFilenamesForGetRequests = new Dictionary<string, string>
+        {
+            { "/current-supply?", "CurrentSupply-GetResponse" },
+            { "/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9?", "SwitchStatus-GetResponse" },
+            { "/proratapreference?", "ProRata-GetResponse" },
+            { "/usage?", "Usage-GetResponse" },
+            { "/preferences?", "Preferences-GetResponse" },
+            { "/future-supply?", "FutureSupply-GetResponse" },
+            { "/future-supplies?", "FutureSupplies-GetResponse" }
+        };
+
+        private static readonly Dictionary<string, string> StubbedResponseFilenamesForPostRequests = new Dictionary<string, string>
+        {
+            { "/current-supply?", "CurrentSupply-PostResponse" },
+            { "/proratapreference?", "ProRata-PostResponse" },
+            { "/usage?", "Usage-PostResponse" },
+            { "/preferences?", "Preferences-PostResponse" },
+        };
+
+        protected ScopedTimingsCollector TimingCollector;
         protected Mock<IPersistAttachments> AttachmentPersistorMock { get; } = new Mock<IPersistAttachments>();
-        
+
         protected void Given_the_provider_adapter_is_loaded()
         {
             _containerBuilder.RegisterModule(new EnergyProviderAdapterModule());
@@ -32,43 +53,45 @@ namespace Energy.ProviderAdapterTests
 
         protected void Given_EHL_API_is_working_correctly()
         {
-            var stubbedResponseFilenamesForGetRequests = new Dictionary<string, string>
-            {
-                { "/current-supply?", "CurrentSupply-GetResponse" },
-                { "/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9?", "SwitchStatus-GetResponse" },
-                { "/proratapreference?", "ProRata-GetResponse" },
-                { "/usage?", "Usage-GetResponse" },
-                { "/preferences?", "Preferences-GetResponse" },
-                { "/future-supply?", "FutureSupply-GetResponse" },
-                { "/future-supplies?", "FutureSupplies-GetResponse" }
-            };
-            var stubbedResponseFilenamesForPostRequests = new Dictionary<string, string>
-            {
-                { "/current-supply?", "CurrentSupply-PostResponse" },
-                { "/proratapreference?", "ProRata-PostResponse" },
-                { "/usage?", "Usage-PostResponse" },
-                { "/preferences?", "Preferences-PostResponse" },
-            };
+            var stubbedGetResponse = GetStubbedResponsesFrom(StubbedResponseFilenamesForGetRequests);
+            var stubbedPostResponse = GetStubbedResponsesFrom(StubbedResponseFilenamesForPostRequests);
 
             var testServer = new HttpTestServerBuilder()
                 .WithCallbackForResponse(
                     context =>
                     {
-                        var stubbedResponseFilenames = context.Request.Method.ToUpperInvariant() == "GET"
-                            ? stubbedResponseFilenamesForGetRequests
-                            : stubbedResponseFilenamesForPostRequests;
+                        var stubbedResponse = context.Request.Method.ToUpperInvariant() == "GET"
+                            ? stubbedGetResponse
+                            : stubbedPostResponse;
 
-                        var filenameWithoutExtension = stubbedResponseFilenames
+                        var response = stubbedResponse
                             .First(x => context.Request.Uri.ToString().Contains(x.Key)).Value;
 
-                        var basePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                        var fullFilePath = Path.Combine(basePath, "SwitchApiMessages", $"{filenameWithoutExtension}.json");
-                        var fileContents = File.ReadAllText(fullFilePath);
-                        context.Response.WriteAsync(fileContents).Wait();
+                        context.Response.WriteAsync(response).Wait();
                     })
                 .Create();
 
             _containerBuilder.RegisterInstance(testServer.Handler);
+            _container = _containerBuilder.Build();
+        }
+
+        private static Dictionary<string, string> GetStubbedResponsesFrom(Dictionary<string, string> responseFilenames)
+        {
+            var stubbedResponses = new Dictionary<string, string>();
+
+            foreach (var responseFilename in responseFilenames)
+            {
+                stubbedResponses.Add(responseFilename.Key, FileContents(responseFilename));
+            }
+
+            return stubbedResponses;
+        }
+
+        private static string FileContents(KeyValuePair<string, string> responseFilenamesForPostRequest)
+        {
+            var basePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty;
+            var fullFilePath = Path.Combine(basePath, "SwitchApiMessages", $"{responseFilenamesForPostRequest.Value}.json");
+            return File.ReadAllText(fullFilePath);
         }
 
         protected void Given_a_valid_enquiry()
@@ -108,16 +131,17 @@ namespace Energy.ProviderAdapterTests
             When_prices_are_requested(environment: "prod");
         }
 
-        private void When_prices_are_requested(string environment)
+        protected void When_prices_are_requested(string environment)
         {
-            _container = _containerBuilder.Build();
-
             var providerAdapter = _container.Resolve<IProviderAdapter<EnergyEnquiry, EnergyQuote>>();
-            providerAdapter.GetQuotes(new MakeProviderEnquiry<EnergyEnquiry>
+            using (TimingCollector = new ScopedTimingsCollector("total"))
             {
-                Environment = environment,
-                Enquiry = _energyEnquiry
-            });
+                providerAdapter.GetQuotes(new MakeProviderEnquiry<EnergyEnquiry>
+                {
+                    Environment = environment,
+                    Enquiry = _energyEnquiry
+                });
+            }
         }
     }
 }

@@ -79,7 +79,9 @@
   <ItemGroup>
     <Compile Include="AttachmentsTests.cs" />
     <Compile Include="OutsideInTestBase.cs" />
+    <Compile Include="Performance\PerformanceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScopedTimingsCollector.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Energy.EHLCommsLibTests\Energy.EHLCommsLibTests.csproj">
