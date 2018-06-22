@@ -15,36 +15,34 @@ namespace Energy.ProviderAdapter
     //TO DO: Create http client for adaptor 
     public class EnergyProviderAdapter : IProviderAdapter<EnergyEnquiry, EnergyQuote>
     {
-        private readonly string providerName;
-        private readonly string brandCodePrefix;
-        private IEhlCommsAggregator _ehlCommsAggregator;
+        private readonly string _providerName;
+        private readonly string _brandCodePrefix;
+        private readonly IEhlCommsAggregator _ehlCommsAggregator;
 
         public EnergyProviderAdapter(string providerName, string brandCodePrefix, IEhlCommsAggregator ehlCommsAggregator)
         {
-            this.providerName = providerName;
-            this.brandCodePrefix = brandCodePrefix;
-            this._ehlCommsAggregator = ehlCommsAggregator;
+            _providerName = providerName;
+            _brandCodePrefix = brandCodePrefix;
+            _ehlCommsAggregator = ehlCommsAggregator;
         }
 
-        public Task<QuoteResult<EnergyQuote>> GetQuotes(MakeProviderEnquiry<EnergyEnquiry> providerEnquiry)
+        public async Task<QuoteResult<EnergyQuote>> GetQuotes(MakeProviderEnquiry<EnergyEnquiry> providerEnquiry)
         {
-            return Task.FromResult(
-            new QuoteResult<EnergyQuote>
+            return new QuoteResult<EnergyQuote>
             {
-
                 NonQuotes = new List<NonQuote>
                     {
                         new NonQuote
                         {
-                            Brand = brandCodePrefix + "3",
+                            Brand = _brandCodePrefix + "3",
                             Reason = Reason.Error,
-                            Note = $"Error from {providerName}, enquiryId: {providerEnquiry.Enquiry.Risk.JourneyId}"
+                            Note = $"Error from {_providerName}, enquiryId: {providerEnquiry.Enquiry.Risk.JourneyId}"
                         }
 
                     },
-                Quotes = _ehlCommsAggregator.GetPrices(providerEnquiry.ToEhlPriceRequest(), providerEnquiry.Environment).Select(el => el.ToEnergyQuote()).ToList().AddFakeBrandCode(brandCodePrefix)
-
-            });
+                Quotes = (await _ehlCommsAggregator.GetPrices(providerEnquiry.ToEhlPriceRequest(), providerEnquiry.Environment))
+                                        .Select(el => el.ToEnergyQuote()).ToList().AddFakeBrandCode(_brandCodePrefix)
+            };
         }
     }
 }

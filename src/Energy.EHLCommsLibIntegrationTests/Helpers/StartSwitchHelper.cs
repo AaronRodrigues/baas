@@ -1,12 +1,10 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Energy.EHLCommsLib.Contracts.Responses;
 using Energy.EHLCommsLib.Contracts;
 using Energy.EHLCommsLib.Contracts.Common.Data;
 using Energy.EHLCommsLib.Extensions;
-using Energy.EHLCommsLib.Http;
 using Energy.EHLCommsLib.Interfaces;
-using Energy.EHLCommsLib.Models;
-using Energy.EHLCommsLibIntegrationTests.Helpers;
 using Energy.EHLCommsLibIntegrationTests.Model;
 
 
@@ -17,7 +15,7 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
         private const string EhlApiEntryPointUrl = "https://rest.staging.energyhelpline.com";
         private const string PartnerReference = "CTM123";
         private const string TestPostcode = "pe26ys";
-        private readonly string ApiKey = System.Environment.GetEnvironmentVariable("ehl_api_key");
+        private readonly string _apiKey = System.Environment.GetEnvironmentVariable("ehl_api_key");
 
         private const string NextRel = "/rels/next";
         private const string StartSwitchUrl = "/domestic/energy/switches";
@@ -30,51 +28,50 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
 
         private const string UnknownRegionId = "0";
 
-        private IEhlHttpClient _ehlHttpClient;
+        private readonly IEhlHttpClient _ehlHttpClient;
 
         public StartSwitchHelper(IEhlHttpClient ehlHttpClient)
         {
             _ehlHttpClient = ehlHttpClient;
         }
 
-        public StartSwitchResponse StartSwitch()
+        public async Task<StartSwitchResponse> StartSwitch()
         {
             var response = new StartSwitchResponse();
 
-            var registerResponse = RegisterPostcode(TestPostcode, ApiKey);
+            var registerResponse = await RegisterPostcode(TestPostcode, _apiKey);
 
-            if (registerResponse.NextStep().Is(CurrentSupplyRel)) return GetStartSwitchResponse(registerResponse);
+            if (registerResponse.NextStep().Is(CurrentSupplyRel)) return await GetStartSwitchResponse(registerResponse);
 
             if (!registerResponse.NextStep().Is(RegionRel)) return response;
-            ApiResponse regionTemplate;
-            if (!RegionHasBeenSuggested(registerResponse, out regionTemplate)) return response;
+            var regionTemplate = await RegionTemplate(registerResponse);
+            if (!RegionSuggested(regionTemplate)) return response;
             var regionUrl = registerResponse.Links.First(l => l.Rel.Contains(RegionRel) && l.Rel.Contains(NextRel)).Uri;
-            var regionConfirmationResponse = _ehlHttpClient.PostApiGetResponse(regionUrl, regionTemplate, Environment);
+            var regionConfirmationResponse = await _ehlHttpClient.PostApiGetResponse(regionUrl, regionTemplate, Environment);
 
-            if (regionConfirmationResponse.NextStep().Is(CurrentSupplyRel)) return GetStartSwitchResponse(regionConfirmationResponse);
-
+            if (regionConfirmationResponse.NextStep().Is(CurrentSupplyRel)) return await GetStartSwitchResponse(regionConfirmationResponse);
 
             return response;
         }
 
-        private ApiResponse RegisterPostcode(string postcode, string apiKey)
+        private async Task<ApiResponse> RegisterPostcode(string postcode, string apiKey)
         {
             const string url = EhlApiEntryPointUrl + StartSwitchUrl;
-            var switchTemplate = _ehlHttpClient.GetApiResponse<ApiResponse>(url, Environment);
+            var switchTemplate = await _ehlHttpClient.GetApiResponse<ApiResponse>(url, Environment);
 
             ApplyReference(switchTemplate, "partnerReference", PartnerReference);
             ApplyReference(switchTemplate, "apiKey", apiKey);
             switchTemplate.DataTemplate.Groups[0].Items[0].Data = postcode;
 
-            return _ehlHttpClient.PostApiGetResponse(url, switchTemplate, Environment);
+            return await _ehlHttpClient.PostApiGetResponse(url, switchTemplate, Environment);
         }
 
-        private StartSwitchResponse GetStartSwitchResponse(ApiResponse ehlResponse)
+        private async Task<StartSwitchResponse> GetStartSwitchResponse(ApiResponse ehlResponse)
         {
-            var switchId = GetSwitchId(ehlResponse);
+            var switchId = await GetSwitchId(ehlResponse);
 
             var currentSupplyUrl = ehlResponse.Links.First(l => l.Rel.Contains(CurrentSupplyRel) && l.Rel.Contains(NextRel)).Uri;
-            var currentSupplyResponse = _ehlHttpClient.GetApiResponse<ApiResponse>(currentSupplyUrl, Environment);
+            var currentSupplyResponse = await _ehlHttpClient.GetApiResponse<ApiResponse>(currentSupplyUrl, Environment);
 
             var response = MapToEnergyResponse(currentSupplyResponse);
             response.SwitchId = switchId;
@@ -83,10 +80,10 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
             return response;
         }
 
-        private string GetSwitchId(ApiResponse ehlResponse)
+        private async Task<string> GetSwitchId(ApiResponse ehlResponse)
         {
             var switchUrl = ehlResponse.Links.First(l => l.Rel.Contains(SwitchRel)).Uri;
-            var switchStatus = _ehlHttpClient.GetApiResponse<SwitchApiResponse>(switchUrl, Environment);
+            var switchStatus = await _ehlHttpClient.GetApiResponse<SwitchApiResponse>(switchUrl, Environment);
             return switchStatus != null ? switchStatus.Id : string.Empty;
         }
 
@@ -116,10 +113,14 @@ namespace Energy.EHLCommsLibIntegrationTests.Services
             return response;
         }
 
-        private bool RegionHasBeenSuggested(ApiResponse registerResponse, out ApiResponse regionTemplate)
+        private async Task<ApiResponse> RegionTemplate(ApiResponse registerResponse)
         {
             var regionUrl = registerResponse.Links.First(l => l.Rel.Contains(RegionRel)).Uri;
-            regionTemplate = _ehlHttpClient.GetApiResponse<ApiResponse>(regionUrl, Environment);
+            return await _ehlHttpClient.GetApiResponse<ApiResponse>(regionUrl, Environment);
+        }
+
+        private bool RegionSuggested(ApiResponse regionTemplate)
+        {
             var region = regionTemplate.DataTemplate.Groups[0].Items[0].Data;
             return region != null && !region.Equals(UnknownRegionId);
         }

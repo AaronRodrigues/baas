@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Energy.EHLCommsLib.Entities;
 using Energy.EHLCommsLib.Exceptions;
 using Energy.EHLCommsLib.Interfaces;
@@ -18,11 +19,11 @@ namespace Energy.EHLCommsLib
             _ehlApiCalls = ehlApiCalls;
        }
 
-        public List<PriceResult> GetPrices(GetPricesRequest request, string environment)
+        public async Task<List<PriceResult>> GetPrices(GetPricesRequest request, string environment)
         {
             try
             {
-                return ApplyDataFromEhlToPricesResponse(request, environment);
+                return await ApplyDataFromEhlToPricesResponse(request, environment);
             }
             catch (InvalidSwitchException ex)
             {
@@ -42,45 +43,39 @@ namespace Energy.EHLCommsLib
             }
         }
         
-        private List<PriceResult> ApplyDataFromEhlToPricesResponse(GetPricesRequest request, string environment)
+        private async Task<List<PriceResult>> ApplyDataFromEhlToPricesResponse(GetPricesRequest request, string environment)
         {
             //Log.Info(string.Format("GetPrices started for JourneyId = {0}, SwitchId = {1}, SwitchUrl = {2}", request.JourneyId, request.SwitchId, request.SwitchUrl));
-            if (SupplyStageUrl(request, environment, out var supplyStageResult)) return null;
-            if (UsageStageResult(request, environment, supplyStageResult, out var usageStageResult)) return null;
+            var usageStageUrl = await UsageStageResult(request, environment);
 
-            var proRataCalculationApplied = _ehlApiCalls.UpdateCurrentSwitchStatus(request, environment);
-            var preferencesStageresult = _ehlApiCalls.GetPreferenceEhlApiResponse(request, usageStageResult.NextUrl, environment);
+            if (string.IsNullOrWhiteSpace(usageStageUrl))
+            {
+                return null;
+            }
+
+            var proRataCalculationApplied = await _ehlApiCalls.UpdateCurrentSwitchStatus(request, environment);
+            var preferencesStageresult = await _ehlApiCalls.GetPreferenceEhlApiResponse(request, usageStageUrl, environment);
             
-            return _ehlApiCalls.PopulatePricesResponseWithFutureSuppliesFromEhl(request,
+            return await _ehlApiCalls.PopulatePricesResponseWithFutureSuppliesFromEhl(request,
                 preferencesStageresult.NextUrl, proRataCalculationApplied, environment);
-
         }
 
-        private bool UsageStageResult(GetPricesRequest request, string environment, EhlApiResponse supplyStageResult,
-            out EhlApiResponse usageStageResult)
+        private async Task<string> UsageStageResult(GetPricesRequest request, string environment)
         {
-            usageStageResult = _ehlApiCalls.GetUsageEhlApiResponse(request, supplyStageResult.NextUrl, environment);
-            if (!usageStageResult.ApiCallWasSuccessful)
+            var supplyStageUrl = await SupplyStageUrl(request, environment);
+            if (string.IsNullOrWhiteSpace(supplyStageUrl))
             {
-                //response.ErrorStage = usageStageResult.ApiStage;
-                //response.ErrorString = usageStageResult.ConcatenatedErrorString;
-                return true;
+                return string.Empty;
             }
 
-            return false;
+            var usageStageResult = await _ehlApiCalls.GetUsageEhlApiResponse(request, supplyStageUrl, environment);
+            return usageStageResult.ApiCallWasSuccessful ? usageStageResult.NextUrl : string.Empty;
         }
 
-        private bool SupplyStageUrl(GetPricesRequest request, string environment, out EhlApiResponse supplyStageResult)
+        private async Task<string> SupplyStageUrl(GetPricesRequest request, string environment)
         {
-            supplyStageResult = _ehlApiCalls.GetSupplierEhlApiResponse(request, environment);
-            if (!supplyStageResult.ApiCallWasSuccessful)
-            {
-                //response.ErrorStage = supplyStageResult.ApiStage;
-                //response.ErrorString = supplyStageResult.ConcatenatedErrorString;
-                return true;
-            }
-
-            return false;
+            var supplyStageResult = await _ehlApiCalls.GetSupplierEhlApiResponse(request, environment);
+            return supplyStageResult.ApiCallWasSuccessful ? supplyStageResult.NextUrl : string.Empty;
         }
     }
 }

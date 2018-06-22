@@ -1,5 +1,5 @@
-﻿using System.Net;
-using System.Net.Http;
+﻿using System.Net.Http;
+using System.Threading.Tasks;
 using CTM.Quoting.Provider;
 using Energy.EHLCommsLib;
 using Energy.EHLCommsLib.Enums;
@@ -31,58 +31,58 @@ namespace Energy.EHLCommsLibIntegrationTests
             _ehlCommsAggregator = new EhlCommsAggregator(new EhlApiCalls(ehlHttpClient));
             _startSwitchHelper = new StartSwitchHelper(ehlHttpClient);
 
-            var startSwitchResponse = _startSwitchHelper.StartSwitch();
+            var startSwitchResponse = _startSwitchHelper.StartSwitch().Result;
             _pricesRequest = EntityHelper.GenerateValidPricesRequest(startSwitchResponse);
         }
 
         [Test]
-        public void Should_ReturnPrices_For_KwhUsageWithoutEconomy7()
+        public async Task Should_ReturnPrices_For_KwhUsageWithoutEconomy7()
         {
             _pricesRequest.EnergyJourneyType = EnergyJourneyType.HaveMyBill;
 
-            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest, "");
+            var resultsResponse = await _ehlCommsAggregator.GetPrices(_pricesRequest, "");
 
             Assert.IsNotEmpty(resultsResponse);
         }
 
         [Test]
-        public void Should_ReturnPrices_For_KwhUsageWithEconomy7()
+        public async Task Should_ReturnPrices_For_KwhUsageWithEconomy7()
         {
             _pricesRequest.EnergyJourneyType = EnergyJourneyType.HaveMyBill;
             _pricesRequest.PercentageNightUsage = 0.65m;
             _pricesRequest.ElectricityEco7 = true;
 
-            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest, "");
+            var resultsResponse = await _ehlCommsAggregator.GetPrices(_pricesRequest, "");
 
             Assert.IsNotEmpty(resultsResponse);
         }
 
         [Test]
-        public void Should_ReturnPrices_For_SpendUsageOnDontHaveMyBillJourney()
+        public async Task Should_ReturnPrices_For_SpendUsageOnDontHaveMyBillJourney()
         {
             _pricesRequest.EnergyJourneyType = EnergyJourneyType.DontHaveMyBill;
 
-            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest, "");
+            var resultsResponse = await _ehlCommsAggregator.GetPrices(_pricesRequest, "");
 
             Assert.IsNotEmpty(resultsResponse);
         }
 
         [Test]
-        public void Should_ReturnPrices_For_EstimatorUsageOnDontHaveMyBillJourney()
+        public async Task Should_ReturnPrices_For_EstimatorUsageOnDontHaveMyBillJourney()
         {
             _pricesRequest.EnergyJourneyType = EnergyJourneyType.DontHaveMyBill;
             _pricesRequest.UseDetailedEstimatorForElectricity = true;
             _pricesRequest.UseDetailedEstimatorForGas = true;
 
-            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest, "");
+            var resultsResponse = await _ehlCommsAggregator.GetPrices(_pricesRequest, "");
 
             Assert.IsNotEmpty(resultsResponse);
         }
 
         [Test]
-        public void Should_ReturnPrices_For_ElectricityOnlyEstimatorUsageOnDontHaveMyBillJourney()
+        public async Task Should_ReturnPrices_For_ElectricityOnlyEstimatorUsageOnDontHaveMyBillJourney()
         {
-            var startSwitchResponse = _startSwitchHelper.StartSwitch();
+            var startSwitchResponse = await _startSwitchHelper.StartSwitch();
             var pricesRequest = EntityHelper.GenerateValidPricesRequest(startSwitchResponse);
             pricesRequest.EnergyJourneyType = EnergyJourneyType.DontHaveMyBill;
             pricesRequest.UseDetailedEstimatorForElectricity = true;
@@ -90,13 +90,13 @@ namespace Energy.EHLCommsLibIntegrationTests
             pricesRequest.SpendData.GasSpendAmount = 150;
             pricesRequest.SpendData.GasSpendPeriod = UsagePeriod.Monthly;
 
-            var resultsResponse = _ehlCommsAggregator.GetPrices(pricesRequest, "");
+            var resultsResponse = await _ehlCommsAggregator.GetPrices(pricesRequest, "");
 
             Assert.IsNotEmpty(resultsResponse);
         }
 
         [Test]
-        public void Should_ReturnPrices_For_GasOnlyEstimatorUsageOnDontHaveMyBillJourney()
+        public async Task Should_ReturnPrices_For_GasOnlyEstimatorUsageOnDontHaveMyBillJourney()
         {
             _pricesRequest.EnergyJourneyType = EnergyJourneyType.DontHaveMyBill;
             _pricesRequest.UseDetailedEstimatorForElectricity = false;
@@ -104,7 +104,7 @@ namespace Energy.EHLCommsLibIntegrationTests
             _pricesRequest.SpendData.ElectricitySpendAmount = 150;
             _pricesRequest.SpendData.ElectricitySpendPeriod = UsagePeriod.Monthly;
 
-            var resultsResponse = _ehlCommsAggregator.GetPrices(_pricesRequest, "");
+            var resultsResponse = await _ehlCommsAggregator.GetPrices(_pricesRequest, "");
 
             Assert.IsNotEmpty(resultsResponse);
         }

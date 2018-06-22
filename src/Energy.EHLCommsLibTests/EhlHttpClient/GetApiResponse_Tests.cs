@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using System.Threading.Tasks;
 using CTM.Quoting.Provider;
 using Energy.EHLCommsLib.Contracts.Responses;
 using Microsoft.Owin;
@@ -11,7 +12,7 @@ namespace Energy.EHLCommsLibTests.EhlHttpClient
     public class GetApiResponse_Tests : ClientTestBase
     {
         [Test]
-        public void A_GET_request_is_made_to_the_url_provided()
+        public async Task A_GET_request_is_made_to_the_url_provided()
         {
             IOwinRequest requestMade = null;
             var testServer = new HttpTestServerBuilder()
@@ -21,7 +22,7 @@ namespace Energy.EHLCommsLibTests.EhlHttpClient
 
             var client = new EHLCommsLib.Http.EhlHttpClient(testServer.Handler, AttachmentPersister);
 
-            client.GetApiResponse<ApiResponse>(Url, NonProdEnvironment);
+            await client.GetApiResponse<ApiResponse>(Url, NonProdEnvironment);
 
             Assert.That(requestMade, Is.Not.Null);
             Assert.Multiple(() =>
@@ -36,21 +37,21 @@ namespace Energy.EHLCommsLibTests.EhlHttpClient
         public class Given_the_server_returns_a_successful_response : ClientTestBase
         {
             [Test]
-            public void Then_the_response_is_deserialised_into_a_model()
+            public async Task Then_the_response_is_deserialised_into_a_model()
             {
                 var client = new EHLCommsLib.Http.EhlHttpClient(SuccessfulResponseHandler, AttachmentPersister);
 
-                var result = client.GetApiResponse<ApiResponse>(Url, NonProdEnvironment);
+                var result = await client.GetApiResponse<ApiResponse>(Url, NonProdEnvironment);
 
                 Assert.That(result.DataTemplate.ValidateAs, Is.EqualTo("test123"));
             }
 
             [Test]
-            public void When_environment_is_not_prod_Then_the_response_is_saved_as_an_attachment()
+            public async Task When_environment_is_not_prod_Then_the_response_is_saved_as_an_attachment()
             {
                 var client = new EHLCommsLib.Http.EhlHttpClient(SuccessfulResponseHandler, AttachmentPersister);
 
-                client.GetApiResponse<ApiResponse>(Url, NonProdEnvironment);
+                await client.GetApiResponse<ApiResponse>(Url, NonProdEnvironment);
 
                 Mock.Get(AttachmentPersister).Verify(attachments => attachments.Save(It.IsAny<Attachment>()), Times.Once());
                 Mock.Get(AttachmentPersister).Verify(attachments => attachments.Save(It.Is<Attachment>
@@ -61,11 +62,11 @@ namespace Energy.EHLCommsLibTests.EhlHttpClient
             }
 
             [Test]
-            public void When_environment_is_prod_Then_the_response_is_not_saved_as_an_attachment()
+            public async Task When_environment_is_prod_Then_the_response_is_not_saved_as_an_attachment()
             {
                 var client = new EHLCommsLib.Http.EhlHttpClient(SuccessfulResponseHandler, AttachmentPersister);
 
-                client.GetApiResponse<ApiResponse>(Url, ProdEnvironment);
+                await client.GetApiResponse<ApiResponse>(Url, ProdEnvironment);
 
                 Mock.Get(AttachmentPersister).Verify(attachments => attachments.Save(It.IsAny<Attachment>()), Times.Never);
             }
@@ -79,7 +80,7 @@ namespace Energy.EHLCommsLibTests.EhlHttpClient
             {
                 var client = new EHLCommsLib.Http.EhlHttpClient(UnSuccessfulResponseHandler, AttachmentPersister);
 
-                Assert.Throws<HttpRequestException>(() => client.GetApiResponse<ApiResponse>(Url, NonProdEnvironment));
+                Assert.ThrowsAsync<HttpRequestException>(() => client.GetApiResponse<ApiResponse>(Url, NonProdEnvironment));
             }
 
             [Test]
@@ -87,7 +88,7 @@ namespace Energy.EHLCommsLibTests.EhlHttpClient
             {
                 var client = new EHLCommsLib.Http.EhlHttpClient(UnSuccessfulResponseHandler, AttachmentPersister);
 
-                Assert.Throws<HttpRequestException>(() => client.GetApiResponse<ApiResponse>(Url, NonProdEnvironment));
+                Assert.ThrowsAsync<HttpRequestException>(() => client.GetApiResponse<ApiResponse>(Url, NonProdEnvironment));
 
                 Mock.Get(AttachmentPersister).Verify(attachments => attachments.Save(It.IsAny<Attachment>()), Times.Once());
                 Mock.Get(AttachmentPersister).Verify(attachments => attachments.Save(It.Is<Attachment>
@@ -102,7 +103,7 @@ namespace Energy.EHLCommsLibTests.EhlHttpClient
             {
                 var client = new EHLCommsLib.Http.EhlHttpClient(UnSuccessfulResponseHandler, AttachmentPersister);
 
-                Assert.Throws<HttpRequestException>(() => client.GetApiResponse<ApiResponse>(Url, ProdEnvironment));
+                Assert.ThrowsAsync<HttpRequestException>(() => client.GetApiResponse<ApiResponse>(Url, ProdEnvironment));
 
                 Mock.Get(AttachmentPersister).Verify(attachments => attachments.Save(It.IsAny<Attachment>()), Times.Never);
             }

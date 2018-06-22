@@ -6,16 +6,17 @@ using Energy.EHLCommsLib.Interfaces;
 using Newtonsoft.Json;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 using Energy.EHLCommsLib.Exceptions;
 
 namespace Energy.EHLCommsLibTests
 {
    public class MockEhlHttpClient : IEhlHttpClient
     {
-        private Dictionary<string, MockEntry> _mockMapGet = new Dictionary<string, MockEntry>();
-        private Dictionary<string, MockEntry> _mockMapPost = new Dictionary<string, MockEntry>();
+        private readonly Dictionary<string, MockEntry> _mockMapGet = new Dictionary<string, MockEntry>();
+        private readonly Dictionary<string, MockEntry> _mockMapPost = new Dictionary<string, MockEntry>();
 
-        public T GetApiResponse<T>(string url, string environment) where T : ApiResponse
+        public Task<T> GetApiResponse<T>(string url, string environment) where T : ApiResponse
         {
             var entry = GetEntryFor(_mockMapGet, url);
             var json = GetJsonFor(entry.FileName);
@@ -28,15 +29,15 @@ namespace Energy.EHLCommsLibTests
                 throw new InvalidSwitchException("", result.Exception);
             }
 
-            return result;
+            return Task.FromResult(result);
         }
 
-        public ApiResponse PostApiGetResponse(string url, ApiResponse responseDataToSend, string environment)
+        public Task<ApiResponse> PostApiGetResponse(string url, ApiResponse responseDataToSend, string environment)
         {
             var entry = GetEntryFor(_mockMapPost, url);
             var json = GetJsonFor(entry.FileName);
             var result = JsonConvert.DeserializeObject<ApiResponse>(json);
-            return result;
+            return Task.FromResult(result);
         }
 
         public MockEhlHttpClient Mock_GetApiResponse(string fileName, string urlFilter, HttpStatusCode responseStatusCode = HttpStatusCode.OK, WebException exception = null)
@@ -60,7 +61,7 @@ namespace Energy.EHLCommsLibTests
 
         public string GetJsonFor(string fileName)
         {
-            var basePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var basePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty;
             string filePath = Path.Combine(basePath, "SwitchApiMessages",$"{fileName}.json");
             
             var file = File.ReadAllText(filePath);

@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading.Tasks;
 using CTM.Quoting.Provider;
 using Energy.EHLCommsLib.Contracts.Responses;
 using Energy.EHLCommsLib.Interfaces;
@@ -32,10 +33,10 @@ namespace Energy.EHLCommsLib.Http
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
         }
 
-        public T GetApiResponse<T>(string url, string environment) where T : ApiResponse
+        public async Task<T> GetApiResponse<T>(string url, string environment) where T : ApiResponse
         {
             var request = HttpRequestMessage(HttpMethod.Get, url);
-            var response = _httpClient.SendAsync(request).Result;
+            var response = await _httpClient.SendAsync(request);
             var responseBody = response.Content.ReadAsStringAsync().Result;
             
             SaveAttachment(environment, url, responseBody, "Get - Response");
@@ -45,7 +46,7 @@ namespace Energy.EHLCommsLib.Http
             return JsonConvert.DeserializeObject<T>(responseBody);
         }
 
-        public ApiResponse PostApiGetResponse(string url, ApiResponse responseDataToSend, string environment)
+        public async Task<ApiResponse> PostApiGetResponse(string url, ApiResponse responseDataToSend, string environment)
         {
             var requestBody = RequestBody(responseDataToSend);
 
@@ -55,7 +56,7 @@ namespace Energy.EHLCommsLib.Http
             httpRequestMessage.Content = new StringContent(requestBody, Encoding.UTF8);
             httpRequestMessage.Content.Headers.ContentType = MediaTypeHeaderValue.Parse(ContentType);
 
-            var response = _httpClient.SendAsync(httpRequestMessage).Result;
+            var response = await _httpClient.SendAsync(httpRequestMessage);
             var responseBody = response.Content.ReadAsStringAsync().Result;
 
             SaveAttachment(environment, url, responseBody, "Post-Reponse");

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Autofac;
 using CTM.Quoting.Provider;
 using Energy.EHLCommsLib.Enums;
@@ -121,22 +122,23 @@ namespace Energy.ProviderAdapterTests
             _energyEnquiry = new EnergyEnquiry { Risk = energyRisk };
         }
 
-        protected void When_prices_are_requested_for_non_production_environment()
+        protected async Task When_prices_are_requested_for_non_production_environment()
         {
-            When_prices_are_requested(environment: "uat");
+            await When_prices_are_requested(environment: "uat");
         }
 
-        protected void When_prices_are_requested_for_production_environment()
+        protected async Task When_prices_are_requested_for_production_environment()
         {
-            When_prices_are_requested(environment: "prod");
+            await When_prices_are_requested(environment: "prod");
         }
 
-        protected void When_prices_are_requested(string environment)
+        protected async Task When_prices_are_requested(string environment)
         {
             var providerAdapter = _container.Resolve<IProviderAdapter<EnergyEnquiry, EnergyQuote>>();
+
             using (TimingCollector = new ScopedTimingsCollector("total"))
             {
-                providerAdapter.GetQuotes(new MakeProviderEnquiry<EnergyEnquiry>
+                await providerAdapter.GetQuotes(new MakeProviderEnquiry<EnergyEnquiry>
                 {
                     Environment = environment,
                     Enquiry = _energyEnquiry

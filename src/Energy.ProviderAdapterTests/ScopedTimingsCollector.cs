@@ -9,7 +9,6 @@ namespace Energy.ProviderAdapterTests
         private readonly string _description;
         private readonly Stopwatch _stopwatch;
         public Dictionary<string, TimeSpan> CollectedData { get; set; } =  new Dictionary<string, TimeSpan>();
-        public List<double> TotalMs { get; set; } = new List<double>();
 
         public ScopedTimingsCollector(string description)
         {

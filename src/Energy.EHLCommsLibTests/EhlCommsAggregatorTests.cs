@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using Energy.EHLCommsLib;
 using Energy.EHLCommsLib.Enums;
 using Energy.EHLCommsLib.Exceptions;
@@ -73,7 +74,7 @@ namespace Energy.EHLCommsLibTests
         }
 
         [TestCase(EnergyJourneyType.DontHaveMyBill)]
-        public void Should_ReturnPricesAsExpected_UsingDetailedEstimator(EnergyJourneyType journeyType)
+        public async Task Should_ReturnPricesAsExpected_UsingDetailedEstimator(EnergyJourneyType journeyType)
         {
             SetupMock();
 
@@ -90,13 +91,13 @@ namespace Energy.EHLCommsLibTests
             request.EstimatorData.NumberOfBedrooms = "5";
             request.EstimatorData.NumberOfOccupants = "2";
 
-            var response = EhlCommsAggregator.GetPrices(request, Environment);
+            var response = await EhlCommsAggregator.GetPrices(request, Environment);
 
             Assert.IsNotEmpty(response);
         }
 
         [Test]
-        public void Should_ReturnPrices_UsingSpendDataForDontHaveMyBillJourney()
+        public async Task Should_ReturnPrices_UsingSpendDataForDontHaveMyBillJourney()
         {
             SetupMock();
 
@@ -106,7 +107,7 @@ namespace Energy.EHLCommsLibTests
             request.SpendData.GasSpendAmount = 50;
             request.SpendData.GasSpendPeriod = UsagePeriod.Monthly;
 
-            var response = EhlCommsAggregator.GetPrices(request, Environment);
+            var response = await EhlCommsAggregator.GetPrices(request, Environment);
 
             Assert.IsNotEmpty(response);
         }
@@ -114,7 +115,7 @@ namespace Energy.EHLCommsLibTests
 
 
         [Test]
-        public void Should_ReturnPrices_UsingKilowattUsageData()
+        public async Task Should_ReturnPrices_UsingKilowattUsageData()
         {
             _iHttpClient
      .Mock_GetApiResponse("CurrentSupply-GetResponse", "/current-supply?")
@@ -136,13 +137,13 @@ namespace Energy.EHLCommsLibTests
             request.UsageData.ElectricityKwh = 1000;
             request.UsageData.ElectricityUsagePeriod = UsagePeriod.Monthly;
 
-            var response = EhlCommsAggregator.GetPrices(request, Environment);
+            var response = await EhlCommsAggregator.GetPrices(request, Environment);
 
             Assert.IsNotEmpty(response);
         }
 
         [Test]
-        public void Should_ReturnPrices_UsingSpendDataForHaveMyBillJourney()
+        public async Task Should_ReturnPrices_UsingSpendDataForHaveMyBillJourney()
         {
             SetupMock();
 
@@ -154,13 +155,13 @@ namespace Energy.EHLCommsLibTests
             request.SpendData.GasSpendAmount = 50;
             request.SpendData.GasSpendPeriod = UsagePeriod.Monthly;
 
-            var response = EhlCommsAggregator.GetPrices(request, Environment);
+            var response = await EhlCommsAggregator.GetPrices(request, Environment);
 
             Assert.IsNotEmpty(response);
         }
 
         [Test]
-        public void Should_ReturnPrices_UsingSpendDataForHaveMyBillJourney_AlsoUsingCustomFeatures()
+        public async Task Should_ReturnPrices_UsingSpendDataForHaveMyBillJourney_AlsoUsingCustomFeatures()
         {
             //AppSettings.ApplySetting("Feature_TariffCustomFeatureEnabled", "true");
 
@@ -184,7 +185,7 @@ namespace Energy.EHLCommsLibTests
             request.CustomFeatures = customFeatures;
             request.TariffCustomFeatureEnabled = true;
 
-            var response = EhlCommsAggregator.GetPrices(request, Environment);
+            var response = await EhlCommsAggregator.GetPrices(request, Environment);
 
             Assert.IsNotEmpty(response);
             Assert.IsTrue(
@@ -221,7 +222,7 @@ namespace Energy.EHLCommsLibTests
 
             var request = GetStubPricesRequest();
 
-            Assert.Throws<InvalidSwitchException>(() => EhlCommsAggregator.GetPrices(request, Environment));
+            Assert.ThrowsAsync<InvalidSwitchException>(() => EhlCommsAggregator.GetPrices(request, Environment));
 
         }
 
@@ -272,7 +273,7 @@ namespace Energy.EHLCommsLibTests
 
         [Test]
         [Ignore("Currently we send only list of prices from adaptor")]
-        public void Should_ReturnResponseWithErrors_WhenGasSupplierNotEntered()
+        public async Task Should_ReturnResponseWithErrors_WhenGasSupplierNotEntered()
         {
             _iHttpClient
                 .Mock_GetApiResponse( "CurrentSupply-GetResponse", "/current-supply?")
@@ -284,7 +285,7 @@ namespace Energy.EHLCommsLibTests
             request.SpendData.GasSpendAmount = 50;
             request.SpendData.GasSpendPeriod = UsagePeriod.Monthly;
 
-            var response = EhlCommsAggregator.GetPrices(request, Environment);
+            var response = await EhlCommsAggregator.GetPrices(request, Environment);
 
             Assert.IsNotEmpty(response);
         }
