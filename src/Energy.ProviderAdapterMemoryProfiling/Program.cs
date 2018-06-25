@@ -11,12 +11,20 @@ namespace Energy.ProviderAdapterMemoryProfiling
 {
     class ScenarioRunner : OutsideInTestBase
     {
-        private static float CalculateMemoryUsedInMb()
+
+        public async Task WarmUp()
+          {
+             await Warmup();
+          }
+
+
+    public static float CalculateMemoryUsedInMb()
         {
             var memoryPerformanceCounter = new PerformanceCounter(
                 "Process",
                 "Working Set",
                 Process.GetCurrentProcess().ProcessName);
+
 
             var memoryUsedInBytes = memoryPerformanceCounter.NextValue();
             var memoryUsedInMb = memoryUsedInBytes / 1024.0f / 1024.0f;
@@ -26,15 +34,33 @@ namespace Energy.ProviderAdapterMemoryProfiling
 
         public void Run()
         {
+            var memoryUsageOverTime = new List<float>();
             Given_the_provider_adapter_is_loaded();
             Given_EHL_API_is_working_correctly();
             Given_a_valid_enquiry();
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 10; i++)
             {
                 When_prices_are_requested_for_production_environment().Wait();
                 CalculateMemoryUsedInMb();
+                memoryUsageOverTime.Add(CalculateMemoryUsedInMb());
+                if (memoryUsageOverTime.Count == 3 || memoryUsageOverTime.Count % 60 == 0)
+                    Console.WriteLine($"... currently using {memoryUsageOverTime.Last():F} MB ...");
+
                 Thread.Sleep(100);
             }
+        }
+
+        private static async Task<List<float>> Profiler(MemoryProfiler memoryProfiling)
+        {
+            var memoryUsageOverTime = new List<float>();
+
+            await memoryProfiling.Run(numOfIterations: 150, onIterationComplete: () =>
+            {
+                memoryUsageOverTime.Add(CalculateMemoryUsedInMb());
+                if (memoryUsageOverTime.Count == 3 || memoryUsageOverTime.Count % 60 == 0)
+                    Console.WriteLine($"... currently using {memoryUsageOverTime.Last():F} MB ...");
+            });
+            return memoryUsageOverTime;
         }
     }
 
@@ -44,21 +70,7 @@ namespace Energy.ProviderAdapterMemoryProfiling
         {
             var scenarioRunner = new ScenarioRunner();
             scenarioRunner.Run();
-            return CalculateMemoryUsedInMb()  < 1000f ? 1 : 0;
-        }
-        private static float CalculateMemoryUsedInMb()
-        {
-            var memoryPerformanceCounter = new PerformanceCounter(
-                "Process",
-                "Working Set",
-                Process.GetCurrentProcess().ProcessName);
-
-            var memoryUsedInBytes = memoryPerformanceCounter.NextValue();
-            var memoryUsedInMb = memoryUsedInBytes / 1024.0f / 1024.0f;
-            Console.WriteLine(memoryUsedInMb);
-            return memoryUsedInMb;
+            return 1;
         }
     }
-
-
 }
