@@ -87,7 +87,11 @@ Target "AnalyseTestCoverage" (fun _ ->
                         (sprintf "./src/Energy.ProviderAdapterTests/bin/%s/Energy.ProviderAdapterTests.dll" mode) 
 
                         "--trace=Off";
-                        "--output=./nunit-output.log"
+                        "--output=./nunit-output.log";
+
+                        // Ignore performance tests when calculating coverage
+                        "--where=cat!=performance"
+
                     ] |> String.concat " "
     let allArgs = [ 
                     "-register:path64"; 

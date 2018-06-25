@@ -5,7 +5,7 @@ using NUnit.Framework;
 
 namespace Energy.ProviderAdapterTests.Performance
 {
-    [TestFixture]
+    [TestFixture, Category("performance")]
     public class PerformanceTests : OutsideInTestBase
     {
         public async Task Warmup()
