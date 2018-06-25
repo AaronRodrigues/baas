@@ -32,7 +32,7 @@ namespace Energy.ProviderAdapterMemoryProfiling
             return memoryUsedInMb;
         }
 
-        public void Run()
+        public int Run()
         {
             var memoryUsageOverTime = new List<float>();
             Given_the_provider_adapter_is_loaded();
@@ -48,19 +48,20 @@ namespace Energy.ProviderAdapterMemoryProfiling
 
                 Thread.Sleep(100);
             }
-        }
 
-        private static async Task<List<float>> Profiler(MemoryProfiler memoryProfiling)
-        {
-            var memoryUsageOverTime = new List<float>();
-
-            await memoryProfiling.Run(numOfIterations: 150, onIterationComplete: () =>
+            memoryUsageOverTime.Sort();
+            var memoryUsageInMbBefore = memoryUsageOverTime.Skip(2).First();
+            var memoryUsageInMbAfter = memoryUsageOverTime.Last();
+            var maxAllowedDifferenceInMb = memoryUsageInMbBefore * 0.05f;
+            if (memoryUsageInMbAfter - memoryUsageInMbBefore > maxAllowedDifferenceInMb)
             {
-                memoryUsageOverTime.Add(CalculateMemoryUsedInMb());
-                if (memoryUsageOverTime.Count == 3 || memoryUsageOverTime.Count % 60 == 0)
-                    Console.WriteLine($"... currently using {memoryUsageOverTime.Last():F} MB ...");
-            });
-            return memoryUsageOverTime;
+                Console.WriteLine($"*** ERROR: memory usage went from {memoryUsageInMbBefore:F} MB to {memoryUsageInMbAfter:F} MB which is more than our threshold of {maxAllowedDifferenceInMb:F} MB.");
+                Console.WriteLine("\tIf this is not expected then check for a memory leak");
+                return 1;
+            }
+            
+            Console.WriteLine("Memory usage is as expected.");
+            return 0;
         }
     }
 
@@ -69,8 +70,7 @@ namespace Energy.ProviderAdapterMemoryProfiling
         static int Main(string[] args)
         {
             var scenarioRunner = new ScenarioRunner();
-            scenarioRunner.Run();
-            return 1;
+            return scenarioRunner.Run();
         }
     }
 }
