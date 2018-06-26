@@ -20,8 +20,8 @@ namespace Energy.ProviderAdapterMemoryProfiling
         public async Task<bool> Run()
         {
             var memoryUsageOverTime = new List<float>();
-
-            for (int i = 0; i < 600; i++)
+            var numberOfIterations = 12000;
+            for (int i = 0; i < numberOfIterations; i++)
             {
                 await When_prices_are_requested_for_production_environment();
 
@@ -37,9 +37,9 @@ namespace Energy.ProviderAdapterMemoryProfiling
                 Thread.Sleep(100);
             }
 
-            var memoryUsageInMbBefore = memoryUsageOverTime.Skip(2).First();
+            var memoryUsageInMbBefore = memoryUsageOverTime.Skip(10).First();
             var memoryUsageInMbAfter = memoryUsageOverTime.Last();
-            var differenceInMb = CalculateDifferenceInMb(memoryUsageOverTime);
+            var differenceInMb = CalculateDifferenceInMb(memoryUsageInMbBefore, memoryUsageInMbAfter);
             var maxAllowedDifferenceInMb = MaxAllowedDifferenceInMb(memoryUsageInMbBefore);
             return IsMemoryUsageAsExpected(differenceInMb, maxAllowedDifferenceInMb, memoryUsageInMbBefore, memoryUsageInMbAfter);
         }
@@ -56,10 +56,8 @@ namespace Energy.ProviderAdapterMemoryProfiling
             return memoryUsedInMb;
         }
 
-        private float CalculateDifferenceInMb(IList<float> memoryUsageOverTime)
+        private float CalculateDifferenceInMb(float memoryUsageInMbBefore, float memoryUsageInMbAfter)
         {
-            var memoryUsageInMbBefore = memoryUsageOverTime.Skip(2).First();
-            var memoryUsageInMbAfter = memoryUsageOverTime.Last();
             var differenceInMb = memoryUsageInMbAfter - memoryUsageInMbBefore;
             return differenceInMb;
         }
