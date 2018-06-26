@@ -8,11 +8,6 @@ namespace Energy.ProviderAdapterTests.Performance
     [TestFixture]
     public class PerformanceTests : OutsideInTestBase
     {
-        public async Task Warmup()
-        {
-            await When_prices_are_requested_for_non_production_environment();
-        }
-
         [Test(Description = "Need to run warmup as it was taking more than 300ms to run for the first time")]
         public async Task When_performance_test_runs_Then_service_call_should_return_reponse_in_less_than_50ms()
         {
