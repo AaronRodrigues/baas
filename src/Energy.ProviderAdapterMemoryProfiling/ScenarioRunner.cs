@@ -21,10 +21,17 @@ namespace Energy.ProviderAdapterMemoryProfiling
         {
             var memoryUsageOverTime = new List<float>();
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 600; i++)
             {
                 await When_prices_are_requested_for_production_environment();
-                memoryUsageOverTime.Add(CalculateMemoryUsedInMb());
+
+                var currentMemoryUsage = CalculateMemoryUsedInMb();
+                memoryUsageOverTime.Add(currentMemoryUsage);
+
+                if (i % 60 == 0)
+                {
+                    Console.WriteLine($"...currently using {currentMemoryUsage} MB");
+                }
                 
                 // Sleep to try and roughly simulate real traffic levels
                 Thread.Sleep(100);
@@ -46,7 +53,6 @@ namespace Energy.ProviderAdapterMemoryProfiling
 
             var memoryUsedInBytes = memoryPerformanceCounter.NextValue();
             var memoryUsedInMb = memoryUsedInBytes / 1024.0f / 1024.0f;
-            Console.WriteLine(memoryUsedInMb);
             return memoryUsedInMb;
         }
 
