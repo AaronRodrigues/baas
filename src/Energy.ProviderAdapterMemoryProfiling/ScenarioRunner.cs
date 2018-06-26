@@ -20,7 +20,7 @@ namespace Energy.ProviderAdapterMemoryProfiling
         public async Task<bool> Run()
         {
             var memoryUsageOverTime = new List<float>();
-            var numberOfIterations = 12000;
+            var numberOfIterations = 600;
             for (int i = 0; i < numberOfIterations; i++)
             {
                 await When_prices_are_requested_for_production_environment();
@@ -77,7 +77,7 @@ namespace Energy.ProviderAdapterMemoryProfiling
 
         private float MaxAllowedDifferenceInMb(float memoryUsageInMbBefore)
         {
-            var maxAllowedDifferenceInMb = memoryUsageInMbBefore * 0.05f;
+            var maxAllowedDifferenceInMb = memoryUsageInMbBefore * 0.1f;
             return maxAllowedDifferenceInMb;
         }
     }
