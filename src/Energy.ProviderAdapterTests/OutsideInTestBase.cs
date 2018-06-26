@@ -145,5 +145,10 @@ namespace Energy.ProviderAdapterTests
                 });
             }
         }
-    }
+        
+       protected async Task Warmup()
+       {
+            await When_prices_are_requested_for_production_environment();
+       }
+}
 }

@@ -43,6 +43,15 @@ let runUnitTests() =
         }
     tests |> NUnit3 nUnitParams
 
+
+let runMemoryProfileTests() =
+    let result =
+        ExecProcess (fun info ->
+             info.FileName <- ( sprintf "./src/Energy.ProviderAdapterMemoryProfiling/bin/%s/Energy.ProviderAdapterMemoryProfiling.exe" mode)
+        )(System.TimeSpan.FromMinutes 5.0)
+
+    if result <> 0 then failwith "Memory Profiling Tests failed or timed out" 
+
 Target "GenerateAssemblyInfo" (fun _ ->
    let now = System.DateTime.Now
    let tcBuildNumber = environVarOrDefault "GO_PIPELINE_COUNTER" "0"
@@ -157,11 +166,13 @@ Target "Deploy" (fun _ ->
 Target "RestoreNuGetPackages" restoreNugetPackages
 Target "Compile" compile
 Target "RunUnitTests" runUnitTests 
+Target "RunMemoryProfileTests" runMemoryProfileTests
 
 "RestoreNuGetPackages"
    ==> "GenerateAssemblyInfo"
    ==> "Compile"
    ==> "RunUnitTests"
+   ==> "RunMemoryProfileTests"
    ==> "PrePush"
    ==> "Package"
 

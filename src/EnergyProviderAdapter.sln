@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2043
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Energy.ProviderAdapter", "Energy.ProviderAdapter\Energy.ProviderAdapter.csproj", "{B49AC471-4EC9-437D-BB49-AE2994E24E93}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{A3425EEF
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Energy.ProviderAdapterTests", "Energy.ProviderAdapterTests\Energy.ProviderAdapterTests.csproj", "{992CCB1F-65D5-4441-AF1C-4182389675B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Energy.ProviderAdapterMemoryProfiling", "Energy.ProviderAdapterMemoryProfiling\Energy.ProviderAdapterMemoryProfiling.csproj", "{CFA74524-FF4B-4B2D-B561-DBAF6C5E2510}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -52,8 +54,15 @@ Global
 		{992CCB1F-65D5-4441-AF1C-4182389675B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{992CCB1F-65D5-4441-AF1C-4182389675B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{992CCB1F-65D5-4441-AF1C-4182389675B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFA74524-FF4B-4B2D-B561-DBAF6C5E2510}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFA74524-FF4B-4B2D-B561-DBAF6C5E2510}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFA74524-FF4B-4B2D-B561-DBAF6C5E2510}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFA74524-FF4B-4B2D-B561-DBAF6C5E2510}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BE9FD1F3-1A10-4E79-A6EA-B4A2727B507B}
 	EndGlobalSection
 EndGlobal
