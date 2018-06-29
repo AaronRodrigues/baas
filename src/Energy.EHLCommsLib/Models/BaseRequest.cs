@@ -2,7 +2,7 @@
 
 namespace Energy.EHLCommsLib.Models
 {
-    public abstract class BaseRequest
+    public class BaseRequest
     {
         public string Postcode { get; set; }
         public string SwitchId { get; set; }

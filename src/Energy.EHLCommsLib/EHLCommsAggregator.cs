@@ -23,7 +23,7 @@ namespace Energy.EHLCommsLib
         {
             try
             {
-                return await ApplyDataFromEhlToPricesResponse(request, environment);
+                return await ApplyDataFromEhlToPricesResponse(request, environment).ConfigureAwait(false);
             }
             catch (InvalidSwitchException ex)
             {
@@ -46,35 +46,35 @@ namespace Energy.EHLCommsLib
         private async Task<List<PriceResult>> ApplyDataFromEhlToPricesResponse(GetPricesRequest request, string environment)
         {
             //Log.Info(string.Format("GetPrices started for JourneyId = {0}, SwitchId = {1}, SwitchUrl = {2}", request.JourneyId, request.SwitchId, request.SwitchUrl));
-            var usageStageUrl = await UsageStageResult(request, environment);
+            var usageStageUrl = await UsageStageResult(request, environment).ConfigureAwait(false);
 
             if (string.IsNullOrWhiteSpace(usageStageUrl))
             {
                 return null;
             }
 
-            var proRataCalculationApplied = await _ehlApiCalls.UpdateCurrentSwitchStatus(request, environment);
-            var preferencesStageresult = await _ehlApiCalls.GetPreferenceEhlApiResponse(request, usageStageUrl, environment);
+            var proRataCalculationApplied = await _ehlApiCalls.UpdateCurrentSwitchStatus(request, environment).ConfigureAwait(false);
+            var preferencesStageresult = await _ehlApiCalls.GetPreferenceEhlApiResponse(request, usageStageUrl, environment).ConfigureAwait(false);
             
             return await _ehlApiCalls.PopulatePricesResponseWithFutureSuppliesFromEhl(request,
-                preferencesStageresult.NextUrl, proRataCalculationApplied, environment);
+                preferencesStageresult.NextUrl, proRataCalculationApplied, environment).ConfigureAwait(false);
         }
 
         private async Task<string> UsageStageResult(GetPricesRequest request, string environment)
         {
-            var supplyStageUrl = await SupplyStageUrl(request, environment);
+            var supplyStageUrl = await SupplyStageUrl(request, environment).ConfigureAwait(false);
             if (string.IsNullOrWhiteSpace(supplyStageUrl))
             {
                 return string.Empty;
             }
 
-            var usageStageResult = await _ehlApiCalls.GetUsageEhlApiResponse(request, supplyStageUrl, environment);
+            var usageStageResult = await _ehlApiCalls.GetUsageEhlApiResponse(request, supplyStageUrl, environment).ConfigureAwait(false);
             return usageStageResult.ApiCallWasSuccessful ? usageStageResult.NextUrl : string.Empty;
         }
 
         private async Task<string> SupplyStageUrl(GetPricesRequest request, string environment)
         {
-            var supplyStageResult = await _ehlApiCalls.GetSupplierEhlApiResponse(request, environment);
+            var supplyStageResult = await _ehlApiCalls.GetSupplierEhlApiResponse(request, environment).ConfigureAwait(false);
             return supplyStageResult.ApiCallWasSuccessful ? supplyStageResult.NextUrl : string.Empty;
         }
     }

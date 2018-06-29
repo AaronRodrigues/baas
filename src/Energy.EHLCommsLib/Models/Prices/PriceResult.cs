@@ -48,35 +48,6 @@ namespace Energy.EHLCommsLib.Models.Prices
         public decimal? GasAnnualSpend { get; set; }
         public List<PriceFeature> KeyFeatures { get; set; }
 
-        public List<PriceFeature> TopNFeatures
-        {
-            get
-            {
-                var selectedFeatures = new List<PriceFeature>();
-
-                var cappedFeature = KeyFeatures.FirstOrDefault(k => k.Category == PriceFeatureCategory.CappedOrFixed);
-                if (cappedFeature != null)
-                    selectedFeatures.Add(cappedFeature);
-
-                var specialOffersFeature =
-                    KeyFeatures.FirstOrDefault(
-                        k =>
-                            k.Category == PriceFeatureCategory.SpecialOffers &&
-                            k.Description.ToLower().Contains("cashback"));
-                if (specialOffersFeature != null)
-                {
-                    selectedFeatures.Add(specialOffersFeature);
-                    Cashback = true;
-                }
-                else
-                {
-                    Cashback = false;
-                }
-
-                return selectedFeatures;
-            }
-        }
-
         public decimal RenewableFuelPercentage { get; set; }
         // Price attributes
         public bool PaperLessBilling { get; set; }
@@ -105,5 +76,32 @@ namespace Energy.EHLCommsLib.Models.Prices
         public bool CheapestGreen { get; set; }
         public bool CheapestHighestRated { get; set; }
         public bool CheapestShortFixed { get; set; }
+
+        public List<PriceFeature> TopNFeatures
+        {
+            get
+            {
+                var selectedFeatures = new List<PriceFeature>();
+
+                var cappedFeature = KeyFeatures.FirstOrDefault(k => k.Category == PriceFeatureCategory.CappedOrFixed);
+                if (cappedFeature != null)
+                    selectedFeatures.Add(cappedFeature);
+
+                var specialOffersFeature =
+                    KeyFeatures.FirstOrDefault(k =>k.Category == PriceFeatureCategory.SpecialOffers && k.Description.ToLowerInvariant().Contains("cashback"));
+
+                if (specialOffersFeature != null)
+                {
+                    selectedFeatures.Add(specialOffersFeature);
+                    Cashback = true;
+                }
+                else
+                {
+                    Cashback = false;
+                }
+
+                return selectedFeatures;
+            }
+        }
     }
 }

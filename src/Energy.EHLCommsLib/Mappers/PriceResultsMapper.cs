@@ -14,8 +14,7 @@ namespace Energy.EHLCommsLib.Mappers
         {
             var mappedResults = new List<PriceResult>();
 
-            var ehlResultsSet =
-                ehlResults.Results.First(r => r.SupplyType.Id.Equals(request.CompareType.EhlSupplyType()));
+            var ehlResultsSet = ehlResults.Results.First(r => r.SupplyType.Id.Equals(request.CompareType.EhlSupplyType()));
 
             foreach (var supply in ehlResultsSet.EnergySupplies)
             {
@@ -42,17 +41,14 @@ namespace Energy.EHLCommsLib.Mappers
                     CanApply = supply.CanApply,
                     CappedOrFixed = supply.SupplyDetails.Attributes.Any(a => a.Equals("CappedOrFixed")),
                     Green = supply.SupplyDetails.Attributes.Any(a => a.Equals("Green")),
-                    AccurateMonthlyBilling =
-                        supply.SupplyDetails.Attributes.Any(a => a.Equals("AccurateMonthlyBilling")),
+                    AccurateMonthlyBilling = supply.SupplyDetails.Attributes.Any(a => a.Equals("AccurateMonthlyBilling")),
                     StayWarm = supply.SupplyDetails.Attributes.Any(a => a.Equals("StayWarm")),
                     Economy10 = supply.SupplyDetails.Attributes.Any(a => a.Equals("Economy10")),
                     PaperLessBilling = supply.SupplyDetails.Attributes.Any(a => a.Equals("PaperlessBilling")),
                     PaperBilling = supply.SupplyDetails.Attributes.Any(a => a.Equals("PaperBilling")),
                     NoStandingCharges = supply.SupplyDetails.Attributes.Any(a => a.Equals("NoStandingCharges")),
                     RenewableFuelPercentage = supply.SupplyDetails.RenewableFuelPercentage,
-                    TotalExitFees =
-                        CalculateTotalExitFees(request.CompareType, supply.SupplyDetails.ExitFeesGas,
-                            supply.SupplyDetails.ExitFeesElectricity),
+                    TotalExitFees = CalculateTotalExitFees(request.CompareType, supply.SupplyDetails.ExitFeesGas, supply.SupplyDetails.ExitFeesElectricity),
                     CheapestBigSupplier = PromotionsValidator(supply.Promotions, "CheapestBigSupplier"),
                     CheapestLongFixed = PromotionsValidator(supply.Promotions, "CheapestLongFixed"),
                     CheapestShortFixed = PromotionsValidator(supply.Promotions, "CheapestShortFixed"),
@@ -71,11 +67,9 @@ namespace Energy.EHLCommsLib.Mappers
                 // Set CTM custom feature text
                 if (request.TariffCustomFeatureEnabled)
                 {
-                    priceResult.CustomFeatureText =
-                        SetCustomFeatureText(priceResult.SupplierName + priceResult.TariffName, request.CustomFeatures);
-                    priceResult.HasTariffCustomFeature = priceResult.CustomFeatureText != null;
+                    priceResult.CustomFeatureText = SetCustomFeatureText(string.Concat(priceResult.SupplierName, priceResult.TariffName).ToLowerInvariant(), request.CustomFeatures);
+                    priceResult.HasTariffCustomFeature = !string.IsNullOrWhiteSpace(priceResult.CustomFeatureText);
                 }
-
 
                 mappedResults.Add(priceResult);
             }
@@ -98,18 +92,16 @@ namespace Energy.EHLCommsLib.Mappers
             }
         }
 
-        private static bool PromotionsValidator(List<string> promotions, string name)
+        private static bool PromotionsValidator(ICollection<string> promotions, string name)
         {
             return promotions.IsNotNull() && promotions.IsNotEmpty() && promotions.Contains(name);
         }
 
-        private static string SetCustomFeatureText(string tariffKey, Dictionary<string, string> customFeatures)
+        private static string SetCustomFeatureText(string tariffKey, IReadOnlyDictionary<string, string> customFeatures)
         {
-            string customFeatureText = null;
+            if (customFeatures == null) return string.Empty;
 
-            customFeatures?.TryGetValue(tariffKey.Replace(" ", "").ToLower(), out customFeatureText);
-
-            return customFeatureText;
+            return customFeatures.TryGetValue(tariffKey.Replace(" ", ""), out var customFeatureText) ? customFeatureText : string.Empty;
         }
     }
 }

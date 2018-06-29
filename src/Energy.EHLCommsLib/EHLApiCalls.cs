@@ -25,28 +25,28 @@ namespace Energy.EHLCommsLib
 
         public async Task<EhlApiResponse> GetSupplierEhlApiResponse(GetPricesRequest request, string environment)
         {
-            var currentSwitchesApiResponse = await _ehlHttpClient.GetApiResponse<ApiResponse>(request.CurrentSupplyUrl, environment);
+            var currentSwitchesApiResponse = await _ehlHttpClient.GetApiResponse<ApiResponse>(request.CurrentSupplyUrl, environment).ConfigureAwait(false);
             if (!currentSwitchesApiResponse.SuccessfulResponseFromEhl())
                 return ApiCallResponse("CustomerSupplyStage", currentSwitchesApiResponse, EhlApiConstants.UsageRel);
 
             request.PopulateCurrentSupplyWithRequestData(currentSwitchesApiResponse);
-            var currentSwitchesApiPostResponse = await _ehlHttpClient.PostApiGetResponse(request.CurrentSupplyUrl, currentSwitchesApiResponse, environment);
+            var currentSwitchesApiPostResponse = await _ehlHttpClient.PostApiGetResponse(request.CurrentSupplyUrl, currentSwitchesApiResponse, environment).ConfigureAwait(false);
             return ApiCallResponse("CustomerSupplyStage", currentSwitchesApiPostResponse, EhlApiConstants.UsageRel);
         }
 
         public async Task<EhlApiResponse> GetUsageEhlApiResponse(GetPricesRequest request, string url, string environment)
         {
-            var usageSwitchesApiResponse = await _ehlHttpClient.GetApiResponse<ApiResponse>(url, environment);
+            var usageSwitchesApiResponse = await _ehlHttpClient.GetApiResponse<ApiResponse>(url, environment).ConfigureAwait(false);
             request.PopulateUsageWithRequestData(usageSwitchesApiResponse);
-            var usageSwitchesApiPostResponse = await _ehlHttpClient.PostApiGetResponse(url, usageSwitchesApiResponse, environment);
+            var usageSwitchesApiPostResponse = await _ehlHttpClient.PostApiGetResponse(url, usageSwitchesApiResponse, environment).ConfigureAwait(false);
             return ApiCallResponse("UsageStage", usageSwitchesApiPostResponse, EhlApiConstants.PreferenceRel);
         }
 
         public async Task<EhlApiResponse> GetPreferenceEhlApiResponse(GetPricesRequest request, string url, string environment)
         {
-            var preferencesSwitchesApiResponse = await _ehlHttpClient.GetApiResponse<ApiResponse>(url, environment);
+            var preferencesSwitchesApiResponse = await _ehlHttpClient.GetApiResponse<ApiResponse>(url, environment).ConfigureAwait(false);
             request.PopulatePreferencesWithRequestData(preferencesSwitchesApiResponse);
-            var preferencesSwitchesApiPostResponse = await _ehlHttpClient.PostApiGetResponse(url, preferencesSwitchesApiResponse, environment);
+            var preferencesSwitchesApiPostResponse = await _ehlHttpClient.PostApiGetResponse(url, preferencesSwitchesApiResponse, environment).ConfigureAwait(false);
             return ApiCallResponse("PreferencesStage", preferencesSwitchesApiPostResponse, EhlApiConstants.FutureSupplyRel);
         }
 
@@ -55,15 +55,15 @@ namespace Energy.EHLCommsLib
             var switchesUrl = request.SwitchUrl;
             var ignoreProRataComparison = request.IgnoreProRataComparison;
             var proRataCalculationApplied = false;
-            var switchStatus = await _ehlHttpClient.GetApiResponse<SwitchApiResponse>(switchesUrl, environment);
+            var switchStatus = await _ehlHttpClient.GetApiResponse<SwitchApiResponse>(switchesUrl, environment).ConfigureAwait(false);
             if (switchStatus == null) return proRataCalculationApplied;
             if (switchStatus.Links.Count <= 0) return proRataCalculationApplied;
             var proRataUrl = switchStatus.Links.SingleOrDefault(l => l.Rel.Equals(EhlApiConstants.ProRataRel));
             if (string.IsNullOrWhiteSpace(proRataUrl?.Uri)) return proRataCalculationApplied;
-            var proRataTemplate = await _ehlHttpClient.GetApiResponse<ApiResponse>(proRataUrl.Uri, environment);
+            var proRataTemplate = await _ehlHttpClient.GetApiResponse<ApiResponse>(proRataUrl.Uri, environment).ConfigureAwait(false);
             var proRataValue = ignoreProRataComparison ? "false" : "true";
             proRataTemplate.UpdateItemData("proRataPreference", "preferProRataCalculations", proRataValue);
-            await _ehlHttpClient.PostApiGetResponse(proRataUrl.Uri, proRataTemplate, environment);
+            await _ehlHttpClient.PostApiGetResponse(proRataUrl.Uri, proRataTemplate, environment).ConfigureAwait(false);
             proRataCalculationApplied = !ignoreProRataComparison;
             return proRataCalculationApplied;
         }
@@ -71,9 +71,9 @@ namespace Energy.EHLCommsLib
         public async Task<List<PriceResult>> PopulatePricesResponseWithFutureSuppliesFromEhl(GetPricesRequest request,  
             string futureSupplyUrl, bool proRataCalculationApplied, string environment)
         {
-            var futureSupplySwitchesApiResponse = await _ehlHttpClient.GetApiResponse<ApiResponse>(futureSupplyUrl, environment);
+            var futureSupplySwitchesApiResponse = await _ehlHttpClient.GetApiResponse<ApiResponse>(futureSupplyUrl, environment).ConfigureAwait(false);
             var futureSuppliesUrl = futureSupplySwitchesApiResponse.GetLinkedDataUrl(EhlApiConstants.FutureSuppliesRel);
-            var futureSuppliesApiPostResponse = await _ehlHttpClient.GetApiResponse<FutureSupplies>(futureSuppliesUrl, environment);
+            var futureSuppliesApiPostResponse = await _ehlHttpClient.GetApiResponse<FutureSupplies>(futureSuppliesUrl, environment).ConfigureAwait(false);
             return futureSuppliesApiPostResponse.MapToPriceResults(request);
         }
 

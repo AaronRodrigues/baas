@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 namespace Energy.EHLCommsLib.Http
 {
     //TO DO : Add logging for exceptions and ehl errors
-    public class EhlHttpClient : IEhlHttpClient
+    public class EhlHttpClient : IEhlHttpClient, IDisposable
     {
         private const string ContentType = @"application/vnd-fri-domestic-energy+json;version=2.0";
 
@@ -36,7 +36,7 @@ namespace Energy.EHLCommsLib.Http
         public async Task<T> GetApiResponse<T>(string url, string environment) where T : ApiResponse
         {
             var request = HttpRequestMessage(HttpMethod.Get, url);
-            var response = await _httpClient.SendAsync(request);
+            var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
             var responseBody = response.Content.ReadAsStringAsync().Result;
             
             SaveAttachment(environment, url, responseBody, "Get - Response");
@@ -56,7 +56,7 @@ namespace Energy.EHLCommsLib.Http
             httpRequestMessage.Content = new StringContent(requestBody, Encoding.UTF8);
             httpRequestMessage.Content.Headers.ContentType = MediaTypeHeaderValue.Parse(ContentType);
 
-            var response = await _httpClient.SendAsync(httpRequestMessage);
+            var response = await _httpClient.SendAsync(httpRequestMessage).ConfigureAwait(false);
             var responseBody = response.Content.ReadAsStringAsync().Result;
 
             SaveAttachment(environment, url, responseBody, "Post-Reponse");
@@ -100,6 +100,11 @@ namespace Energy.EHLCommsLib.Http
             var result = new HttpRequestMessage(httpMethod, url);
             result.Headers.Add("Accept", ContentType);
             return result;
+        }
+
+        public void Dispose()
+        {
+            _httpClient?.Dispose();
         }
     }
 }

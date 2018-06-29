@@ -3,7 +3,7 @@ using Energy.EHLCommsLib.Enums;
 
 namespace Energy.EHLCommsLib.Models
 {
-    public abstract class BaseResponse
+    public class BaseResponse
     {
         protected BaseResponse()
         {

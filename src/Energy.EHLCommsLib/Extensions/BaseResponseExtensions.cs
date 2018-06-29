@@ -54,21 +54,9 @@ namespace Energy.EHLCommsLib.Extensions
 
         private static MessageCode MapEhlMessageIdToMessageCode(string ehlMessageId)
         {
-            switch (ehlMessageId)
-            {
-                case EhlErrorConstants.EhlErrorCodeChannelIsland:
-                    return MessageCode.ChannelIslandPostcodeEntered;
-                case EhlErrorConstants.EhlErrorOperationNotAvailable:
-                    return MessageCode.AlreadySwitched;
-                case EhlErrorConstants.EhlErrorGeneric:
-                    return MessageCode.InternalServerError;
-                case EhlErrorConstants.EhlErrorNegativeElecUsage:
-                    return MessageCode.NegativeElectricityUsage;
-                case EhlErrorConstants.EhlErrorNegativeGasUsage:
-                    return MessageCode.NegativeGasUsage;
-                default:
-                    return MessageCode.Unknown;
-            }
+            return EhlErrorMessageCodeMapping.EhlErrorMessageCode.TryGetValue(ehlMessageId, out var messageCode)
+                ? messageCode
+                : MessageCode.Unknown;
         }
     }
 }

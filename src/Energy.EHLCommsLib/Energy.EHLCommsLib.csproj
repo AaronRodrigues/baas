@@ -74,6 +74,7 @@
   <ItemGroup>
     <Compile Include="Constants\EhlApiConstants.cs" />
     <Compile Include="Constants\EhlErrorConstants.cs" />
+    <Compile Include="Constants\EhlErrorMessageCodeMapping.cs" />
     <Compile Include="Contracts\Common\Data\DataTemplate.cs" />
     <Compile Include="Contracts\Common\Data\Item.cs" />
     <Compile Include="Contracts\Common\Data\NameIdPair.cs" />

@@ -40,7 +40,7 @@ namespace Energy.ProviderAdapter
                         }
 
                     },
-                Quotes = (await _ehlCommsAggregator.GetPrices(providerEnquiry.ToEhlPriceRequest(), providerEnquiry.Environment))
+                Quotes = (await _ehlCommsAggregator.GetPrices(providerEnquiry.ToEhlPriceRequest(), providerEnquiry.Environment).ConfigureAwait(false))
                                         .Select(el => el.ToEnergyQuote()).ToList().AddFakeBrandCode(_brandCodePrefix)
             };
         }
