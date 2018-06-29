@@ -1,0 +1,11 @@
+{
+  "ServerUri": "https://sonarqube-security.test.ctmers.io/",
+  "Organization": null,
+  "ProjectKey": "EnergyProviderAdapter",
+  "Profiles": {
+    "CSharp": {
+      "ProfileKey": "cs-transformers-14831",
+      "ProfileTimestamp": "2018-05-31T11:26:35+01:00"
+    }
+  }
+}
