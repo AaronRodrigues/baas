@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="SonarQube - Energy Provider Adapter ctm-transformers-profile-cs" ToolsVersion="15.0">
+  <Include Path="..\.sonarlint\energyprovideradaptercsharp.ruleset" Action="Default" />
+</RuleSet>
