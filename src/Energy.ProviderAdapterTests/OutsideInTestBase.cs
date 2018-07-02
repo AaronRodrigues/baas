@@ -12,6 +12,7 @@ using Energy.EHLCommsLibTests.EhlHttpClient;
 using Energy.ProviderAdapter;
 using Energy.ProviderAdapter.Models;
 using Microsoft.Owin;
+using Microsoft.Owin.Testing;
 using Moq;
 using Newtonsoft.Json;
 
@@ -46,7 +47,7 @@ namespace Energy.ProviderAdapterTests
         protected ScopedTimingsCollector TimingCollector;
         protected Mock<IPersistAttachments> AttachmentPersistorMock { get; set;  } = new Mock<IPersistAttachments>();
         public List<IOwinRequest> RequestCollection { get; } = new List<IOwinRequest>();
-
+   
         protected void Given_the_provider_adapter_is_loaded()
         {
             _containerBuilder.RegisterModule(new EnergyProviderAdapterModule());
@@ -54,11 +55,20 @@ namespace Energy.ProviderAdapterTests
             _containerBuilder.RegisterInstance(AttachmentPersistorMock.Object).As<IPersistAttachments>();
         }
 
-        protected void Given_EHL_API_is_working_correctly()
+        protected void Given_EHL_API_is_working_correctly(bool isHttpServerWithRequestCallBack = true)
         {
             var stubbedGetResponse = GetStubbedResponsesFrom(StubbedResponseFilenamesForGetRequests);
             var stubbedPostResponse = GetStubbedResponsesFrom(StubbedResponseFilenamesForPostRequests);
 
+            var testServer = isHttpServerWithRequestCallBack ? HttpTestServerWithRequestCallBack(stubbedGetResponse, stubbedPostResponse)
+                                                      : HttpTestServer(stubbedGetResponse, stubbedPostResponse);
+
+            _containerBuilder.RegisterInstance(testServer.Handler);
+            _container = _containerBuilder.Build();
+        }
+
+        private TestServer HttpTestServerWithRequestCallBack(Dictionary<string, string> stubbedGetResponse, Dictionary<string, string> stubbedPostResponse)
+        {
             var testServer = new HttpTestServerBuilder()
                 .WithCallbackForResponse(
                     context =>
@@ -74,9 +84,26 @@ namespace Energy.ProviderAdapterTests
                     })
                 .WithCallbackForRequest((_, req) => { RequestCollection.Add(req); })
                 .Create();
+            return testServer;
+        }
 
-            _containerBuilder.RegisterInstance(testServer.Handler);
-            _container = _containerBuilder.Build();
+        private static TestServer HttpTestServer(Dictionary<string, string> stubbedGetResponse, Dictionary<string, string> stubbedPostResponse)
+        {
+            var testServer = new HttpTestServerBuilder()
+                .WithCallbackForResponse(
+                    context =>
+                    {
+                        var stubbedResponse = context.Request.Method.ToUpperInvariant() == "GET"
+                            ? stubbedGetResponse
+                            : stubbedPostResponse;
+
+                        var response = stubbedResponse
+                            .First(x => context.Request.Uri.ToString().Contains(x.Key)).Value;
+
+                        context.Response.WriteAsync(response).Wait();
+                    })
+                .Create();
+            return testServer;
         }
 
         private static Dictionary<string, string> GetStubbedResponsesFrom(Dictionary<string, string> responseFilenames)

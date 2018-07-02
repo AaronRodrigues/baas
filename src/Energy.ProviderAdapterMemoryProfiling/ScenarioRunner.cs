@@ -8,13 +8,11 @@ using Energy.ProviderAdapterTests;
 
 namespace Energy.ProviderAdapterMemoryProfiling
 {
-    class ScenarioRunner : OutsideInTestBase
+    class ScenarioRunner : MemoryProfiler
     {
         public void Initialize()
         {
-            Given_the_provider_adapter_is_loaded();
-            Given_EHL_API_is_working_correctly();
-            Given_a_valid_enquiry();
+            Setup();
         }
 
         public async Task<bool> Run()
@@ -23,7 +21,7 @@ namespace Energy.ProviderAdapterMemoryProfiling
             var numberOfIterations = 600;
             for (int i = 0; i < numberOfIterations; i++)
             {
-                await When_prices_are_requested_for_production_environment();
+                await When_prices_are_requested_for_production_environment().ConfigureAwait(false);
 
                 var currentMemoryUsage = CalculateMemoryUsedInMb();
                 memoryUsageOverTime.Add(currentMemoryUsage);

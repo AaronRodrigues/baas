@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Energy.ProviderAdapterMemoryProfiling
+﻿namespace Energy.ProviderAdapterMemoryProfiling
 {
     class Program
     {

@@ -82,6 +82,7 @@
   <ItemGroup>
     <Compile Include="AttachmentsTests.cs" />
     <Compile Include="HappyPathTests.cs" />
+    <Compile Include="MemoryProfiler.cs" />
     <Compile Include="OutsideInTestBase.cs" />
     <Compile Include="Performance\PerformanceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

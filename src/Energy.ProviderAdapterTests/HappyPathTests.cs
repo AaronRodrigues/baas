@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Threading.Tasks;
 using CTM.Quoting.Provider;
 using NUnit.Framework;
 using Moq;
@@ -26,14 +25,11 @@ namespace Energy.ProviderAdapterTests
                 Assert.That(QuotesReturnedByProviderAdapter.Quotes.First().AnnualSpend, Is.EqualTo(640M));
                 Assert.That(QuotesReturnedByProviderAdapter.Quotes.Count(), Is.EqualTo(70));
                 Assert.That(QuotesReturnedByProviderAdapter.Quotes.First().SupplierName, Is.EqualTo("EDF Energy"));
-                Assert.That(QuotesReturnedByProviderAdapter.Quotes.First().ResultId,
-                    Is.EqualTo("tariffSelectionG592694_E592596"));
+                Assert.That(QuotesReturnedByProviderAdapter.Quotes.First().ResultId, Is.EqualTo("tariffSelectionG592694_E592596"));
                 AttachmentPersistorMock.Verify(x => x.Save(It.IsAny<Attachment>()), Times.Never());
                 Assert.That(RequestCollection.Count, Is.EqualTo(11));
-                Assert.That(RequestCollection.First().Path.Value,
-                    Is.EqualTo("/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9/current-supply"));
-                Assert.That(RequestCollection[1].Path.Value,
-                    Is.EqualTo("/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9/current-supply"));
+                Assert.That(RequestCollection.First().Path.Value, Is.EqualTo("/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9/current-supply"));
+                Assert.That(RequestCollection[1].Path.Value, Is.EqualTo("/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9/current-supply"));
                 Assert.That(RequestCollection.First().Method, Is.EqualTo("GET"));
                 Assert.That(RequestCollection[1].Method, Is.EqualTo("POST"));
                 Assert.That(RequestCollection[2].Path.Value,
