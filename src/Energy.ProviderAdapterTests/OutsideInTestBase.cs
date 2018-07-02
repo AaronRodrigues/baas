@@ -11,6 +11,7 @@ using Energy.EHLCommsLib.Models.Prices;
 using Energy.EHLCommsLibTests.EhlHttpClient;
 using Energy.ProviderAdapter;
 using Energy.ProviderAdapter.Models;
+using Microsoft.Owin;
 using Moq;
 using Newtonsoft.Json;
 
@@ -43,7 +44,8 @@ namespace Energy.ProviderAdapterTests
         };
 
         protected ScopedTimingsCollector TimingCollector;
-        protected Mock<IPersistAttachments> AttachmentPersistorMock { get; } = new Mock<IPersistAttachments>();
+        protected Mock<IPersistAttachments> AttachmentPersistorMock { get; set;  } = new Mock<IPersistAttachments>();
+        public List<IOwinRequest> RequestCollection { get; } = new List<IOwinRequest>();
 
         protected void Given_the_provider_adapter_is_loaded()
         {
@@ -70,6 +72,7 @@ namespace Energy.ProviderAdapterTests
 
                         context.Response.WriteAsync(response).Wait();
                     })
+                .WithCallbackForRequest((_, req) => { RequestCollection.Add(req); })
                 .Create();
 
             _containerBuilder.RegisterInstance(testServer.Handler);
@@ -138,15 +141,17 @@ namespace Energy.ProviderAdapterTests
 
             using (TimingCollector = new ScopedTimingsCollector("total"))
             {
-                await providerAdapter.GetQuotes(new MakeProviderEnquiry<EnergyEnquiry>
+                QuotesReturnedByProviderAdapter = await providerAdapter.GetQuotes(new MakeProviderEnquiry<EnergyEnquiry>
                 {
                     Environment = environment,
                     Enquiry = _energyEnquiry
                 });
             }
         }
-        
-       protected async Task Warmup()
+
+        protected QuoteResult<EnergyQuote> QuotesReturnedByProviderAdapter { get; private set; }
+
+        protected async Task Warmup()
        {
             await When_prices_are_requested_for_production_environment();
        }
