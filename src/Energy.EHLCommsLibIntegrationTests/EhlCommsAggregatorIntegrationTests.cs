@@ -16,8 +16,6 @@ namespace Energy.EHLCommsLibIntegrationTests
     [TestFixture]
     public class EhlCommsAggregatorIntegrationTests
     {
-
-
         private StartSwitchHelper _startSwitchHelper;
         private EhlCommsAggregator _ehlCommsAggregator;
         private GetPricesRequest _pricesRequest;

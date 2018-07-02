@@ -96,7 +96,7 @@ namespace Energy.EHLCommsLib.Extensions
 
         private static void PopulateSpendUsageForElectricity(GetPricesRequest request, ApiResponse usageTemplate)
         {
-            if (request.CompareType != CompareWhat.Electricity) return;
+            if (request.CompareType != CompareWhat.Electricity && request.CompareType != CompareWhat.Both) return;
 
             UpdateItemData(usageTemplate, "elecUsageType", "usageType", EhlApiConstants.UsageTypeBySpend);
             UpdateItemData(usageTemplate, "elecSpend", "usageAsSpend", request.SpendData.ElectricitySpendAmount.ToString(CultureInfo.InvariantCulture));
@@ -123,7 +123,7 @@ namespace Energy.EHLCommsLib.Extensions
 
         private static void PopulateSpendUsageForGas(GetPricesRequest request, ApiResponse usageTemplate)
         {
-            if (request.CompareType != CompareWhat.Gas) return;
+            if (request.CompareType != CompareWhat.Gas && request.CompareType != CompareWhat.Both) return;
 
             UpdateItemData(usageTemplate, "gasUsageType", "usageType", EhlApiConstants.UsageTypeBySpend);
             UpdateItemData(usageTemplate, "gasSpend", "usageAsSpend", request.SpendData.GasSpendAmount.ToString(CultureInfo.InvariantCulture));
