@@ -43,6 +43,20 @@ let runUnitTests() =
         }
     tests |> NUnit3 nUnitParams
 
+let runIntegrationTests() =
+    let tests = [ 
+        (sprintf "./src/Energy.EHLCommsLibIntegrationTests/bin/%s/Energy.EHLCommsLibIntegrationTests.dll" mode);
+    ]
+
+    let nUnitParams _ = 
+        { 
+            NUnit3Defaults with 
+                TimeOut = System.TimeSpan.FromMinutes(4.0)
+                //TraceLevel = NUnit3TraceLevel.Off
+                OutputDir = "./nunit-output.log"
+        }
+    tests |> NUnit3 nUnitParams
+
 
 let runMemoryProfileTests() =
     let result =
@@ -166,12 +180,14 @@ Target "Deploy" (fun _ ->
 Target "RestoreNuGetPackages" restoreNugetPackages
 Target "Compile" compile
 Target "RunUnitTests" runUnitTests 
+Target "RunIntegrationTests" runIntegrationTests 
 Target "RunMemoryProfileTests" runMemoryProfileTests
 
 "RestoreNuGetPackages"
    ==> "GenerateAssemblyInfo"
    ==> "Compile"
    ==> "RunUnitTests"
+   ==> "RunIntegrationTests"
    ==> "RunMemoryProfileTests"
    ==> "PrePush"
    ==> "Package"
