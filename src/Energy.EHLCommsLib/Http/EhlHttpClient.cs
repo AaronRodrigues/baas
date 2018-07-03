@@ -20,6 +20,13 @@ namespace Energy.EHLCommsLib.Http
         private readonly HttpClient _httpClient;
 
         public EhlHttpClient(
+            Func<HttpMessageHandler, HttpMessageHandler> messageHandlerDecorator, 
+            IPersistAttachments attachmentPersister)
+            : this(messageHandlerDecorator(new HttpClientHandler()), attachmentPersister)
+        {
+        }
+
+        internal EhlHttpClient(
             HttpMessageHandler messageHandler, 
             IPersistAttachments attachmentPersister)
         {

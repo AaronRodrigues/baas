@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 using Autofac;
@@ -63,8 +64,14 @@ namespace Energy.ProviderAdapterTests
             var testServer = isHttpServerWithRequestCallBack ? HttpTestServerWithRequestCallBack(stubbedGetResponse, stubbedPostResponse)
                                                       : HttpTestServer(stubbedGetResponse, stubbedPostResponse);
 
-            _containerBuilder.RegisterInstance(testServer.Handler);
+            RouteAllHttpRequestsThroughStub(testServer.Handler);
             _container = _containerBuilder.Build();
+        }
+
+        private void RouteAllHttpRequestsThroughStub(HttpMessageHandler handler)
+        {
+            _containerBuilder.RegisterInstance<Func<HttpMessageHandler, HttpMessageHandler>>(_ => handler)
+                .As<Func<HttpMessageHandler, HttpMessageHandler>>();
         }
 
         private TestServer HttpTestServerWithRequestCallBack(Dictionary<string, string> stubbedGetResponse, Dictionary<string, string> stubbedPostResponse)
