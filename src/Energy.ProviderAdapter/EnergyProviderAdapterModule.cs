@@ -1,8 +1,5 @@
 ﻿using Autofac;
 using CTM.Quoting.Provider;
-using Energy.EHLCommsLib;
-using Energy.EHLCommsLib.Http;
-using Energy.EHLCommsLib.Interfaces;
 
 namespace Energy.ProviderAdapter
 {
@@ -25,9 +22,6 @@ namespace Energy.ProviderAdapter
                 .WithMetadata("messaging:component.queueName", $"quoting:Energy:{providerName}:2.0")
                 .WithParameter("providerName", providerName)
                 .WithParameter("brandCodePrefix", brandCodePrefix);
-            builder.RegisterType<EhlHttpClient>().As<IEhlHttpClient>().SingleInstance();
-            builder.RegisterType<EhlCommsAggregator>().As<IEhlCommsAggregator>();
-            builder.RegisterType<EhlApiCalls>().As<IEhlApiCalls>();
         }
     }
 }
