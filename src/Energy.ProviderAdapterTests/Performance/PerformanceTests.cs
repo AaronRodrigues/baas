@@ -15,7 +15,7 @@ namespace Energy.ProviderAdapterTests.Performance
 
             Given_the_provider_adapter_is_loaded();
             Given_EHL_API_is_working_correctly();
-            Given_a_valid_enquiry();
+            When_a_valid_enquiry();
             await Warmup();
 
             for (var i = 0; i < 25; i++)

@@ -106,11 +106,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="SwitchApiMessages\CurrentSupply-GetResponse-WithError-Wrong-Key.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="SwitchApiMessages\CurrentSupply-GetResponse-WithError-AlreadySwitched.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="SwitchApiMessages\CurrentSupply-GetResponse-WithError-InternalServerError.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="SwitchApiMessages\CurrentSupply-GetResponse-WithSchema-ErrorResponse.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="SwitchApiMessages\CurrentSupply-GetResponse.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -125,6 +131,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="SwitchApiMessages\FutureSupply-GetResponse.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="SwitchApiMessages\InvalidFutureSupplies-GetResponse.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="SwitchApiMessages\Preferences-GetResponse.json">

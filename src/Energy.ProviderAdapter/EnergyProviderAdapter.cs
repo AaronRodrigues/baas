@@ -38,7 +38,6 @@ namespace Energy.ProviderAdapter
                             Reason = Reason.Error,
                             Note = $"Error from {_providerName}, enquiryId: {providerEnquiry.Enquiry.Risk.JourneyId}"
                         }
-
                     },
                 Quotes = (await _ehlCommsAggregator.GetPrices(providerEnquiry.ToEhlPriceRequest(), providerEnquiry.Environment).ConfigureAwait(false))
                                         .Select(el => el.ToEnergyQuote()).ToList().AddFakeBrandCode(_brandCodePrefix)

@@ -29,6 +29,8 @@ namespace Energy.EHLCommsLib.Contracts.Responses
         [XmlIgnore]
         public Exception Exception { get; set; }
 
+        public bool IsSuccessStatusCode { get; set; }
+
         public HttpStatusCode? StatusCode { get; set; }
         public List<KeyValuePair<string, string>> HttpHeaders { get; set; }
         public string MediaType { get; set; }
@@ -50,7 +52,7 @@ namespace Energy.EHLCommsLib.Contracts.Responses
 
         public bool SuccessfulResponseFromEhl()
         {
-            return (Errors == null || Errors.Count == 0) && StatusCode != HttpStatusCode.InternalServerError;
+            return Errors == null || Errors.Count == 0;
         }
     }
 }

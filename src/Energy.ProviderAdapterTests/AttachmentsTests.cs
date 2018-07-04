@@ -10,7 +10,7 @@ namespace Energy.ProviderAdapterTests
         {
             Given_the_provider_adapter_is_loaded();
             Given_EHL_API_is_working_correctly();
-            Given_a_valid_enquiry();
+            When_a_valid_enquiry();
 
             When_prices_are_requested_for_non_production_environment().Wait();
         }
@@ -28,7 +28,7 @@ namespace Energy.ProviderAdapterTests
         {
             Given_the_provider_adapter_is_loaded();
             Given_EHL_API_is_working_correctly();
-            Given_a_valid_enquiry();
+            When_a_valid_enquiry();
 
             When_prices_are_requested_for_production_environment().Wait();
         }

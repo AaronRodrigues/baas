@@ -34,7 +34,22 @@ namespace Energy.ProviderAdapterTests
             { "/usage?", "Usage-GetResponse" },
             { "/preferences?", "Preferences-GetResponse" },
             { "/future-supply?", "FutureSupply-GetResponse" },
-            { "/future-supplies?", "FutureSupplies-GetResponse" }
+            { "/future-supplies?", "FutureSupplies-GetResponse" },
+            { "/error-response?", "CurrentSupply-GetResponse-WithError-Wrong-Key"},
+            { "/schemaerror-response?", "CurrentSupply-GetResponse-WithSchema-ErrorResponse"}
+        };
+
+        private static readonly Dictionary<string, string> InvalidFutureSupplyStubbedGetRequests = new Dictionary<string, string>
+        {
+            { "/current-supply?", "CurrentSupply-GetResponse" },
+            { "/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9?", "SwitchStatus-GetResponse" },
+            { "/proratapreference?", "ProRata-GetResponse" },
+            { "/usage?", "Usage-GetResponse" },
+            { "/preferences?", "Preferences-GetResponse" },
+            { "/future-supply?", "FutureSupply-GetResponse" },
+            { "/future-supplies?", "InvalidFutureSupplies-GetResponse" },
+            { "/error-response?", "CurrentSupply-GetResponse-WithError-Wrong-Key"},
+            { "/schemaerror-response?", "CurrentSupply-GetResponse-WithSchema-ErrorResponse"}
         };
 
         private static readonly Dictionary<string, string> StubbedResponseFilenamesForPostRequests = new Dictionary<string, string>
@@ -113,6 +128,41 @@ namespace Energy.ProviderAdapterTests
             return testServer;
         }
 
+        protected void Given_EHL_API_is_working_correctly_with_invalid_futuresupplies()
+        {
+            var stubbedGetResponse = GetStubbedResponsesFrom(InvalidFutureSupplyStubbedGetRequests);
+            var stubbedPostResponse = GetStubbedResponsesFrom(StubbedResponseFilenamesForPostRequests);
+
+            var testServer = new HttpTestServerBuilder()
+                .WithCallbackForResponse(
+                    context =>
+                    {
+                        var stubbedResponse = context.Request.Method.ToUpperInvariant() == "GET"
+                            ? stubbedGetResponse
+                            : stubbedPostResponse;
+
+                        var response = stubbedResponse
+                            .First(x => context.Request.Uri.ToString().Contains(x.Key)).Value;
+
+                        context.Response.WriteAsync(response).Wait();
+                    })
+                .WithCallbackForRequest((_, req) => { RequestCollection.Add(req); })
+                .Create();
+
+            _containerBuilder.RegisterInstance(testServer.Handler);
+            _container = _containerBuilder.Build();
+        }
+
+        protected void Given_EHL_API_is_not_working()
+        {
+            var testServer = new HttpTestServerBuilder()
+                .WithUnsuccessfulResponse()
+                .Create();
+
+            _containerBuilder.RegisterInstance(testServer.Handler);
+            _container = _containerBuilder.Build();
+        }
+
         private static Dictionary<string, string> GetStubbedResponsesFrom(Dictionary<string, string> responseFilenames)
         {
             var stubbedResponses = new Dictionary<string, string>();
@@ -132,7 +182,7 @@ namespace Energy.ProviderAdapterTests
             return File.ReadAllText(fullFilePath);
         }
 
-        protected void Given_a_valid_enquiry()
+        protected void When_a_valid_enquiry()
         {
             var stubPriceRequest = new GetPricesRequest
             {
@@ -142,6 +192,84 @@ namespace Energy.ProviderAdapterTests
                 SwitchUrl =
                     "http://rest-predeploy.energyhelpline.com/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9?b=1+SxdN9QwjA1nP8RoesecNN8ctw",
                 Postcode = "PE26YS",
+                ElectricitySupplierId = 1,
+                EnergyJourneyType = EnergyJourneyType.DontHaveMyBill,
+                ElectricityTariffId = 1,
+                GasSupplierId = 1,
+                GasTariffId = 1,
+                PercentageNightUsage = 100M,
+                SwitchId = Guid.NewGuid().ToString(),
+                ElectricityEco7 = true,
+                PrePayment = "false",
+            };
+
+            // todo: sort out this work-around (doing this to just get some example data for now)
+            // todo: do we need EnergyRisk AND GetPricesRequest as they seem to be very similar?            
+            var energyRisk = JsonConvert.DeserializeObject<EnergyRisk>(JsonConvert.SerializeObject(stubPriceRequest));
+            _energyEnquiry = new EnergyEnquiry { Risk = energyRisk };
+        }
+
+        protected void When_an_invalid_enquiry()
+        {
+            var stubPriceRequest = new GetPricesRequest
+            {
+                CompareType = CompareWhat.Both,
+                CurrentSupplyUrl = "http://rest-predeploy.energyhelpline.com/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9/error-response?b=1+SxdN9QwjA1nP8RoesecNN8ctw",
+                SwitchUrl =
+                    "http://rest-predeploy.energyhelpline.com/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9?b=1+SxdN9QwjA1nP8RoesecNN8ctw",
+                Postcode = "",
+                ElectricitySupplierId = 1,
+                EnergyJourneyType = EnergyJourneyType.DontHaveMyBill,
+                ElectricityTariffId = 1,
+                GasSupplierId = 1,
+                GasTariffId = 1,
+                PercentageNightUsage = 100M,
+                SwitchId = Guid.NewGuid().ToString(),
+                ElectricityEco7 = true,
+                PrePayment = "false",
+            };
+
+            // todo: sort out this work-around (doing this to just get some example data for now)
+            // todo: do we need EnergyRisk AND GetPricesRequest as they seem to be very similar?            
+            var energyRisk = JsonConvert.DeserializeObject<EnergyRisk>(JsonConvert.SerializeObject(stubPriceRequest));
+            _energyEnquiry = new EnergyEnquiry { Risk = energyRisk };
+        }
+
+        protected void When_an_invalid_enquiry_with_empty_CurrentSupplyURL()
+        {
+            var stubPriceRequest = new GetPricesRequest
+            {
+                CompareType = CompareWhat.Both,
+                CurrentSupplyUrl = "",
+                SwitchUrl =
+                    "http://rest-predeploy.energyhelpline.com/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9?b=1+SxdN9QwjA1nP8RoesecNN8ctw",
+                Postcode = "",
+                ElectricitySupplierId = 1,
+                EnergyJourneyType = EnergyJourneyType.DontHaveMyBill,
+                ElectricityTariffId = 1,
+                GasSupplierId = 1,
+                GasTariffId = 1,
+                PercentageNightUsage = 100M,
+                SwitchId = Guid.NewGuid().ToString(),
+                ElectricityEco7 = true,
+                PrePayment = "false",
+            };
+
+            // todo: sort out this work-around (doing this to just get some example data for now)
+            // todo: do we need EnergyRisk AND GetPricesRequest as they seem to be very similar?            
+            var energyRisk = JsonConvert.DeserializeObject<EnergyRisk>(JsonConvert.SerializeObject(stubPriceRequest));
+            _energyEnquiry = new EnergyEnquiry { Risk = energyRisk };
+        }
+
+        protected void When_an_invalid_Response_returned_from_Ehl()
+        {
+            var stubPriceRequest = new GetPricesRequest
+            {
+                CompareType = CompareWhat.Both,
+                CurrentSupplyUrl = "http://rest-predeploy.energyhelpline.com/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9/schemaerror-response?b=1+SxdN9QwjA1nP8RoesecNN8ctw",
+                SwitchUrl =
+                    "http://rest-predeploy.energyhelpline.com/domestic/energy/switches/e1b208db-54ab-4cb6-b592-a17f008f6dc9?b=1+SxdN9QwjA1nP8RoesecNN8ctw",
+                Postcode = "",
                 ElectricitySupplierId = 1,
                 EnergyJourneyType = EnergyJourneyType.DontHaveMyBill,
                 ElectricityTariffId = 1,

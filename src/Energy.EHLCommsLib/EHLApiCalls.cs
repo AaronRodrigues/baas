@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Energy.EHLCommsLib.Constants;
 using Energy.EHLCommsLib.Contracts.FutureSupplies;
@@ -12,8 +14,6 @@ using Energy.EHLCommsLib.Models.Prices;
 
 namespace Energy.EHLCommsLib
 {
-    //TO DO : Process Ehl Errors
-
     public class EhlApiCalls : IEhlApiCalls
     {
         private readonly IEhlHttpClient _ehlHttpClient;
@@ -26,8 +26,7 @@ namespace Energy.EHLCommsLib
         public async Task<EhlApiResponse> GetSupplierEhlApiResponse(GetPricesRequest request, string environment)
         {
             var currentSwitchesApiResponse = await _ehlHttpClient.GetApiResponse<ApiResponse>(request.CurrentSupplyUrl, environment).ConfigureAwait(false);
-            if (!currentSwitchesApiResponse.SuccessfulResponseFromEhl())
-                return ApiCallResponse("CustomerSupplyStage", currentSwitchesApiResponse, EhlApiConstants.UsageRel);
+            CheckSuccessReponse("CustomerSupplyStage", currentSwitchesApiResponse);
 
             request.PopulateCurrentSupplyWithRequestData(currentSwitchesApiResponse);
             var currentSwitchesApiPostResponse = await _ehlHttpClient.PostApiGetResponse(request.CurrentSupplyUrl, currentSwitchesApiResponse, environment).ConfigureAwait(false);
@@ -37,6 +36,8 @@ namespace Energy.EHLCommsLib
         public async Task<EhlApiResponse> GetUsageEhlApiResponse(GetPricesRequest request, string url, string environment)
         {
             var usageSwitchesApiResponse = await _ehlHttpClient.GetApiResponse<ApiResponse>(url, environment).ConfigureAwait(false);
+            CheckSuccessReponse("UsageStage", usageSwitchesApiResponse);
+
             request.PopulateUsageWithRequestData(usageSwitchesApiResponse);
             var usageSwitchesApiPostResponse = await _ehlHttpClient.PostApiGetResponse(url, usageSwitchesApiResponse, environment).ConfigureAwait(false);
             return ApiCallResponse("UsageStage", usageSwitchesApiPostResponse, EhlApiConstants.PreferenceRel);
@@ -45,6 +46,8 @@ namespace Energy.EHLCommsLib
         public async Task<EhlApiResponse> GetPreferenceEhlApiResponse(GetPricesRequest request, string url, string environment)
         {
             var preferencesSwitchesApiResponse = await _ehlHttpClient.GetApiResponse<ApiResponse>(url, environment).ConfigureAwait(false);
+            CheckSuccessReponse("PreferencesStage", preferencesSwitchesApiResponse);
+
             request.PopulatePreferencesWithRequestData(preferencesSwitchesApiResponse);
             var preferencesSwitchesApiPostResponse = await _ehlHttpClient.PostApiGetResponse(url, preferencesSwitchesApiResponse, environment).ConfigureAwait(false);
             return ApiCallResponse("PreferencesStage", preferencesSwitchesApiPostResponse, EhlApiConstants.FutureSupplyRel);
@@ -72,29 +75,36 @@ namespace Energy.EHLCommsLib
             string futureSupplyUrl, bool proRataCalculationApplied, string environment)
         {
             var futureSupplySwitchesApiResponse = await _ehlHttpClient.GetApiResponse<ApiResponse>(futureSupplyUrl, environment).ConfigureAwait(false);
+            CheckSuccessReponse("FutureSupplySwitches", futureSupplySwitchesApiResponse);
             var futureSuppliesUrl = futureSupplySwitchesApiResponse.GetLinkedDataUrl(EhlApiConstants.FutureSuppliesRel);
-            var futureSuppliesApiPostResponse = await _ehlHttpClient.GetApiResponse<FutureSupplies>(futureSuppliesUrl, environment).ConfigureAwait(false);
-            return futureSuppliesApiPostResponse.MapToPriceResults(request);
+            var futureSuppliesGetResponse = await _ehlHttpClient.GetApiResponse<FutureSupplies>(futureSuppliesUrl, environment).ConfigureAwait(false);
+            CheckSuccessReponse("FutureSuppliesSwitches", futureSuppliesGetResponse);
+            return futureSuppliesGetResponse.MapToPriceResults(request);
         }
 
-        //To DO : Process Ehl errors ??
-        private EhlApiResponse ApiCallResponse(string typeOfRequest, ApiResponse switchesApiResponse, string rel = "")
+        private EhlApiResponse ApiCallResponse(string typeOfRequest, ApiResponse apiResponse, string rel)
         {
-            if (!switchesApiResponse.SuccessfulResponseFromEhl())
+            CheckSuccessReponse(typeOfRequest, apiResponse);
+
+            return new EhlApiResponse
             {
-               //response.HydrateSwitchResponseWithErrors(switchesApiResponse.Errors);
+                ApiCallWasSuccessful = true,
+                NextUrl = apiResponse.GetNextRelUrl(rel)
+            };
+        }
+
+        private static void CheckSuccessReponse(string typeOfRequest, ApiResponse apiResponse)
+        {
+            if (apiResponse == null)
+            {
+                throw new NullReferenceException($"{typeOfRequest} : Deserialization of API Response failed");
             }
-            if (switchesApiResponse.Errors == null || !switchesApiResponse.Errors.Any())
-                return new EhlApiResponse
-                {
-                    ApiCallWasSuccessful = true,
-                    ApiStage = typeOfRequest,
-                    ConcatenatedErrorString = string.Empty,
-                    NextUrl = rel == string.Empty ? "" : switchesApiResponse.GetNextRelUrl(rel)
-                };
+
+            if (apiResponse.SuccessfulResponseFromEhl()) return;
+            
             var errString = string.Empty;
-            errString = switchesApiResponse.Errors.Aggregate(errString, (current, error) => current + error.Message.Text);
-            return new EhlApiResponse { ApiCallWasSuccessful = false, ApiStage = typeOfRequest, ConcatenatedErrorString = errString };
+            errString = apiResponse.Errors.Aggregate(errString, (current, error) => current + error.Message.Text);
+            throw new HttpRequestException($"{typeOfRequest} : {errString}");
         }
     }
 }

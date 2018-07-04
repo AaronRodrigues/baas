@@ -1,0 +1,20 @@
+{
+    "errors": [
+        {
+            "message": {
+                "id": "/errors/operation-not-available",
+                "text": "Unable to access the requested resource at this time"
+            }
+        }
+    ],
+    "links": [
+        {
+            "rel": "/rels/home /rels/bookmark",
+            "uri": "http://rest-predeploy.energyhelpline.com/domestic/energy"
+        },
+        {
+            "rel": "/rels/domestic/current-supply /rels/self",
+            "uri": "http://rest-predeploy.energyhelpline.com/domestic/energy/switches/15275dbf-d1b2-4cd5-87e6-a19e0095e130/current-supply?b=s/RoPJMps64s6tm4/hlRjQCM6+o"
+        }
+    ]
+}

@@ -37,9 +37,7 @@ namespace Energy.EHLCommsLib.Extensions
 
         public static string GetLinkedDataUrl(this ApiResponse response, string rel)
         {
-            return response.LinkedDataSources
-                .First(l => l.Rel.Equals(rel))
-                .Uri;
+            return response.LinkedDataSources.First(l => l.Rel.Equals(rel)).Uri;
         }
     }
 }
