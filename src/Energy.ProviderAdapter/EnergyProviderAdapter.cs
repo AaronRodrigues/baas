@@ -1,7 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using CTM.Quoting.Provider;
+using Energy.EHLCommsLib;
+using Energy.EHLCommsLib.Http;
 using Energy.EHLCommsLib.Interfaces;
 using Energy.ProviderAdapter.ModelConverters;
 using Energy.ProviderAdapter.Models;
@@ -19,11 +23,18 @@ namespace Energy.ProviderAdapter
         private readonly string _brandCodePrefix;
         private readonly IEhlCommsAggregator _ehlCommsAggregator;
 
-        public EnergyProviderAdapter(string providerName, string brandCodePrefix, IEhlCommsAggregator ehlCommsAggregator)
+        public EnergyProviderAdapter(
+            string providerName,
+            string brandCodePrefix,
+            Func<HttpMessageHandler, HttpMessageHandler> messageHandlerDecorator,
+            IPersistAttachments attachmentPersister)
         {
             _providerName = providerName;
             _brandCodePrefix = brandCodePrefix;
-            _ehlCommsAggregator = ehlCommsAggregator;
+
+            _ehlCommsAggregator = new EhlCommsAggregator(
+                new EhlApiCalls(
+                    new EhlHttpClient(messageHandlerDecorator, attachmentPersister)));
         }
 
         public async Task<QuoteResult<EnergyQuote>> GetQuotes(MakeProviderEnquiry<EnergyEnquiry> providerEnquiry)
