@@ -20,9 +20,9 @@ namespace Energy.ProviderAdapterTests.UnitTests
             _ehlApiCalls = Mock.Of<IEhlApiCalls>();
             Mock.Get(_ehlApiCalls).Setup(x => x.GetSupplierEhlApiResponse(It.IsAny<GetPricesRequest>(), It.IsAny<string>())).ReturnsAsync(new EhlApiResponse { NextUrl = "UasageUrl" });
             Mock.Get(_ehlApiCalls).Setup(x => x.GetUsageEhlApiResponse(It.IsAny<GetPricesRequest>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new EhlApiResponse { NextUrl = "UasageUrl" });
-            Mock.Get(_ehlApiCalls).Setup(x => x.UpdateCurrentSwitchStatus(It.IsAny<GetPricesRequest>(), It.IsAny<string>())).ReturnsAsync(true);
+            Mock.Get(_ehlApiCalls).Setup(x => x.UpdateCurrentSwitchStatus(It.IsAny<GetPricesRequest>(), It.IsAny<string>()));
             Mock.Get(_ehlApiCalls).Setup(x => x.GetPreferenceEhlApiResponse(It.IsAny<GetPricesRequest>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new EhlApiResponse { NextUrl = "UasageUrl" });
-            Mock.Get(_ehlApiCalls).Setup(x => x.PopulatePricesResponseWithFutureSuppliesFromEhl(It.IsAny<GetPricesRequest>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>())).ReturnsAsync(new List<PriceResult>());
+            Mock.Get(_ehlApiCalls).Setup(x => x.PopulatePricesResponseWithFutureSuppliesFromEhl(It.IsAny<GetPricesRequest>(), It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new List<PriceResult>());
         }
 
         [Test]
