@@ -78,9 +78,5 @@ namespace Energy.ProviderAdapterTests
                 Assert.ThrowsAsync<NullReferenceException>(async () => await When_prices_are_requested_for_production_environment());
             }
         }
-
-        // Cases for Unhappy Path 
-        // - Use the same properties as the error object returned by ehl in the data contract
-        // 2. Given object is sent back from GetQuotes doesnt have quotes 
     }
 }

@@ -23,10 +23,10 @@ namespace Energy.EHLCommsLib
                 throw new NullReferenceException($"Supply Stage/ Usage Stage url is not available for SwitchUrl : {request.SwitchUrl}, SwitchId : {request.SwitchId}");
             }
 
-            var proRataCalculationApplied = await _ehlApiCalls.UpdateCurrentSwitchStatus(request, environment).ConfigureAwait(false);
+            await _ehlApiCalls.UpdateCurrentSwitchStatus(request, environment).ConfigureAwait(false);
             var preferencesStageresult = await _ehlApiCalls.GetPreferenceEhlApiResponse(request, usageStageUrl, environment).ConfigureAwait(false);
             return await _ehlApiCalls.PopulatePricesResponseWithFutureSuppliesFromEhl(request,
-                preferencesStageresult.NextUrl, proRataCalculationApplied, environment).ConfigureAwait(false);
+                preferencesStageresult.NextUrl, environment).ConfigureAwait(false);
         }
 
         private async Task<string> UsageStageResult(GetPricesRequest request, string environment)

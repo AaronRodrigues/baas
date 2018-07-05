@@ -10,8 +10,8 @@ namespace Energy.EHLCommsLib
         Task<EhlApiResponse> GetSupplierEhlApiResponse(GetPricesRequest request, string environment);
         Task<EhlApiResponse> GetUsageEhlApiResponse(GetPricesRequest request, string url, string environment);
         Task<EhlApiResponse> GetPreferenceEhlApiResponse(GetPricesRequest request, string url, string environment);
-        Task<bool> UpdateCurrentSwitchStatus(GetPricesRequest request, string environment);
+        Task UpdateCurrentSwitchStatus(GetPricesRequest request, string environment);
         Task<List<PriceResult>> PopulatePricesResponseWithFutureSuppliesFromEhl(GetPricesRequest request,  
-            string futureSupplyUrl, bool proRataCalculationApplied, string environment);
+            string futureSupplyUrl,  string environment);
     }
 }

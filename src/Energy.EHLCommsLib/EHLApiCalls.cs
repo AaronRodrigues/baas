@@ -53,26 +53,28 @@ namespace Energy.EHLCommsLib
             return ApiCallResponse("PreferencesStage", preferencesSwitchesApiPostResponse, EhlApiConstants.FutureSupplyRel);
         }
 
-        public async Task<bool> UpdateCurrentSwitchStatus(GetPricesRequest request, string environment)
+        public async Task UpdateCurrentSwitchStatus(GetPricesRequest request, string environment)
         {
             var switchesUrl = request.SwitchUrl;
             var ignoreProRataComparison = request.IgnoreProRataComparison;
-            var proRataCalculationApplied = false;
             var switchStatus = await _ehlHttpClient.GetApiResponse<SwitchApiResponse>(switchesUrl, environment).ConfigureAwait(false);
-            if (switchStatus == null) return proRataCalculationApplied;
-            if (switchStatus.Links.Count <= 0) return proRataCalculationApplied;
+            if (switchStatus?.Links == null)
+            {
+                return;
+            }
             var proRataUrl = switchStatus.Links.SingleOrDefault(l => l.Rel.Equals(EhlApiConstants.ProRataRel));
-            if (string.IsNullOrWhiteSpace(proRataUrl?.Uri)) return proRataCalculationApplied;
+            if (string.IsNullOrWhiteSpace(proRataUrl?.Uri))
+            {
+                return;
+            }
             var proRataTemplate = await _ehlHttpClient.GetApiResponse<ApiResponse>(proRataUrl.Uri, environment).ConfigureAwait(false);
             var proRataValue = ignoreProRataComparison ? "false" : "true";
             proRataTemplate.UpdateItemData("proRataPreference", "preferProRataCalculations", proRataValue);
             await _ehlHttpClient.PostApiGetResponse(proRataUrl.Uri, proRataTemplate, environment).ConfigureAwait(false);
-            proRataCalculationApplied = !ignoreProRataComparison;
-            return proRataCalculationApplied;
         }
 
         public async Task<List<PriceResult>> PopulatePricesResponseWithFutureSuppliesFromEhl(GetPricesRequest request,  
-            string futureSupplyUrl, bool proRataCalculationApplied, string environment)
+            string futureSupplyUrl, string environment)
         {
             var futureSupplySwitchesApiResponse = await _ehlHttpClient.GetApiResponse<ApiResponse>(futureSupplyUrl, environment).ConfigureAwait(false);
             CheckSuccessReponse("FutureSupplySwitches", futureSupplySwitchesApiResponse);
@@ -99,9 +101,10 @@ namespace Energy.EHLCommsLib
             {
                 throw new NullReferenceException($"{typeOfRequest} : Deserialization of API Response failed");
             }
-
-            if (apiResponse.SuccessfulResponseFromEhl()) return;
-            
+            if (apiResponse.SuccessfulResponseFromEhl())
+            {
+                return;
+            }
             var errString = string.Empty;
             errString = apiResponse.Errors.Aggregate(errString, (current, error) => current + error.Message.Text);
             throw new HttpRequestException($"{typeOfRequest} : {errString}");
