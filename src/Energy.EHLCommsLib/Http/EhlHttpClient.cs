@@ -97,7 +97,7 @@ namespace Energy.EHLCommsLib.Http
             return new Attachment
             {
                 Content = $"{{ \"url\": \"{requestUrl}\", \"body\": {content} }}",
-                Description = $"{description} body",
+                Description = $"{description} body".Replace(" ", ""),
                 MediaType = "application/json"
             };
         }
