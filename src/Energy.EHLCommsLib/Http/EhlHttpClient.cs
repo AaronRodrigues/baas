@@ -92,12 +92,12 @@ namespace Energy.EHLCommsLib.Http
             return environment.Equals("prod", StringComparison.InvariantCultureIgnoreCase);
         }
 
-        private static Attachment Attachment(string url, string responseBody, string method)
+        private static Attachment Attachment(string requestUrl, string content, string description)
         {
             return new Attachment
             {
-                Content = responseBody,
-                Description = $"{method} - {url} - Body",
+                Content = $"{{ \"url\": \"{requestUrl}\", \"body\": {content} }}",
+                Description = $"{description} body".Replace(" ", ""),
                 MediaType = "application/json"
             };
         }
