@@ -55,7 +55,7 @@ namespace Energy.EHLCommsLibTests.EhlHttpClient
 
                 Mock.Get(AttachmentPersister).Verify(attachments => attachments.Save(It.IsAny<Attachment>()), Times.Once());
                 Mock.Get(AttachmentPersister).Verify(attachments => attachments.Save(It.Is<Attachment>
-                    (att => att.Content.Equals(ExpectedResponseBody, StringComparison.InvariantCultureIgnoreCase)
+                    (att => att.Content.Contains(ExpectedResponseBody)
                             && string.Equals(att.MediaType, "application/json",
                                 StringComparison.InvariantCultureIgnoreCase))),
                     Times.Once());
@@ -92,7 +92,7 @@ namespace Energy.EHLCommsLibTests.EhlHttpClient
 
                 Mock.Get(AttachmentPersister).Verify(attachments => attachments.Save(It.IsAny<Attachment>()), Times.Once());
                 Mock.Get(AttachmentPersister).Verify(attachments => attachments.Save(It.Is<Attachment>
-                    (att => att.Content.Equals(ExpectedErrorResponseBody, StringComparison.InvariantCultureIgnoreCase)
+                    (att => att.Content.Contains(ExpectedErrorResponseBody)
                             && string.Equals(att.MediaType, "application/json",
                                 StringComparison.InvariantCultureIgnoreCase))),
                     Times.Once());
