@@ -28,35 +28,33 @@ let compile() =
                  NodeReuse = false
                  Properties = [ "Configuration", mode ] }) "./src/EnergyProviderAdapter.sln" 
 
+let runNUnit testAssemblies =
+    let nUnitParams _ = 
+        { 
+            NUnit3Defaults with 
+                TimeOut = System.TimeSpan.FromMinutes(4.0)
+                OutputDir = "./nunit-output.log"
+        }
+    testAssemblies |> NUnit3 nUnitParams
+
 let runUnitTests() =
-    let tests = [ 
+    [
         (sprintf "./src/Energy.EHLCommsLibTests/bin/%s/Energy.EHLCommsLibTests.dll" mode);
         (sprintf "./src/Energy.ProviderAdapterTests/bin/%s/Energy.ProviderAdapterTests.dll" mode);
     ]
+    |> runNUnit
 
-    let nUnitParams _ = 
-        { 
-            NUnit3Defaults with 
-                TimeOut = System.TimeSpan.FromMinutes(4.0)
-                //TraceLevel = NUnit3TraceLevel.Off
-                OutputDir = "./nunit-output.log"
-        }
-    tests |> NUnit3 nUnitParams
+let runPerformanceTests() =
+    [
+        (sprintf "./src/Energy.ProviderAdapterPerformanceTests/bin/%s/Energy.ProviderAdapterPerformanceTests.dll" mode);
+    ]
+    |> runNUnit
 
 let runIntegrationTests() =
-    let tests = [ 
+    [
         (sprintf "./src/Energy.EHLCommsLibIntegrationTests/bin/%s/Energy.EHLCommsLibIntegrationTests.dll" mode);
     ]
-
-    let nUnitParams _ = 
-        { 
-            NUnit3Defaults with 
-                TimeOut = System.TimeSpan.FromMinutes(4.0)
-                //TraceLevel = NUnit3TraceLevel.Off
-                OutputDir = "./nunit-output.log"
-        }
-    tests |> NUnit3 nUnitParams
-
+    |> runNUnit
 
 let runMemoryProfileTests() =
     let result =
@@ -108,13 +106,8 @@ Target "AnalyseTestCoverage" (fun _ ->
     let nunitArgs = [
                         (sprintf "./src/Energy.EHLCommsLibTests/bin/%s/Energy.EHLCommsLibTests.dll" mode) 
                         (sprintf "./src/Energy.ProviderAdapterTests/bin/%s/Energy.ProviderAdapterTests.dll" mode) 
-
                         "--trace=Off";
                         "--output=./nunit-output.log";
-
-                        // Ignore performance tests when calculating coverage
-                        "--where=cat!=performance"
-
                     ] |> String.concat " "
     let allArgs = [ 
                     "-register:path64"; 
@@ -180,6 +173,7 @@ Target "Deploy" (fun _ ->
 Target "RestoreNuGetPackages" restoreNugetPackages
 Target "Compile" compile
 Target "RunUnitTests" runUnitTests 
+Target "RunPerformanceTests" runPerformanceTests 
 Target "RunIntegrationTests" runIntegrationTests 
 Target "RunMemoryProfileTests" runMemoryProfileTests
 
@@ -187,6 +181,7 @@ Target "RunMemoryProfileTests" runMemoryProfileTests
    ==> "GenerateAssemblyInfo"
    ==> "Compile"
    ==> "RunUnitTests"
+   ==> "RunPerformanceTests"
    ==> "RunIntegrationTests"
    ==> "RunMemoryProfileTests"
    ==> "PrePush"

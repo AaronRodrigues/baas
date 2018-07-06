@@ -22,11 +22,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{A3425EEF
 		..\fake = ..\fake
 		..\fake.bat = ..\fake.bat
 		..\fake.fsx = ..\fake.fsx
+		..\fettle.config.yml = ..\fettle.config.yml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Energy.ProviderAdapterTests", "Energy.ProviderAdapterTests\Energy.ProviderAdapterTests.csproj", "{992CCB1F-65D5-4441-AF1C-4182389675B8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Energy.ProviderAdapterMemoryProfiling", "Energy.ProviderAdapterMemoryProfiling\Energy.ProviderAdapterMemoryProfiling.csproj", "{CFA74524-FF4B-4B2D-B561-DBAF6C5E2510}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Energy.ProviderAdapterPerformanceTests", "Energy.ProviderAdapterPerformanceTests\Energy.ProviderAdapterPerformanceTests.csproj", "{C8036EA4-B420-4CD2-AAD4-5596B59E7C20}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,6 +61,10 @@ Global
 		{CFA74524-FF4B-4B2D-B561-DBAF6C5E2510}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFA74524-FF4B-4B2D-B561-DBAF6C5E2510}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CFA74524-FF4B-4B2D-B561-DBAF6C5E2510}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8036EA4-B420-4CD2-AAD4-5596B59E7C20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8036EA4-B420-4CD2-AAD4-5596B59E7C20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8036EA4-B420-4CD2-AAD4-5596B59E7C20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8036EA4-B420-4CD2-AAD4-5596B59E7C20}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
