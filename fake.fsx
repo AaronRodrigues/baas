@@ -64,6 +64,15 @@ let runMemoryProfileTests() =
 
     if result <> 0 then failwith "Memory Profiling Tests failed or timed out" 
 
+let runMutationTesting() =
+    let result =
+        ExecProcess (fun info ->
+             info.FileName <- "./Tools/Fettle/Fettle.Console.exe"
+             info.Arguments <- "-c ./fettle.config.yml"
+        )(System.TimeSpan.FromMinutes 5.0)
+
+    if result <> 0 then failwith "Mutation testing failed or timed out" 
+
 Target "GenerateAssemblyInfo" (fun _ ->
    let now = System.DateTime.Now
    let tcBuildNumber = environVarOrDefault "GO_PIPELINE_COUNTER" "0"
@@ -176,6 +185,7 @@ Target "RunUnitTests" runUnitTests
 Target "RunPerformanceTests" runPerformanceTests 
 Target "RunIntegrationTests" runIntegrationTests 
 Target "RunMemoryProfileTests" runMemoryProfileTests
+Target "RunMutationTesting" runMutationTesting
 
 "RestoreNuGetPackages"
    ==> "GenerateAssemblyInfo"
@@ -188,5 +198,6 @@ Target "RunMemoryProfileTests" runMemoryProfileTests
    ==> "Package"
 
 "Compile" ==> "AnalyseTestCoverage" ==> "CreateTestCoverageReport"
+"Compile" ==> "RunMutationTesting"
 
 RunTargetOrDefault "Package"
