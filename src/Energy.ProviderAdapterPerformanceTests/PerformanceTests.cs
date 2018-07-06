@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Energy.ProviderAdapterTests;
 using NUnit.Framework;
 
-namespace Energy.ProviderAdapterTests.Performance
+namespace Energy.ProviderAdapterPerformanceTests
 {
     [TestFixture, Category("performance")]
     public class PerformanceTests : OutsideInTestBase

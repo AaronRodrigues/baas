@@ -84,7 +84,6 @@
     <Compile Include="HappyPathTests.cs" />
     <Compile Include="MemoryProfiler.cs" />
     <Compile Include="OutsideInTestBase.cs" />
-    <Compile Include="Performance\PerformanceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScopedTimingsCollector.cs" />
     <Compile Include="UnhappyPathTests.cs" />
