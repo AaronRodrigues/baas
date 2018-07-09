@@ -77,22 +77,19 @@ namespace Energy.ProviderAdapter.ModelConverters
 
         public static GetPricesRequest ToEhlPriceRequest(this MakeProviderEnquiry<EnergyEnquiry> energyEnquiry)
         {
-
             var enquiry = energyEnquiry.Enquiry;
             var risk = enquiry.Risk;
 
-            GetPricesRequest request = new GetPricesRequest()
+            var priceRequest = new GetPricesRequest
             {
                 EnergyJourneyType = risk.EnergyJourneyType,
                 JourneyId = Guid.Parse(risk.JourneyId),
                 Postcode = risk.Postcode,
                 SwitchId = risk.SwitchId,
-
                 CurrentSupplyUrl = risk.CurrentSupplyUrl,
                 SwitchUrl = risk.SwitchUrl,
                 PrePayment = risk.PrePayment,
                 CompareType = risk.CompareType,
-
                 GasSupplierId = risk.GasSupplierId,
                 GasTariffId = risk.GasTariffId,
                 GasPaymentMethodId = risk.GasPaymentMethodId,
@@ -101,50 +98,57 @@ namespace Energy.ProviderAdapter.ModelConverters
                 ElectricityPaymentMethodId = risk.ElectricityPaymentMethodId,
                 ElectricityEco7 = risk.Economy7,
                 PercentageNightUsage = risk.Economy7NightUsage,
-                IgnoreProRataComparison = risk.IgnoreProRataComparison
+                IgnoreProRataComparison = risk.IgnoreProRataComparison,
+                UseDetailedEstimatorForElectricity = risk.CompareType == CompareWhat.Electricity && risk.NoBill != null && risk.NoBill.ElectricitySpendUnknown,
+                UseDetailedEstimatorForGas = risk.CompareType == CompareWhat.Gas && risk.NoBill != null && risk.NoBill.GasSpendUnknown
             };
 
-            if (risk.CompareType == CompareWhat.Gas) request.UseDetailedEstimatorForElectricity = false;
-            else request.UseDetailedEstimatorForElectricity = risk.NoBill != null && risk.NoBill.ElectricitySpendUnknown;
+            SetPriceRequestBillDetails(risk, priceRequest);
 
-            if (risk.CompareType == CompareWhat.Electricity) request.UseDetailedEstimatorForGas = false;
-            else request.UseDetailedEstimatorForGas = risk.NoBill != null && risk.NoBill.GasSpendUnknown;
+            return priceRequest;
+        }
 
-
-            if (risk.EnergyJourneyType == EnergyJourneyType.HaveMyBill && risk.Bill != null)
+        private static void SetPriceRequestBillDetails(EnergyRisk risk, GetPricesRequest priceRequest)
+        {
+            switch (risk.EnergyJourneyType)
             {
-
-                request.UsageData.GasKwh = risk.Bill.GasUsage;
-                request.UsageData.GasUsagePeriod = risk.Bill.GasUsagePeriod;
-                request.UsageData.ElectricityKwh = risk.Bill.ElectricityUsage;
-                request.UsageData.ElectricityUsagePeriod = risk.Bill.ElectricityUsagePeriod;
-
-                request.SpendData.GasSpendAmount = risk.Bill.GasSpend;
-                request.SpendData.GasSpendPeriod = risk.Bill.GasSpendPeriod;
-                request.SpendData.ElectricitySpendAmount = risk.Bill.ElectricitySpend;
-                request.SpendData.ElectricitySpendPeriod = risk.Bill.ElectricitySpendPeriod;
-
+                case EnergyJourneyType.HaveMyBill when risk.Bill != null:
+                    SetPriceRequestWithHaveBill(priceRequest, risk);
+                    break;
+                case EnergyJourneyType.DontHaveMyBill when risk.NoBill != null:
+                    SetPriceRequestWithDontHaveMyBill(priceRequest, risk);
+                    break;
             }
+        }
 
-            if (risk.EnergyJourneyType == EnergyJourneyType.DontHaveMyBill && risk.NoBill != null)
-            {
+        private static void SetPriceRequestWithDontHaveMyBill(GetPricesRequest request, EnergyRisk risk)
+        {
+            request.SpendData.GasSpendAmount = risk.NoBill.GasSpend;
+            request.SpendData.GasSpendPeriod = risk.NoBill.GasSpendPeriod;
+            request.SpendData.ElectricitySpendAmount = risk.NoBill.ElectricitySpend;
+            request.SpendData.ElectricitySpendPeriod = risk.NoBill.ElectricitySpendPeriod;
 
-                request.SpendData.GasSpendAmount = risk.NoBill.GasSpend;
-                request.SpendData.GasSpendPeriod = risk.NoBill.GasSpendPeriod;
-                request.SpendData.ElectricitySpendAmount = risk.NoBill.ElectricitySpend;
-                request.SpendData.ElectricitySpendPeriod = risk.NoBill.ElectricitySpendPeriod;
+            request.EstimatorData.NumberOfBedrooms = risk.NoBill.NumberOfBedrooms.ToString();
+            request.EstimatorData.NumberOfOccupants = risk.NoBill.NumberOfOccupants.ToString();
+            request.EstimatorData.MainHeatingSource = risk.NoBill.MainHeatingSource;
+            request.EstimatorData.HeatingUsage = risk.NoBill.HeatingUsage;
+            request.EstimatorData.HouseInsulation = risk.NoBill.HouseInsulation;
+            request.EstimatorData.MainCookingSource = risk.NoBill.MainCookingSource;
+            request.EstimatorData.HouseOccupied = risk.NoBill.HouseOccupied.ToString();
+            request.EstimatorData.HouseType = risk.NoBill.HouseType;
+        }
 
-                request.EstimatorData.NumberOfBedrooms = risk.NoBill.NumberOfBedrooms.ToString();
-                request.EstimatorData.NumberOfOccupants = risk.NoBill.NumberOfOccupants.ToString();
-                request.EstimatorData.MainHeatingSource = risk.NoBill.MainHeatingSource;
-                request.EstimatorData.HeatingUsage = risk.NoBill.HeatingUsage;
-                request.EstimatorData.HouseInsulation = risk.NoBill.HouseInsulation;
-                request.EstimatorData.MainCookingSource = risk.NoBill.MainCookingSource;
-                request.EstimatorData.HouseOccupied = risk.NoBill.HouseOccupied.ToString();
-                request.EstimatorData.HouseType = risk.NoBill.HouseType;
-            }
+        private static void SetPriceRequestWithHaveBill(GetPricesRequest request, EnergyRisk risk)
+        {
+            request.UsageData.GasKwh = risk.Bill.GasUsage;
+            request.UsageData.GasUsagePeriod = risk.Bill.GasUsagePeriod;
+            request.UsageData.ElectricityKwh = risk.Bill.ElectricityUsage;
+            request.UsageData.ElectricityUsagePeriod = risk.Bill.ElectricityUsagePeriod;
 
-            return request;
+            request.SpendData.GasSpendAmount = risk.Bill.GasSpend;
+            request.SpendData.GasSpendPeriod = risk.Bill.GasSpendPeriod;
+            request.SpendData.ElectricitySpendAmount = risk.Bill.ElectricitySpend;
+            request.SpendData.ElectricitySpendPeriod = risk.Bill.ElectricitySpendPeriod;
         }
 
         public static List<EnergyQuote> AddFakeBrandCode(this List<EnergyQuote> quoteList, string brandCode)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CTM.Common.BuildingBlocks.Extensions;
 using Energy.EHLCommsLib.Contracts.FutureSupplies;
@@ -39,14 +40,14 @@ namespace Energy.EHLCommsLib.Mappers
                     PaymentMethod = (PaymentMethodType) paymentMethod,
                     PaymentMethodId = paymentMethod,
                     CanApply = supply.CanApply,
-                    CappedOrFixed = supply.SupplyDetails.Attributes.Any(a => a.Equals("CappedOrFixed")),
-                    Green = supply.SupplyDetails.Attributes.Any(a => a.Equals("Green")),
-                    AccurateMonthlyBilling = supply.SupplyDetails.Attributes.Any(a => a.Equals("AccurateMonthlyBilling")),
-                    StayWarm = supply.SupplyDetails.Attributes.Any(a => a.Equals("StayWarm")),
-                    Economy10 = supply.SupplyDetails.Attributes.Any(a => a.Equals("Economy10")),
-                    PaperLessBilling = supply.SupplyDetails.Attributes.Any(a => a.Equals("PaperlessBilling")),
-                    PaperBilling = supply.SupplyDetails.Attributes.Any(a => a.Equals("PaperBilling")),
-                    NoStandingCharges = supply.SupplyDetails.Attributes.Any(a => a.Equals("NoStandingCharges")),
+                    CappedOrFixed = supply.SupplyDetails.Attributes.Any(a => a.Equals("CappedOrFixed", StringComparison.InvariantCultureIgnoreCase)),
+                    Green = supply.SupplyDetails.Attributes.Any(a => a.Equals("Green", StringComparison.InvariantCultureIgnoreCase)),
+                    AccurateMonthlyBilling = supply.SupplyDetails.Attributes.Any(a => a.Equals("AccurateMonthlyBilling", StringComparison.InvariantCultureIgnoreCase)),
+                    StayWarm = supply.SupplyDetails.Attributes.Any(a => a.Equals("StayWarm", StringComparison.InvariantCultureIgnoreCase)),
+                    Economy10 = supply.SupplyDetails.Attributes.Any(a => a.Equals("Economy10", StringComparison.InvariantCultureIgnoreCase)),
+                    PaperLessBilling = supply.SupplyDetails.Attributes.Any(a => a.Equals("PaperlessBilling", StringComparison.InvariantCultureIgnoreCase)),
+                    PaperBilling = supply.SupplyDetails.Attributes.Any(a => a.Equals("PaperBilling", StringComparison.InvariantCultureIgnoreCase)),
+                    NoStandingCharges = supply.SupplyDetails.Attributes.Any(a => a.Equals("NoStandingCharges", StringComparison.InvariantCultureIgnoreCase)),
                     RenewableFuelPercentage = supply.SupplyDetails.RenewableFuelPercentage,
                     TotalExitFees = CalculateTotalExitFees(request.CompareType, supply.SupplyDetails.ExitFeesGas, supply.SupplyDetails.ExitFeesElectricity),
                     CheapestBigSupplier = PromotionsValidator(supply.Promotions, "CheapestBigSupplier"),
