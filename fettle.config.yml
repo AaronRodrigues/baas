@@ -1,0 +1,10 @@
+﻿
+solution: src\EnergyProviderAdapter.sln
+
+testAssemblies:
+    - src\Energy.EHLCommsLibTests\bin\Debug\Energy.EHLCommsLibTests.dll
+    - src\Energy.ProviderAdapterTests\bin\Debug\Energy.ProviderAdapterTests.dll
+
+projectFilters:
+    - Energy.EHLCommsLib
+    - Energy.ProviderAdapter
