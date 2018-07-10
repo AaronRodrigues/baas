@@ -1,5 +1,5 @@
 $ErrorActionPreference = "Stop"
-﻿
+
 write-output "=================================================="
 write-output "   Starting SonarQube runner"
 write-output "=================================================="
