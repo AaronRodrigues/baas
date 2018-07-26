@@ -56,7 +56,14 @@ namespace Energy.ProviderAdapterTests
         public string Name;
         public string Id;
     }
-    public class BiscuitProvider   
+
+    public interface IBiscuitHttpClient
+    {
+        Task<HttpResponseMessage> GetAsync(string url);
+        Task<BiscuitProvider.PostResponse> CreateBiscuit(Biscuit biscuit);
+    }
+
+    public class BiscuitProvider  : IBiscuitHttpClient 
     {
         private readonly HttpClient _client;
 
@@ -64,6 +71,12 @@ namespace Energy.ProviderAdapterTests
         {
             _client = client;
         }
+
+        public Task<HttpResponseMessage> GetAsync(string url)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<PostResponse> CreateBiscuit(Biscuit biscuit)
         {
             //todo: POST to biscuit api with serialised biscuit in the request body
